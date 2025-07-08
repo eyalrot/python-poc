@@ -49,10 +49,5 @@ jobs:
     - name: Run C++ integration tests
       run: |
         export PYTHONPATH=${{ github.workspace }}:$PYTHONPATH
-        # Run all tests in cpp_integration directory
-        pytest tests/cpp_integration/ -v
-    
-    - name: Run compatibility test
-      run: |
-        export PYTHONPATH=${{ github.workspace }}:$PYTHONPATH
-        python tests/cpp_integration/test_python_cpp_compatibility.py
+        cd ${{ github.workspace }}
+        python tests/cpp_integration/run_tests.py

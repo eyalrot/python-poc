@@ -100,8 +100,7 @@ jobs:
       run: |
         export PYTHONPATH=${{ github.workspace }}:$PYTHONPATH
         cd ${{ github.workspace }}
-        python tests/cpp_integration/test_cpp_bindings.py
-        python tests/cpp_integration/test_batch_operations.py
+        python tests/cpp_integration/run_tests.py
     
   performance-check:
     runs-on: ubuntu-latest
