@@ -250,6 +250,19 @@ void save_json(const Drawing& drawing, const std::string& filename) {
                     break;
                 }
                 
+                case ObjectType::Ellipse: {
+                    auto* ellipse = storage.get_ellipse(obj_id);
+                    if (ellipse) {
+                        write_object_base(writer, ellipse->base, obj_id);
+                        writer.write_key("center"); 
+                        writer.write_point(Point(ellipse->x, ellipse->y));
+                        writer.write_key("rx"); writer.write_number(ellipse->rx);
+                        writer.write_key("ry"); writer.write_number(ellipse->ry);
+                        writer.write_key("rotation"); writer.write_number(ellipse->rotation);
+                    }
+                    break;
+                }
+                
                 case ObjectType::Polygon: {
                     auto* poly = storage.get_polygon(obj_id);
                     if (poly) {

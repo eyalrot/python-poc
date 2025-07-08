@@ -135,6 +135,40 @@ class DrawingCpp:
                 
         return obj_id
     
+    def add_ellipse(self, x: float, y: float, rx: float, ry: float,
+                    rotation: float = 0,
+                    fill_color: Optional[Tuple[int, int, int]] = None,
+                    stroke_color: Optional[Tuple[int, int, int]] = None,
+                    stroke_width: float = 1.0,
+                    layer_id: Optional[int] = None) -> int:
+        """Add an ellipse to the drawing.
+        
+        Args:
+            x, y: Center position
+            rx, ry: Radii in x and y directions
+            rotation: Rotation angle in radians
+            fill_color: Optional fill color as (r, g, b)
+            stroke_color: Optional stroke color as (r, g, b)
+            stroke_width: Stroke width (not used yet)
+            layer_id: Optional layer ID
+        """
+        if layer_id is None:
+            layer_id = self._default_layer_id
+            
+        obj_id = self._drawing.add_ellipse(x, y, rx, ry, rotation, layer_id)
+        
+        # Set colors if provided
+        if fill_color or stroke_color:
+            storage = self._drawing.get_storage()
+            if fill_color:
+                color = drawing_cpp.Color(*fill_color)
+                storage.set_fill_color([obj_id], color)
+            if stroke_color:
+                color = drawing_cpp.Color(*stroke_color)
+                storage.set_stroke_color([obj_id], color)
+                
+        return obj_id
+    
     def find_objects_at_point(self, x: float, y: float, tolerance: float = 1.0) -> List[int]:
         """Find objects at the given point."""
         storage = self._drawing.get_storage()

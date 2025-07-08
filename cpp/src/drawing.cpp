@@ -35,6 +35,13 @@ BoundingBox Drawing::get_bounding_box() const {
                     }
                     break;
                     
+                case ObjectType::Ellipse:
+                    if (auto* ellipse = storage.get_ellipse(obj_id)) {
+                        obj_bbox = ellipse->get_bounding_box();
+                        has_bbox = true;
+                    }
+                    break;
+                    
                 case ObjectType::Polygon:
                     // Polygon handling would go here
                     // For now, skip as it requires friend access or public polygon array

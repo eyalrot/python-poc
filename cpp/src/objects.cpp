@@ -22,6 +22,9 @@ void ObjectStorage::set_fill_color(const std::vector<ObjectID>& ids, Color color
             case ObjectType::Line:
                 if (auto* obj = get_line(id)) obj->base.fill_color = color;
                 break;
+            case ObjectType::Ellipse:
+                if (auto* obj = get_ellipse(id)) obj->base.fill_color = color;
+                break;
             case ObjectType::Polygon:
                 if (uint32_t idx = get_index(id); idx < polygons.size()) {
                     polygons[idx].base.fill_color = color;
@@ -44,6 +47,9 @@ void ObjectStorage::set_stroke_color(const std::vector<ObjectID>& ids, Color col
                 break;
             case ObjectType::Line:
                 if (auto* obj = get_line(id)) obj->base.stroke_color = color;
+                break;
+            case ObjectType::Ellipse:
+                if (auto* obj = get_ellipse(id)) obj->base.stroke_color = color;
                 break;
             case ObjectType::Polygon:
                 if (uint32_t idx = get_index(id); idx < polygons.size()) {
@@ -69,6 +75,9 @@ void ObjectStorage::set_opacity(const std::vector<ObjectID>& ids, float opacity)
                 break;
             case ObjectType::Line:
                 if (auto* obj = get_line(id)) obj->base.opacity = opacity;
+                break;
+            case ObjectType::Ellipse:
+                if (auto* obj = get_ellipse(id)) obj->base.opacity = opacity;
                 break;
             case ObjectType::Polygon:
                 if (uint32_t idx = get_index(id); idx < polygons.size()) {
@@ -102,6 +111,13 @@ std::vector<ObjectStorage::ObjectID> ObjectStorage::find_in_rect(const BoundingB
     for (size_t i = 0; i < lines.size(); ++i) {
         if (rect.intersects(lines[i].get_bounding_box())) {
             result.push_back(make_id(ObjectType::Line, i));
+        }
+    }
+    
+    // Check ellipses
+    for (size_t i = 0; i < ellipses.size(); ++i) {
+        if (rect.intersects(ellipses[i].get_bounding_box())) {
+            result.push_back(make_id(ObjectType::Ellipse, i));
         }
     }
     
@@ -185,6 +201,34 @@ std::vector<ObjectStorage::ObjectID> ObjectStorage::find_at_point(const Point& p
             if (dist_sq <= tol_sq) {
                 result.push_back(make_id(ObjectType::Line, i));
             }
+        }
+    }
+    
+    // Check ellipses
+    for (size_t i = 0; i < ellipses.size(); ++i) {
+        const auto& ellipse = ellipses[i];
+        
+        // Transform point to ellipse coordinate system (account for rotation)
+        float cos_rot = std::cos(-ellipse.rotation);
+        float sin_rot = std::sin(-ellipse.rotation);
+        float dx = point.x - ellipse.x;
+        float dy = point.y - ellipse.y;
+        float local_x = dx * cos_rot - dy * sin_rot;
+        float local_y = dx * sin_rot + dy * cos_rot;
+        
+        // Check if point is on ellipse edge (within tolerance)
+        float rx_outer = ellipse.rx + tolerance;
+        float ry_outer = ellipse.ry + tolerance;
+        float rx_inner = std::max(0.0f, ellipse.rx - tolerance);
+        float ry_inner = std::max(0.0f, ellipse.ry - tolerance);
+        
+        float outer_check = (local_x * local_x) / (rx_outer * rx_outer) + 
+                           (local_y * local_y) / (ry_outer * ry_outer);
+        float inner_check = (local_x * local_x) / (rx_inner * rx_inner) + 
+                           (local_y * local_y) / (ry_inner * ry_inner);
+        
+        if (outer_check <= 1.0f && (rx_inner == 0 || ry_inner == 0 || inner_check >= 1.0f)) {
+            result.push_back(make_id(ObjectType::Ellipse, i));
         }
     }
     

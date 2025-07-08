@@ -69,6 +69,25 @@ struct CompactLine {
     }
 };
 
+// Compact Ellipse (40 bytes total)
+struct CompactEllipse {
+    CompactObject base;     // 20 bytes
+    float x, y;             // 8 bytes - center position
+    float rx, ry;           // 8 bytes - radii
+    float rotation;         // 4 bytes - rotation angle in radians
+    
+    CompactEllipse() : base(ObjectType::Ellipse), x(0), y(0), rx(0), ry(0), rotation(0) {}
+    CompactEllipse(float x, float y, float rx, float ry, float rotation = 0)
+        : base(ObjectType::Ellipse), x(x), y(y), rx(rx), ry(ry), rotation(rotation) {}
+    
+    BoundingBox get_bounding_box() const {
+        // For rotated ellipse, we need to calculate the axis-aligned bounding box
+        // This is a simplified version - for exact bounds, we'd need trig calculations
+        float max_radius = std::max(rx, ry);
+        return BoundingBox(x - max_radius, y - max_radius, x + max_radius, y + max_radius);
+    }
+};
+
 // For variable-size objects like Polygon, we use a different approach
 struct CompactPolygon {
     CompactObject base;     // 20 bytes
@@ -86,6 +105,7 @@ public:
     std::vector<CompactCircle> circles;
     std::vector<CompactRectangle> rectangles;
     std::vector<CompactLine> lines;
+    std::vector<CompactEllipse> ellipses;
     std::vector<CompactPolygon> polygons;
     
     // Variable data storage (public for serialization)
@@ -127,6 +147,11 @@ public:
     ObjectID add_line(float x1, float y1, float x2, float y2) {
         lines.emplace_back(x1, y1, x2, y2);
         return make_id(ObjectType::Line, lines.size() - 1);
+    }
+    
+    ObjectID add_ellipse(float x, float y, float rx, float ry, float rotation = 0) {
+        ellipses.emplace_back(x, y, rx, ry, rotation);
+        return make_id(ObjectType::Ellipse, ellipses.size() - 1);
     }
     
     ObjectID add_polygon(const std::vector<Point>& points) {
@@ -175,6 +200,18 @@ public:
         return idx < lines.size() ? &lines[idx] : nullptr;
     }
     
+    CompactEllipse* get_ellipse(ObjectID id) {
+        if (get_type(id) != ObjectType::Ellipse) return nullptr;
+        uint32_t idx = get_index(id);
+        return idx < ellipses.size() ? &ellipses[idx] : nullptr;
+    }
+    
+    const CompactEllipse* get_ellipse(ObjectID id) const {
+        if (get_type(id) != ObjectType::Ellipse) return nullptr;
+        uint32_t idx = get_index(id);
+        return idx < ellipses.size() ? &ellipses[idx] : nullptr;
+    }
+    
     CompactPolygon* get_polygon(ObjectID id) {
         if (get_type(id) != ObjectType::Polygon) return nullptr;
         uint32_t idx = get_index(id);
@@ -206,13 +243,14 @@ public:
     
     // Statistics
     size_t total_objects() const {
-        return circles.size() + rectangles.size() + lines.size() + polygons.size();
+        return circles.size() + rectangles.size() + lines.size() + ellipses.size() + polygons.size();
     }
     
     size_t memory_usage() const {
         return sizeof(CompactCircle) * circles.size() +
                sizeof(CompactRectangle) * rectangles.size() +
                sizeof(CompactLine) * lines.size() +
+               sizeof(CompactEllipse) * ellipses.size() +
                sizeof(CompactPolygon) * polygons.size() +
                sizeof(Point) * polygon_points.size() +
                sizeof(Transform2D) * transforms.size();

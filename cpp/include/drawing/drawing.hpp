@@ -144,6 +144,17 @@ public:
         return id;
     }
     
+    ObjectStorage::ObjectID add_ellipse(float x, float y, float rx, float ry, float rotation = 0, uint8_t layer_id = 0) {
+        auto id = storage.add_ellipse(x, y, rx, ry, rotation);
+        if (auto* layer = get_layer(layer_id)) {
+            layer->add_object(id);
+            if (auto* ellipse = storage.get_ellipse(id)) {
+                ellipse->base.layer_id = layer_id;
+            }
+        }
+        return id;
+    }
+    
     // Access to storage for advanced operations
     ObjectStorage& get_storage() { return storage; }
     const ObjectStorage& get_storage() const { return storage; }
