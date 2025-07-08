@@ -110,6 +110,31 @@ class DrawingCpp:
                 
         return obj_id
     
+    def add_polygon(self, points: List[Tuple[float, float]],
+                    fill_color: Optional[Tuple[int, int, int]] = None,
+                    stroke_color: Optional[Tuple[int, int, int]] = None,
+                    stroke_width: float = 1.0,
+                    layer_id: Optional[int] = None) -> int:
+        """Add a polygon to the drawing."""
+        if layer_id is None:
+            layer_id = self._default_layer_id
+            
+        # Convert points to drawing_cpp.Point objects
+        cpp_points = [drawing_cpp.Point(x, y) for x, y in points]
+        obj_id = self._drawing.add_polygon(cpp_points, layer_id)
+        
+        # Set colors if provided
+        if fill_color or stroke_color:
+            storage = self._drawing.get_storage()
+            if fill_color:
+                color = drawing_cpp.Color(*fill_color)
+                storage.set_fill_color([obj_id], color)
+            if stroke_color:
+                color = drawing_cpp.Color(*stroke_color)
+                storage.set_stroke_color([obj_id], color)
+                
+        return obj_id
+    
     def find_objects_at_point(self, x: float, y: float, tolerance: float = 1.0) -> List[int]:
         """Find objects at the given point."""
         storage = self._drawing.get_storage()

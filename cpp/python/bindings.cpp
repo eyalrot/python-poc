@@ -107,6 +107,8 @@ PYBIND11_MODULE(drawing_cpp, m) {
              py::arg("x"), py::arg("y"), py::arg("width"), py::arg("height"), py::arg("layer_id")=0)
         .def("add_line", &Drawing::add_line,
              py::arg("x1"), py::arg("y1"), py::arg("x2"), py::arg("y2"), py::arg("layer_id")=0)
+        .def("add_polygon", &Drawing::add_polygon,
+             py::arg("points"), py::arg("layer_id")=0)
         .def("get_bounding_box", &Drawing::get_bounding_box)
         .def("find_objects_in_rect", &Drawing::find_objects_in_rect)
         .def("total_objects", &Drawing::total_objects)
@@ -190,4 +192,5 @@ PYBIND11_MODULE(drawing_cpp, m) {
     m.attr("BYTES_PER_CIRCLE") = sizeof(CompactCircle);
     m.attr("BYTES_PER_RECTANGLE") = sizeof(CompactRectangle);
     m.attr("BYTES_PER_LINE") = sizeof(CompactLine);
+    m.attr("BYTES_PER_POLYGON") = sizeof(CompactPolygon);
 }

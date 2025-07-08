@@ -175,6 +175,18 @@ public:
         return idx < lines.size() ? &lines[idx] : nullptr;
     }
     
+    CompactPolygon* get_polygon(ObjectID id) {
+        if (get_type(id) != ObjectType::Polygon) return nullptr;
+        uint32_t idx = get_index(id);
+        return idx < polygons.size() ? &polygons[idx] : nullptr;
+    }
+    
+    const CompactPolygon* get_polygon(ObjectID id) const {
+        if (get_type(id) != ObjectType::Polygon) return nullptr;
+        uint32_t idx = get_index(id);
+        return idx < polygons.size() ? &polygons[idx] : nullptr;
+    }
+    
     // Get polygon points
     std::pair<const Point*, size_t> get_polygon_points(const CompactPolygon& poly) const {
         if (poly.point_offset + poly.point_count > polygon_points.size()) {

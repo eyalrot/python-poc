@@ -188,7 +188,20 @@ struct CompactCircle {
 - [ ] Parallel algorithms for rendering
 - [ ] Memory-mapped file support
 
-### Phase 4: Advanced Features (📋 PLANNED)
+### Phase 4: Full Object Compatibility (🚧 NEXT PRIORITY)
+Current implementation supports only 4 out of 10 object types. Need to implement:
+- [ ] Ellipse (rx, ry, rotation)
+- [ ] Polyline (open path with points)
+- [ ] Arc (center, radius, start/end angles)
+- [ ] Text (position, font properties, alignment)
+- [ ] Path (SVG-style commands)
+- [ ] Group (container for nested objects)
+- [ ] Gradient/Pattern fills
+- [ ] Line styles (dashed, dotted)
+- [ ] 3D transforms (currently 2D only)
+- [ ] Metadata support per object
+
+### Phase 5: Advanced Features (📋 FUTURE)
 - [ ] Streaming API for huge files
 - [ ] Progressive loading/rendering
 - [ ] GPU compute support
@@ -196,8 +209,16 @@ struct CompactCircle {
 
 ## Recent Updates
 
-### C++ Implementation Complete (Latest)
-- ✅ Achieved all performance targets with C++ implementation
+### Object Support Gap Analysis (Latest)
+**Current Status**: C++ implements only 4 out of 10 drawable object types:
+- ✅ Circle, Rectangle, Line, Polygon (Polygon not exposed in bindings)
+- ❌ Missing: Ellipse, Polyline, Arc, Text, Path, Group
+- ❌ Missing: Gradients, patterns, line styles, metadata
+- ⚠️ Transform: C++ has 2D only, Python has full 3D
+
+**Next Steps**: Implement full object compatibility to match Python API
+
+### C++ Performance Targets Achieved
 - ✅ Memory: 32 bytes/object (25x reduction from Python's 800 bytes)
 - ✅ Creation: 1.4M objects/second
 - ✅ Batch operations: 147M objects/second with SIMD optimization

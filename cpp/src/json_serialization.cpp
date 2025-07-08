@@ -250,6 +250,25 @@ void save_json(const Drawing& drawing, const std::string& filename) {
                     break;
                 }
                 
+                case ObjectType::Polygon: {
+                    auto* poly = storage.get_polygon(obj_id);
+                    if (poly) {
+                        write_object_base(writer, poly->base, obj_id);
+                        writer.write_key("points");
+                        writer.begin_array();
+                        
+                        auto [points, count] = storage.get_polygon_points(*poly);
+                        for (size_t i = 0; i < count; ++i) {
+                            writer.write_comma();
+                            writer.write_indent();
+                            writer.write_point(points[i]);
+                        }
+                        
+                        writer.end_array();
+                    }
+                    break;
+                }
+                
                 default:
                     break;
             }
