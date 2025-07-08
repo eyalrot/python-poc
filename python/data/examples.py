@@ -3,18 +3,18 @@ Example usage of the drawing data structures
 """
 
 from python.data import (
-    Drawing,
-    Layer,
-    Color,
-    Point,
-    Line,
     Circle,
+    Color,
+    Drawing,
+    FillStyle,
+    Group,
+    Layer,
+    Line,
+    LineStyle,
+    Point,
+    Polygon,
     Rectangle,
     Text,
-    Group,
-    Polygon,
-    FillStyle,
-    LineStyle,
 )
 
 

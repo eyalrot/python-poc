@@ -2,28 +2,29 @@
 SVG rendering functionality for drawable objects
 """
 
-from typing import List, Union
+import math
+from typing import Union
+
 from python.data.models import (
-    DrawableObject,
-    Line,
-    Circle,
-    Ellipse,
-    Rectangle,
-    Polygon,
-    Polyline,
     Arc,
-    Text,
-    Path,
+    Circle,
+    Color,
+    DrawableObject,
+    Drawing,
+    Ellipse,
+    FillStyle,
     Group,
     Layer,
-    Drawing,
-    Color,
-    FillStyle,
+    Line,
     LineStyle,
+    Path,
+    Polygon,
+    Polyline,
+    Rectangle,
+    Text,
     TextAlignment,
     VerticalAlignment,
 )
-import math
 
 
 def color_to_svg(color: Color) -> str:
@@ -44,7 +45,7 @@ def line_style_to_svg(style: LineStyle) -> str:
     return patterns.get(style, "")
 
 
-def fill_to_svg(fill: FillStyle, defs: List[str], obj_id: str) -> str:
+def fill_to_svg(fill: FillStyle, defs: list[str], obj_id: str) -> str:
     """Convert FillStyle to SVG fill attribute"""
     if not fill:
         return "none"
@@ -84,7 +85,7 @@ def fill_to_svg(fill: FillStyle, defs: List[str], obj_id: str) -> str:
     return "none"
 
 
-def render_line(line: Line, defs: List[str]) -> str:
+def render_line(line: Line, defs: list[str]) -> str:
     """Render Line to SVG"""
     attrs = []
     attrs.append(f'x1="{line.start_point.x}"')
@@ -106,7 +107,7 @@ def render_line(line: Line, defs: List[str]) -> str:
     return f'<line {" ".join(attrs)}/>'
 
 
-def render_circle(circle: Circle, defs: List[str]) -> str:
+def render_circle(circle: Circle, defs: list[str]) -> str:
     """Render Circle to SVG"""
     attrs = []
     attrs.append(f'cx="{circle.center.x}"')
@@ -126,7 +127,7 @@ def render_circle(circle: Circle, defs: List[str]) -> str:
     return f'<circle {" ".join(attrs)}/>'
 
 
-def render_ellipse(ellipse: Ellipse, defs: List[str]) -> str:
+def render_ellipse(ellipse: Ellipse, defs: list[str]) -> str:
     """Render Ellipse to SVG"""
     attrs = []
     attrs.append(f'cx="{ellipse.center.x}"')
@@ -152,7 +153,7 @@ def render_ellipse(ellipse: Ellipse, defs: List[str]) -> str:
     return f'<ellipse {" ".join(attrs)}/>'
 
 
-def render_rectangle(rect: Rectangle, defs: List[str]) -> str:
+def render_rectangle(rect: Rectangle, defs: list[str]) -> str:
     """Render Rectangle to SVG"""
     attrs = []
     attrs.append(f'x="{rect.top_left.x}"')
@@ -177,7 +178,7 @@ def render_rectangle(rect: Rectangle, defs: List[str]) -> str:
     return f'<rect {" ".join(attrs)}/>'
 
 
-def render_polygon(polygon: Polygon, defs: List[str]) -> str:
+def render_polygon(polygon: Polygon, defs: list[str]) -> str:
     """Render Polygon to SVG"""
     points = " ".join([f"{p.x},{p.y}" for p in polygon.points])
 
@@ -197,7 +198,7 @@ def render_polygon(polygon: Polygon, defs: List[str]) -> str:
     return f'<polygon {" ".join(attrs)}/>'
 
 
-def render_polyline(polyline: Polyline, defs: List[str]) -> str:
+def render_polyline(polyline: Polyline, defs: list[str]) -> str:
     """Render Polyline to SVG"""
     points = " ".join([f"{p.x},{p.y}" for p in polyline.points])
 
@@ -219,7 +220,7 @@ def render_polyline(polyline: Polyline, defs: List[str]) -> str:
     return f'<polyline {" ".join(attrs)}/>'
 
 
-def render_arc(arc: Arc, defs: List[str]) -> str:
+def render_arc(arc: Arc, defs: list[str]) -> str:
     """Render Arc to SVG using path"""
     # Convert angles to radians
     start_rad = math.radians(arc.start_angle)
@@ -254,7 +255,7 @@ def render_arc(arc: Arc, defs: List[str]) -> str:
     return f'<path {" ".join(attrs)}/>'
 
 
-def render_text(text: Text, defs: List[str]) -> str:
+def render_text(text: Text, defs: list[str]) -> str:
     """Render Text to SVG"""
     attrs = []
     attrs.append(f'x="{text.position.x}"')
@@ -296,7 +297,7 @@ def render_text(text: Text, defs: List[str]) -> str:
     return f'<text {" ".join(attrs)}>{content}</text>'
 
 
-def render_path(path: Path, defs: List[str]) -> str:
+def render_path(path: Path, defs: list[str]) -> str:
     """Render Path to SVG"""
     # Build path data from commands
     path_data = []
@@ -320,7 +321,7 @@ def render_path(path: Path, defs: List[str]) -> str:
     return f'<path {" ".join(attrs)}/>'
 
 
-def render_object(obj: Union[DrawableObject, Group], defs: List[str]) -> str:
+def render_object(obj: Union[DrawableObject, Group], defs: list[str]) -> str:
     """Render any drawable object to SVG"""
     if isinstance(obj, Line):
         return render_line(obj, defs)
@@ -346,7 +347,7 @@ def render_object(obj: Union[DrawableObject, Group], defs: List[str]) -> str:
         return f"<!-- Unsupported object type: {type(obj).__name__} -->"
 
 
-def render_group(group: Group, defs: List[str]) -> str:
+def render_group(group: Group, defs: list[str]) -> str:
     """Render Group to SVG"""
     group_parts = [f'<g id="{group.id}">']
 
@@ -359,7 +360,7 @@ def render_group(group: Group, defs: List[str]) -> str:
     return "\n".join(group_parts)
 
 
-def render_layer(layer: Layer, defs: List[str]) -> str:
+def render_layer(layer: Layer, defs: list[str]) -> str:
     """Render Layer to SVG"""
     if not layer.visible:
         return ""

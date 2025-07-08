@@ -1,14 +1,15 @@
 import pytest
 from pydantic import ValidationError
+
 from python.data import (
-    Point,
-    Color,
     BoundingBox,
-    Transform,
-    GradientStop,
-    Gradient,
-    GradientType,
+    Color,
     FillStyle,
+    Gradient,
+    GradientStop,
+    GradientType,
+    Point,
+    Transform,
 )
 
 

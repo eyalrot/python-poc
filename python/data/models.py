@@ -1,8 +1,9 @@
-from typing import List, Optional, Dict, Any, Union
-from pydantic import BaseModel, Field, field_validator
-from uuid import UUID, uuid4
-from enum import Enum
 from datetime import datetime
+from enum import Enum
+from typing import Any, Optional, Union
+from uuid import UUID, uuid4
+
+from pydantic import BaseModel, Field, field_validator
 
 
 class Point(BaseModel):
@@ -94,7 +95,7 @@ class GradientStop(BaseModel):
 
 class Gradient(BaseModel):
     type: GradientType
-    stops: List[GradientStop]
+    stops: list[GradientStop]
     angle: Optional[float] = 0.0  # For linear gradients
     center: Optional[Point] = None  # For radial gradients
     radius: Optional[float] = None  # For radial gradients
@@ -117,7 +118,7 @@ class DrawableObject(BaseModel):
     locked: bool = False
     layer_id: Optional[UUID] = None
     transform: Transform = Field(default_factory=Transform)
-    metadata: Dict[str, Any] = Field(default_factory=dict)
+    metadata: dict[str, Any] = Field(default_factory=dict)
     created_at: datetime = Field(default_factory=datetime.now)
     updated_at: datetime = Field(default_factory=datetime.now)
 
@@ -184,7 +185,7 @@ class Rectangle(DrawableObject):
 
 
 class Polygon(DrawableObject):
-    points: List[Point] = Field(min_length=3)
+    points: list[Point] = Field(min_length=3)
     closed: bool = True
 
     def get_bounding_box(self) -> BoundingBox:
@@ -196,7 +197,7 @@ class Polygon(DrawableObject):
 
 
 class Polyline(DrawableObject):
-    points: List[Point] = Field(min_length=2)
+    points: list[Point] = Field(min_length=2)
     line_style: LineStyle = LineStyle.SOLID
 
     def get_bounding_box(self) -> BoundingBox:
@@ -249,11 +250,11 @@ class Text(DrawableObject):
 
 class PathCommand(BaseModel):
     command: str  # M, L, C, Q, A, Z, etc.
-    params: List[float] = Field(default_factory=list)
+    params: list[float] = Field(default_factory=list)
 
 
 class Path(DrawableObject):
-    commands: List[PathCommand]
+    commands: list[PathCommand]
 
     def get_bounding_box(self) -> BoundingBox:
         # Simplified implementation
@@ -266,7 +267,7 @@ DrawableObjectType = Union[Line, Circle, Ellipse, Rectangle, Polygon, Polyline, 
 
 
 class Group(DrawableObject):
-    objects: List[DrawableObjectType] = Field(default_factory=list)
+    objects: list[DrawableObjectType] = Field(default_factory=list)
 
     def get_bounding_box(self) -> BoundingBox:
         if not self.objects:
@@ -299,7 +300,7 @@ class Layer(BaseModel):
     visible: bool = True
     locked: bool = False
     opacity: float = Field(ge=0.0, le=1.0, default=1.0)
-    objects: List[Union[DrawableObjectType, Group]] = Field(default_factory=list)
+    objects: list[Union[DrawableObjectType, Group]] = Field(default_factory=list)
     z_index: int = 0
 
     def add_object(self, obj: Union[DrawableObjectType, Group]):
@@ -328,8 +329,8 @@ class Drawing(BaseModel):
     width: float = Field(gt=0.0, default=800)
     height: float = Field(gt=0.0, default=600)
     background_color: Color = Field(default_factory=lambda: Color(r=255, g=255, b=255))
-    layers: List[Layer] = Field(default_factory=list)
-    metadata: Dict[str, Any] = Field(default_factory=dict)
+    layers: list[Layer] = Field(default_factory=list)
+    metadata: dict[str, Any] = Field(default_factory=dict)
     created_at: datetime = Field(default_factory=datetime.now)
     updated_at: datetime = Field(default_factory=datetime.now)
 
@@ -351,7 +352,7 @@ class Drawing(BaseModel):
                 return layer
         return None
 
-    def get_all_objects(self) -> List[Union[DrawableObjectType, Group]]:
+    def get_all_objects(self) -> list[Union[DrawableObjectType, Group]]:
         all_objects = []
         for layer in self.layers:
             all_objects.extend(layer.objects)

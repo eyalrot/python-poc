@@ -3,7 +3,8 @@ Pytest configuration and shared fixtures
 """
 
 import pytest
-from python.data import Point, Color, FillStyle
+
+from python.data import Color, FillStyle, Point
 
 
 @pytest.fixture

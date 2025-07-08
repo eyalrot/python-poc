@@ -1,24 +1,26 @@
-import pytest
 from datetime import datetime
 from uuid import UUID
+
+import pytest
 from pydantic import ValidationError
+
 from python.data import (
-    Point,
-    Color,
-    Line,
-    Circle,
-    Ellipse,
-    Rectangle,
-    Polygon,
-    Polyline,
     Arc,
-    Text,
+    Circle,
+    Color,
+    Ellipse,
+    FillStyle,
+    Line,
+    LineStyle,
     Path,
     PathCommand,
-    LineStyle,
+    Point,
+    Polygon,
+    Polyline,
+    Rectangle,
+    Text,
     TextAlignment,
     VerticalAlignment,
-    FillStyle,
 )
 
 

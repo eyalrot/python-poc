@@ -3,8 +3,9 @@ Python wrapper for the C++ drawing library.
 Provides compatibility layer with the existing Pydantic models.
 """
 
+from typing import Optional
+
 import drawing_cpp
-from typing import Optional, Tuple, List
 
 
 class DrawingCpp:
@@ -31,12 +32,12 @@ class DrawingCpp:
         self._drawing.set_height(value)
 
     @property
-    def background_color(self) -> Tuple[int, int, int, int]:
+    def background_color(self) -> tuple[int, int, int, int]:
         c = self._drawing.get_background()
         return (c.r, c.g, c.b, c.a)
 
     @background_color.setter
-    def background_color(self, color: Tuple[int, int, int, int]):
+    def background_color(self, color: tuple[int, int, int, int]):
         if len(color) == 3:
             self._drawing.set_background(drawing_cpp.Color(*color))
         else:
@@ -51,8 +52,8 @@ class DrawingCpp:
         x: float,
         y: float,
         radius: float,
-        fill_color: Optional[Tuple[int, int, int]] = None,
-        stroke_color: Optional[Tuple[int, int, int]] = None,
+        fill_color: Optional[tuple[int, int, int]] = None,
+        stroke_color: Optional[tuple[int, int, int]] = None,
         stroke_width: float = 1.0,
         layer_id: Optional[int] = None,
     ) -> int:
@@ -80,8 +81,8 @@ class DrawingCpp:
         y: float,
         width: float,
         height: float,
-        fill_color: Optional[Tuple[int, int, int]] = None,
-        stroke_color: Optional[Tuple[int, int, int]] = None,
+        fill_color: Optional[tuple[int, int, int]] = None,
+        stroke_color: Optional[tuple[int, int, int]] = None,
         stroke_width: float = 1.0,
         layer_id: Optional[int] = None,
     ) -> int:
@@ -109,7 +110,7 @@ class DrawingCpp:
         y1: float,
         x2: float,
         y2: float,
-        stroke_color: Optional[Tuple[int, int, int]] = None,
+        stroke_color: Optional[tuple[int, int, int]] = None,
         stroke_width: float = 1.0,
         layer_id: Optional[int] = None,
     ) -> int:
@@ -129,9 +130,9 @@ class DrawingCpp:
 
     def add_polygon(
         self,
-        points: List[Tuple[float, float]],
-        fill_color: Optional[Tuple[int, int, int]] = None,
-        stroke_color: Optional[Tuple[int, int, int]] = None,
+        points: list[tuple[float, float]],
+        fill_color: Optional[tuple[int, int, int]] = None,
+        stroke_color: Optional[tuple[int, int, int]] = None,
         stroke_width: float = 1.0,
         layer_id: Optional[int] = None,
     ) -> int:
@@ -162,8 +163,8 @@ class DrawingCpp:
         rx: float,
         ry: float,
         rotation: float = 0,
-        fill_color: Optional[Tuple[int, int, int]] = None,
-        stroke_color: Optional[Tuple[int, int, int]] = None,
+        fill_color: Optional[tuple[int, int, int]] = None,
+        stroke_color: Optional[tuple[int, int, int]] = None,
         stroke_width: float = 1.0,
         layer_id: Optional[int] = None,
     ) -> int:
@@ -197,8 +198,8 @@ class DrawingCpp:
 
     def add_polyline(
         self,
-        points: List[Tuple[float, float]],
-        stroke_color: Optional[Tuple[int, int, int]] = None,
+        points: list[tuple[float, float]],
+        stroke_color: Optional[tuple[int, int, int]] = None,
         stroke_width: float = 1.0,
         layer_id: Optional[int] = None,
     ) -> int:
@@ -232,8 +233,8 @@ class DrawingCpp:
         radius: float,
         start_angle: float,
         end_angle: float,
-        fill_color: Optional[Tuple[int, int, int]] = None,
-        stroke_color: Optional[Tuple[int, int, int]] = None,
+        fill_color: Optional[tuple[int, int, int]] = None,
+        stroke_color: Optional[tuple[int, int, int]] = None,
         stroke_width: float = 1.0,
         layer_id: Optional[int] = None,
     ) -> int:
@@ -275,8 +276,8 @@ class DrawingCpp:
         font_family: str = "Arial",
         text_align: str = "left",
         text_baseline: str = "alphabetic",
-        fill_color: Optional[Tuple[int, int, int]] = None,
-        stroke_color: Optional[Tuple[int, int, int]] = None,
+        fill_color: Optional[tuple[int, int, int]] = None,
+        stroke_color: Optional[tuple[int, int, int]] = None,
         stroke_width: float = 1.0,
         layer_id: Optional[int] = None,
     ) -> int:
@@ -332,8 +333,8 @@ class DrawingCpp:
     def add_path(
         self,
         path_data: str,
-        fill_color: Optional[Tuple[int, int, int]] = None,
-        stroke_color: Optional[Tuple[int, int, int]] = None,
+        fill_color: Optional[tuple[int, int, int]] = None,
+        stroke_color: Optional[tuple[int, int, int]] = None,
         stroke_width: float = 1.0,
         layer_id: Optional[int] = None,
     ) -> int:
@@ -372,7 +373,7 @@ class DrawingCpp:
         return obj_id
 
     def add_group(
-        self, children: Optional[List[int]] = None, layer_id: Optional[int] = None
+        self, children: Optional[list[int]] = None, layer_id: Optional[int] = None
     ) -> int:
         """Add a group to the drawing.
 
@@ -400,30 +401,30 @@ class DrawingCpp:
         """
         self._drawing.add_to_group(group_id, child_id)
 
-    def find_objects_at_point(self, x: float, y: float, tolerance: float = 1.0) -> List[int]:
+    def find_objects_at_point(self, x: float, y: float, tolerance: float = 1.0) -> list[int]:
         """Find objects at the given point."""
         storage = self._drawing.get_storage()
         point = drawing_cpp.Point(x, y)
         return storage.find_at_point(point, tolerance)
 
-    def find_objects_in_rect(self, x1: float, y1: float, x2: float, y2: float) -> List[int]:
+    def find_objects_in_rect(self, x1: float, y1: float, x2: float, y2: float) -> list[int]:
         """Find objects within the given rectangle."""
         bbox = drawing_cpp.BoundingBox(x1, y1, x2, y2)
         return self._drawing.find_objects_in_rect(bbox)
 
-    def set_fill_color(self, object_ids: List[int], color: Tuple[int, int, int]):
+    def set_fill_color(self, object_ids: list[int], color: tuple[int, int, int]):
         """Set fill color for multiple objects."""
         storage = self._drawing.get_storage()
         cpp_color = drawing_cpp.Color(*color)
         storage.set_fill_color(object_ids, cpp_color)
 
-    def set_stroke_color(self, object_ids: List[int], color: Tuple[int, int, int]):
+    def set_stroke_color(self, object_ids: list[int], color: tuple[int, int, int]):
         """Set stroke color for multiple objects."""
         storage = self._drawing.get_storage()
         cpp_color = drawing_cpp.Color(*color)
         storage.set_stroke_color(object_ids, cpp_color)
 
-    def set_opacity(self, object_ids: List[int], opacity: float):
+    def set_opacity(self, object_ids: list[int], opacity: float):
         """Set opacity for multiple objects."""
         storage = self._drawing.get_storage()
         storage.set_opacity(object_ids, opacity)
@@ -456,7 +457,7 @@ class DrawingCpp:
             return wrapper
         return None
 
-    def get_bounding_box(self) -> Tuple[float, float, float, float]:
+    def get_bounding_box(self) -> tuple[float, float, float, float]:
         """Get bounding box of all objects."""
         bbox = self._drawing.get_bounding_box()
         return (bbox.min_x, bbox.min_y, bbox.max_x, bbox.max_y)
@@ -468,11 +469,10 @@ class DrawingCpp:
 def compare_performance():
     """Compare performance between Python and C++ implementations."""
     import time
-    import sys
 
     print("Performance Comparison: Python vs C++")
     print("=====================================")
-    print(f"Size of Python Circle object: ~800 bytes (estimated)")
+    print("Size of Python Circle object: ~800 bytes (estimated)")
     print(f"Size of C++ Circle object: {drawing_cpp.BYTES_PER_CIRCLE} bytes")
     print(f"Memory reduction: {800 / drawing_cpp.BYTES_PER_CIRCLE:.1f}x\n")
 
@@ -502,14 +502,14 @@ def compare_performance():
 
     file_size = os.path.getsize("test_cpp.bin")
 
-    print(f"\nSerialization:")
+    print("\nSerialization:")
     print(f"  Save time: {save_time*1000:.1f} ms")
     print(f"  File size: {file_size / 1024 / 1024:.1f} MB")
     print(f"  Bytes/object: {file_size / num_objects:.1f}")
 
     # Test loading
     start = time.time()
-    loaded = DrawingCpp.load_binary("test_cpp.bin")
+    DrawingCpp.load_binary("test_cpp.bin")
     load_time = time.time() - start
 
     print(f"  Load time: {load_time*1000:.1f} ms")

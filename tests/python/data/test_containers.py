@@ -1,17 +1,18 @@
-import pytest
-from datetime import datetime
 from uuid import UUID
+
+import pytest
+
 from python.data import (
-    Point,
-    Color,
-    Line,
     Circle,
-    Rectangle,
-    Text,
-    Group,
-    Layer,
+    Color,
     Drawing,
     FillStyle,
+    Group,
+    Layer,
+    Line,
+    Point,
+    Rectangle,
+    Text,
 )
 
 
@@ -374,7 +375,7 @@ class TestIntegration:
         assert len(shape_group.objects) == 5
 
         # Test layer ordering
-        sorted_layers = sorted(drawing.layers, key=lambda l: l.z_index)
+        sorted_layers = sorted(drawing.layers, key=lambda layer: layer.z_index)
         assert sorted_layers[0].name == "Background"
         assert sorted_layers[1].name == "Shapes"
         assert sorted_layers[2].name == "Text"
