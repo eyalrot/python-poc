@@ -17,8 +17,8 @@ TEST(ObjectsTest, CompactCircle) {
     EXPECT_EQ(bbox.max_x, 150.0f);
     EXPECT_EQ(bbox.max_y, 250.0f);
     
-    // Size check
-    EXPECT_LE(sizeof(CompactCircle), 32);
+    // Size check (40 bytes with new features: gradient, pattern, name support)
+    EXPECT_LE(sizeof(CompactCircle), 40);
 }
 
 TEST(ObjectsTest, CompactRectangle) {
@@ -36,8 +36,8 @@ TEST(ObjectsTest, CompactRectangle) {
     EXPECT_EQ(bbox.max_x, 110.0f);
     EXPECT_EQ(bbox.max_y, 70.0f);
     
-    // Size check
-    EXPECT_LE(sizeof(CompactRectangle), 36);
+    // Size check (48 bytes with new features: gradient, pattern, name + corner_radius)
+    EXPECT_LE(sizeof(CompactRectangle), 48);
 }
 
 TEST(ObjectsTest, CompactLine) {
@@ -55,8 +55,8 @@ TEST(ObjectsTest, CompactLine) {
     EXPECT_EQ(bbox.max_x, 100.0f);
     EXPECT_EQ(bbox.max_y, 50.0f);
     
-    // Size check
-    EXPECT_LE(sizeof(CompactLine), 36);
+    // Size check (48 bytes with new features: gradient, pattern, name + line_style)
+    EXPECT_LE(sizeof(CompactLine), 48);
 }
 
 TEST(ObjectsTest, ObjectStorage) {

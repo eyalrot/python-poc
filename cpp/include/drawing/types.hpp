@@ -92,6 +92,59 @@ struct BoundingBox {
     }
 };
 
+// Line style enum (1 byte)
+enum class LineStyle : uint8_t {
+    Solid = 0,
+    Dashed = 1,
+    Dotted = 2,
+    DashDot = 3
+};
+
+// Gradient type enum (1 byte)
+enum class GradientType : uint8_t {
+    Linear = 0,
+    Radial = 1
+};
+
+// Gradient stop (8 bytes)
+struct GradientStop {
+    float offset;       // 4 bytes - position (0.0 to 1.0)
+    Color color;        // 4 bytes - RGBA color
+    
+    constexpr GradientStop() : offset(0.0f), color() {}
+    constexpr GradientStop(float offset, Color color) : offset(offset), color(color) {}
+};
+
+// Compact gradient definition (24 bytes)
+struct CompactGradient {
+    GradientType type;      // 1 byte - linear or radial
+    uint8_t stop_count;     // 1 byte - number of stops
+    uint16_t stop_offset;   // 2 bytes - offset into gradient stops array
+    float angle;            // 4 bytes - angle for linear gradients (radians)
+    float center_x, center_y; // 8 bytes - center point for radial gradients
+    float radius;           // 4 bytes - radius for radial gradients
+    
+    constexpr CompactGradient() 
+        : type(GradientType::Linear), stop_count(0), stop_offset(0), 
+          angle(0.0f), center_x(0.0f), center_y(0.0f), radius(0.0f) {}
+    
+    constexpr CompactGradient(GradientType type, uint8_t count, uint16_t offset, 
+                             float angle = 0.0f, float cx = 0.0f, float cy = 0.0f, float r = 0.0f)
+        : type(type), stop_count(count), stop_offset(offset), 
+          angle(angle), center_x(cx), center_y(cy), radius(r) {}
+};
+
+// Metadata entry (12 bytes)
+struct MetadataEntry {
+    uint32_t key_index;     // 4 bytes - index into metadata keys
+    uint32_t value_index;   // 4 bytes - index into metadata values
+    uint32_t object_id;     // 4 bytes - object this metadata belongs to
+    
+    constexpr MetadataEntry() : key_index(0), value_index(0), object_id(0) {}
+    constexpr MetadataEntry(uint32_t key_idx, uint32_t val_idx, uint32_t obj_id)
+        : key_index(key_idx), value_index(val_idx), object_id(obj_id) {}
+};
+
 // Object types enum (1 byte)
 enum class ObjectType : uint8_t {
     None = 0,
@@ -117,6 +170,9 @@ struct ObjectFlags {
     static constexpr uint16_t HAS_FILL = 1 << 3;
     static constexpr uint16_t HAS_STROKE = 1 << 4;
     static constexpr uint16_t HAS_TRANSFORM = 1 << 5;
+    static constexpr uint16_t HAS_GRADIENT = 1 << 6;
+    static constexpr uint16_t HAS_PATTERN = 1 << 7;
+    static constexpr uint16_t HAS_METADATA = 1 << 8;
     
     constexpr ObjectFlags() : value(VISIBLE | HAS_FILL) {}
     
@@ -126,6 +182,9 @@ struct ObjectFlags {
     constexpr bool has_fill() const { return value & HAS_FILL; }
     constexpr bool has_stroke() const { return value & HAS_STROKE; }
     constexpr bool has_transform() const { return value & HAS_TRANSFORM; }
+    constexpr bool has_gradient() const { return value & HAS_GRADIENT; }
+    constexpr bool has_pattern() const { return value & HAS_PATTERN; }
+    constexpr bool has_metadata() const { return value & HAS_METADATA; }
     
     void set_visible(bool v) { 
         if (v) value |= VISIBLE; 
@@ -138,6 +197,18 @@ struct ObjectFlags {
     void set_selected(bool v) { 
         if (v) value |= SELECTED; 
         else value &= ~SELECTED; 
+    }
+    void set_gradient(bool v) { 
+        if (v) value |= HAS_GRADIENT; 
+        else value &= ~HAS_GRADIENT; 
+    }
+    void set_pattern(bool v) { 
+        if (v) value |= HAS_PATTERN; 
+        else value &= ~HAS_PATTERN; 
+    }
+    void set_metadata(bool v) { 
+        if (v) value |= HAS_METADATA; 
+        else value &= ~HAS_METADATA; 
     }
 };
 

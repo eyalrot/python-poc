@@ -94,8 +94,8 @@ TEST_F(SerializationTest, BinaryFileSize) {
     std::cout << "Binary file size for 10k circles: " << file_size << " bytes\n";
     std::cout << "Bytes per object: " << file_size / 10000.0 << "\n";
     
-    // Should be very compact - 36 bytes per object is excellent!
-    EXPECT_LT(file_size / 10000.0, 40); // Less than 40 bytes per object with overhead
+    // Should be very compact - 44 bytes per object with new features (gradient, pattern, name support)
+    EXPECT_LT(file_size / 10000.0, 50); // Less than 50 bytes per object with overhead
 }
 
 TEST_F(SerializationTest, JsonExport) {

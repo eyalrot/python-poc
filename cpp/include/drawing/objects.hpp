@@ -15,7 +15,7 @@ class ObjectStorage;
 // Object ID is encoded as: [type:8bits][index:24bits]
 using ObjectID = uint32_t;
 
-// Base compact object header (20 bytes)
+// Base compact object header (28 bytes)
 struct CompactObject {
     ObjectType type;        // 1 byte
     uint8_t layer_id;       // 1 byte  
@@ -24,18 +24,22 @@ struct CompactObject {
     Color stroke_color;     // 4 bytes
     float stroke_width;     // 4 bytes
     float opacity;          // 4 bytes
+    uint16_t gradient_id;   // 2 bytes - index into gradients array (0xFFFF = none)
+    uint16_t pattern_id;    // 2 bytes - index into patterns array (0xFFFF = none)
+    uint32_t name_id;       // 4 bytes - index into object names array (0xFFFFFFFF = none)
     
     CompactObject(ObjectType t = ObjectType::None) 
         : type(t), layer_id(0), flags(), 
           fill_color(Color::BLACK), stroke_color(Color::BLACK),
-          stroke_width(1.0f), opacity(1.0f) {}
+          stroke_width(1.0f), opacity(1.0f), gradient_id(0xFFFF), pattern_id(0xFFFF), 
+          name_id(0xFFFFFFFF) {}
     
     BoundingBox get_bounding_box() const;
 };
 
-// Compact Circle (32 bytes total)
+// Compact Circle (40 bytes total)
 struct CompactCircle {
-    CompactObject base;     // 20 bytes
+    CompactObject base;     // 28 bytes
     float x, y, radius;     // 12 bytes
     
     CompactCircle() : base(ObjectType::Circle), x(0), y(0), radius(0) {}
@@ -47,28 +51,36 @@ struct CompactCircle {
     }
 };
 
-// Compact Rectangle (36 bytes total)
+// Compact Rectangle (48 bytes total)
 struct CompactRectangle {
-    CompactObject base;     // 20 bytes
+    CompactObject base;     // 28 bytes
     float x, y, width, height; // 16 bytes
+    float corner_radius;    // 4 bytes
     
-    CompactRectangle() : base(ObjectType::Rectangle), x(0), y(0), width(0), height(0) {}
-    CompactRectangle(float x, float y, float w, float h)
-        : base(ObjectType::Rectangle), x(x), y(y), width(w), height(h) {}
+    CompactRectangle() : base(ObjectType::Rectangle), x(0), y(0), width(0), height(0), corner_radius(0) {}
+    CompactRectangle(float x, float y, float w, float h, float corner_radius = 0)
+        : base(ObjectType::Rectangle), x(x), y(y), width(w), height(h), corner_radius(corner_radius) {}
     
     BoundingBox get_bounding_box() const {
         return BoundingBox(x, y, x + width, y + height);
     }
 };
 
-// Compact Line (36 bytes total)
+// Compact Line (48 bytes total)
 struct CompactLine {
-    CompactObject base;     // 20 bytes
+    CompactObject base;     // 28 bytes
     float x1, y1, x2, y2;   // 16 bytes
+    LineStyle line_style;   // 1 byte
+    uint8_t padding[3];     // 3 bytes padding for alignment
     
-    CompactLine() : base(ObjectType::Line), x1(0), y1(0), x2(0), y2(0) {}
-    CompactLine(float x1, float y1, float x2, float y2)
-        : base(ObjectType::Line), x1(x1), y1(y1), x2(x2), y2(y2) {}
+    CompactLine() : base(ObjectType::Line), x1(0), y1(0), x2(0), y2(0), 
+                    line_style(LineStyle::Solid) {
+        padding[0] = padding[1] = padding[2] = 0;
+    }
+    CompactLine(float x1, float y1, float x2, float y2, LineStyle style = LineStyle::Solid)
+        : base(ObjectType::Line), x1(x1), y1(y1), x2(x2), y2(y2), line_style(style) {
+        padding[0] = padding[1] = padding[2] = 0;
+    }
     
     BoundingBox get_bounding_box() const {
         return BoundingBox(
@@ -78,9 +90,9 @@ struct CompactLine {
     }
 };
 
-// Compact Ellipse (40 bytes total)
+// Compact Ellipse (48 bytes total)
 struct CompactEllipse {
-    CompactObject base;     // 20 bytes
+    CompactObject base;     // 28 bytes
     float x, y;             // 8 bytes - center position
     float rx, ry;           // 8 bytes - radii
     float rotation;         // 4 bytes - rotation angle in radians
@@ -99,26 +111,43 @@ struct CompactEllipse {
 
 // For variable-size objects like Polygon, we use a different approach
 struct CompactPolygon {
-    CompactObject base;     // 20 bytes
+    CompactObject base;     // 28 bytes
     uint32_t point_offset;  // 4 bytes - offset into point array
     uint32_t point_count;   // 4 bytes
-    // 4 bytes padding for alignment
+    bool closed;            // 1 byte - whether polygon is closed
+    uint8_t padding[3];     // 3 bytes padding for alignment
     
-    CompactPolygon() : base(ObjectType::Polygon), point_offset(0), point_count(0) {}
+    CompactPolygon() : base(ObjectType::Polygon), point_offset(0), point_count(0), closed(true) {
+        padding[0] = padding[1] = padding[2] = 0;
+    }
+    CompactPolygon(uint32_t offset, uint32_t count, bool closed = true)
+        : base(ObjectType::Polygon), point_offset(offset), point_count(count), closed(closed) {
+        padding[0] = padding[1] = padding[2] = 0;
+    }
 };
 
-// Compact Polyline (28 bytes total) - same structure as polygon but open path
+// Compact Polyline (40 bytes total) - same structure as polygon but open path
 struct CompactPolyline {
-    CompactObject base;     // 20 bytes
+    CompactObject base;     // 28 bytes
     uint32_t point_offset;  // 4 bytes - offset into point array
     uint32_t point_count;   // 4 bytes
+    LineStyle line_style;   // 1 byte
+    uint8_t padding[3];     // 3 bytes padding for alignment
     
-    CompactPolyline() : base(ObjectType::Polyline), point_offset(0), point_count(0) {}
+    CompactPolyline() : base(ObjectType::Polyline), point_offset(0), point_count(0), 
+                        line_style(LineStyle::Solid) {
+        padding[0] = padding[1] = padding[2] = 0;
+    }
+    CompactPolyline(uint32_t offset, uint32_t count, LineStyle style = LineStyle::Solid)
+        : base(ObjectType::Polyline), point_offset(offset), point_count(count), 
+          line_style(style) {
+        padding[0] = padding[1] = padding[2] = 0;
+    }
 };
 
-// Compact Arc (36 bytes total)
+// Compact Arc (44 bytes total)
 struct CompactArc {
-    CompactObject base;     // 20 bytes
+    CompactObject base;     // 28 bytes
     float x, y;             // 8 bytes - center position
     float radius;           // 4 bytes
     float start_angle;      // 4 bytes - in radians
@@ -150,9 +179,9 @@ enum class TextBaseline : uint8_t {
     Alphabetic = 3
 };
 
-// Compact Text (40 bytes total)
+// Compact Text (48 bytes total)
 struct CompactText {
-    CompactObject base;     // 20 bytes
+    CompactObject base;     // 28 bytes
     float x, y;             // 8 bytes - position
     uint32_t text_index;    // 4 bytes - index into text storage
     float font_size;        // 4 bytes
@@ -216,9 +245,9 @@ struct PathSegment {
         : cmd(c), param_count(count), param_offset(offset) {}
 };
 
-// Compact Path (32 bytes total)
+// Compact Path (40 bytes total)
 struct CompactPath {
-    CompactObject base;     // 20 bytes
+    CompactObject base;     // 28 bytes
     uint32_t segment_offset; // 4 bytes - offset into path segments
     uint16_t segment_count;  // 2 bytes - number of segments
     uint16_t param_offset;   // 2 bytes - offset into path parameters
@@ -296,9 +325,9 @@ struct CompactPath {
     }
 };
 
-// Compact Group (32 bytes total) - container for nested objects
+// Compact Group (40 bytes total) - container for nested objects
 struct CompactGroup {
-    CompactObject base;     // 20 bytes
+    CompactObject base;     // 28 bytes
     uint32_t child_offset;  // 4 bytes - offset into group children array
     uint16_t child_count;   // 2 bytes - number of children
     uint16_t parent_id;     // 2 bytes - parent group ID (0xFFFF for no parent)
@@ -339,6 +368,17 @@ public:
     std::vector<float> path_parameters;
     std::vector<ObjectID> group_children;
     
+    // Gradient and pattern storage
+    std::vector<CompactGradient> gradients;
+    std::vector<GradientStop> gradient_stops;
+    std::vector<std::string> patterns;  // Pattern names/references
+    std::vector<std::string> object_names;  // Object names
+    
+    // Metadata storage
+    std::vector<MetadataEntry> metadata_entries;
+    std::vector<std::string> metadata_keys;
+    std::vector<std::string> metadata_values;
+    
 private:
     std::vector<Transform2D> transforms;
     
@@ -364,13 +404,13 @@ public:
         return make_id(ObjectType::Circle, circles.size() - 1);
     }
     
-    ObjectID add_rectangle(float x, float y, float width, float height) {
-        rectangles.emplace_back(x, y, width, height);
+    ObjectID add_rectangle(float x, float y, float width, float height, float corner_radius = 0) {
+        rectangles.emplace_back(x, y, width, height, corner_radius);
         return make_id(ObjectType::Rectangle, rectangles.size() - 1);
     }
     
-    ObjectID add_line(float x1, float y1, float x2, float y2) {
-        lines.emplace_back(x1, y1, x2, y2);
+    ObjectID add_line(float x1, float y1, float x2, float y2, LineStyle style = LineStyle::Solid) {
+        lines.emplace_back(x1, y1, x2, y2, style);
         return make_id(ObjectType::Line, lines.size() - 1);
     }
     
@@ -379,19 +419,15 @@ public:
         return make_id(ObjectType::Ellipse, ellipses.size() - 1);
     }
     
-    ObjectID add_polygon(const std::vector<Point>& points) {
-        CompactPolygon poly;
-        poly.point_offset = polygon_points.size();
-        poly.point_count = points.size();
+    ObjectID add_polygon(const std::vector<Point>& points, bool closed = true) {
+        CompactPolygon poly(polygon_points.size(), points.size(), closed);
         polygon_points.insert(polygon_points.end(), points.begin(), points.end());
         polygons.push_back(poly);
         return make_id(ObjectType::Polygon, polygons.size() - 1);
     }
     
-    ObjectID add_polyline(const std::vector<Point>& points) {
-        CompactPolyline polyline;
-        polyline.point_offset = polyline_points.size();
-        polyline.point_count = points.size();
+    ObjectID add_polyline(const std::vector<Point>& points, LineStyle style = LineStyle::Solid) {
+        CompactPolyline polyline(polyline_points.size(), points.size(), style);
         polyline_points.insert(polyline_points.end(), points.begin(), points.end());
         polylines.push_back(polyline);
         return make_id(ObjectType::Polyline, polylines.size() - 1);
@@ -548,6 +584,220 @@ public:
                     }
                 }
             }
+        }
+    }
+    
+    // Gradient management
+    uint16_t add_linear_gradient(const std::vector<GradientStop>& stops, float angle = 0.0f) {
+        uint16_t stop_offset = gradient_stops.size();
+        uint8_t stop_count = std::min(stops.size(), static_cast<size_t>(255));
+        
+        gradient_stops.insert(gradient_stops.end(), stops.begin(), stops.begin() + stop_count);
+        
+        CompactGradient gradient(GradientType::Linear, stop_count, stop_offset, angle);
+        gradients.push_back(gradient);
+        
+        return gradients.size() - 1;
+    }
+    
+    uint16_t add_radial_gradient(const std::vector<GradientStop>& stops, 
+                                float center_x, float center_y, float radius) {
+        uint16_t stop_offset = gradient_stops.size();
+        uint8_t stop_count = std::min(stops.size(), static_cast<size_t>(255));
+        
+        gradient_stops.insert(gradient_stops.end(), stops.begin(), stops.begin() + stop_count);
+        
+        CompactGradient gradient(GradientType::Radial, stop_count, stop_offset, 
+                               0.0f, center_x, center_y, radius);
+        gradients.push_back(gradient);
+        
+        return gradients.size() - 1;
+    }
+    
+    uint16_t add_pattern(const std::string& pattern_name) {
+        patterns.push_back(pattern_name);
+        return patterns.size() - 1;
+    }
+    
+    void set_object_gradient(ObjectID id, uint16_t gradient_id) {
+        CompactObject* obj = get_object_base(id);
+        if (obj && gradient_id < gradients.size()) {
+            obj->gradient_id = gradient_id;
+            obj->flags.set_gradient(true);
+        }
+    }
+    
+    void set_object_pattern(ObjectID id, uint16_t pattern_id) {
+        CompactObject* obj = get_object_base(id);
+        if (obj && pattern_id < patterns.size()) {
+            obj->pattern_id = pattern_id;
+            obj->flags.set_pattern(true);
+        }
+    }
+    
+    uint32_t add_object_name(const std::string& name) {
+        // Check if name already exists to avoid duplicates
+        for (size_t i = 0; i < object_names.size(); ++i) {
+            if (object_names[i] == name) {
+                return static_cast<uint32_t>(i);
+            }
+        }
+        object_names.push_back(name);
+        return object_names.size() - 1;
+    }
+    
+    void set_object_name(ObjectID id, const std::string& name) {
+        CompactObject* obj = get_object_base(id);
+        if (obj) {
+            obj->name_id = add_object_name(name);
+        }
+    }
+    
+    const std::string& get_object_name(ObjectID id) const {
+        static const std::string empty_name;
+        const CompactObject* obj = get_object_base_const(id);
+        if (obj && obj->name_id != 0xFFFFFFFF && obj->name_id < object_names.size()) {
+            return object_names[obj->name_id];
+        }
+        return empty_name;
+    }
+    
+    // Metadata management
+    uint32_t find_or_add_key(const std::string& key) {
+        for (size_t i = 0; i < metadata_keys.size(); ++i) {
+            if (metadata_keys[i] == key) {
+                return static_cast<uint32_t>(i);
+            }
+        }
+        metadata_keys.push_back(key);
+        return metadata_keys.size() - 1;
+    }
+    
+    uint32_t find_or_add_value(const std::string& value) {
+        for (size_t i = 0; i < metadata_values.size(); ++i) {
+            if (metadata_values[i] == value) {
+                return static_cast<uint32_t>(i);
+            }
+        }
+        metadata_values.push_back(value);
+        return metadata_values.size() - 1;
+    }
+    
+    void set_object_metadata(ObjectID id, const std::string& key, const std::string& value) {
+        CompactObject* obj = get_object_base(id);
+        if (!obj) return;
+        
+        uint32_t key_idx = find_or_add_key(key);
+        uint32_t val_idx = find_or_add_value(value);
+        
+        // Check if metadata entry already exists for this object and key
+        for (auto& entry : metadata_entries) {
+            if (entry.object_id == id && entry.key_index == key_idx) {
+                entry.value_index = val_idx;  // Update existing value
+                return;
+            }
+        }
+        
+        // Add new metadata entry
+        metadata_entries.emplace_back(key_idx, val_idx, id);
+        obj->flags.set_metadata(true);
+    }
+    
+    std::string get_object_metadata(ObjectID id, const std::string& key) const {
+        uint32_t key_idx = 0xFFFFFFFF;
+        for (size_t i = 0; i < metadata_keys.size(); ++i) {
+            if (metadata_keys[i] == key) {
+                key_idx = static_cast<uint32_t>(i);
+                break;
+            }
+        }
+        
+        if (key_idx == 0xFFFFFFFF) return "";
+        
+        for (const auto& entry : metadata_entries) {
+            if (entry.object_id == id && entry.key_index == key_idx) {
+                if (entry.value_index < metadata_values.size()) {
+                    return metadata_values[entry.value_index];
+                }
+            }
+        }
+        
+        return "";
+    }
+    
+    std::vector<std::pair<std::string, std::string>> get_all_object_metadata(ObjectID id) const {
+        std::vector<std::pair<std::string, std::string>> result;
+        
+        for (const auto& entry : metadata_entries) {
+            if (entry.object_id == id) {
+                if (entry.key_index < metadata_keys.size() && 
+                    entry.value_index < metadata_values.size()) {
+                    result.emplace_back(metadata_keys[entry.key_index], 
+                                       metadata_values[entry.value_index]);
+                }
+            }
+        }
+        
+        return result;
+    }
+    
+    CompactObject* get_object_base(ObjectID id) {
+        ObjectType type = get_type(id);
+        uint32_t idx = get_index(id);
+        
+        switch (type) {
+            case ObjectType::Circle: 
+                return idx < circles.size() ? &circles[idx].base : nullptr;
+            case ObjectType::Rectangle: 
+                return idx < rectangles.size() ? &rectangles[idx].base : nullptr;
+            case ObjectType::Line: 
+                return idx < lines.size() ? &lines[idx].base : nullptr;
+            case ObjectType::Ellipse: 
+                return idx < ellipses.size() ? &ellipses[idx].base : nullptr;
+            case ObjectType::Polygon: 
+                return idx < polygons.size() ? &polygons[idx].base : nullptr;
+            case ObjectType::Polyline: 
+                return idx < polylines.size() ? &polylines[idx].base : nullptr;
+            case ObjectType::Arc: 
+                return idx < arcs.size() ? &arcs[idx].base : nullptr;
+            case ObjectType::Text: 
+                return idx < texts.size() ? &texts[idx].base : nullptr;
+            case ObjectType::Path: 
+                return idx < paths.size() ? &paths[idx].base : nullptr;
+            case ObjectType::Group: 
+                return idx < groups.size() ? &groups[idx].base : nullptr;
+            default: 
+                return nullptr;
+        }
+    }
+    
+    const CompactObject* get_object_base_const(ObjectID id) const {
+        ObjectType type = get_type(id);
+        uint32_t idx = get_index(id);
+        
+        switch (type) {
+            case ObjectType::Circle: 
+                return idx < circles.size() ? &circles[idx].base : nullptr;
+            case ObjectType::Rectangle: 
+                return idx < rectangles.size() ? &rectangles[idx].base : nullptr;
+            case ObjectType::Line: 
+                return idx < lines.size() ? &lines[idx].base : nullptr;
+            case ObjectType::Ellipse: 
+                return idx < ellipses.size() ? &ellipses[idx].base : nullptr;
+            case ObjectType::Polygon: 
+                return idx < polygons.size() ? &polygons[idx].base : nullptr;
+            case ObjectType::Polyline: 
+                return idx < polylines.size() ? &polylines[idx].base : nullptr;
+            case ObjectType::Arc: 
+                return idx < arcs.size() ? &arcs[idx].base : nullptr;
+            case ObjectType::Text: 
+                return idx < texts.size() ? &texts[idx].base : nullptr;
+            case ObjectType::Path: 
+                return idx < paths.size() ? &paths[idx].base : nullptr;
+            case ObjectType::Group: 
+                return idx < groups.size() ? &groups[idx].base : nullptr;
+            default: 
+                return nullptr;
         }
     }
     
@@ -756,12 +1006,19 @@ public:
                sizeof(PathSegment) * path_segments.size() +
                sizeof(float) * path_parameters.size() +
                sizeof(ObjectID) * group_children.size() +
-               sizeof(Transform2D) * transforms.size();
+               sizeof(Transform2D) * transforms.size() +
+               sizeof(CompactGradient) * gradients.size() +
+               sizeof(GradientStop) * gradient_stops.size() +
+               sizeof(MetadataEntry) * metadata_entries.size();
         
         // Add string storage
         size_t string_size = 0;
         for (const auto& s : text_strings) string_size += s.size();
         for (const auto& s : font_names) string_size += s.size();
+        for (const auto& s : patterns) string_size += s.size();
+        for (const auto& s : object_names) string_size += s.size();
+        for (const auto& s : metadata_keys) string_size += s.size();
+        for (const auto& s : metadata_values) string_size += s.size();
         
         return base_size + string_size;
     }
