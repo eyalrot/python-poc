@@ -6,11 +6,13 @@ on:
     paths-ignore:
       - 'cpp/**'
       - '**.md'
+      - 'benchmarks/**'
   pull_request:
     branches: [ master, main ]
     paths-ignore:
       - 'cpp/**'
       - '**.md'
+      - 'benchmarks/**'
 
 jobs:
   test:

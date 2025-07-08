@@ -5,11 +5,13 @@ on:
     branches: [ master, main ]
     paths:
       - 'cpp/**'
+      - 'benchmarks/**'
       - '.github/workflows/cpp-ci.yml'
   pull_request:
     branches: [ master, main ]
     paths:
       - 'cpp/**'
+      - 'benchmarks/**'
       - '.github/workflows/cpp-ci.yml'
 
 jobs:
@@ -29,7 +31,7 @@ jobs:
         cd cpp
         mkdir -p build
         cd build
-        cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=ON
+        cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=ON -DBUILD_BENCHMARKS=ON
     
     - name: Build
       run: |
@@ -41,12 +43,25 @@ jobs:
         cd cpp/build
         ./tests/test_drawing --gtest_output=xml:test_results.xml
     
+    - name: Run C++ benchmarks (if built)
+      run: |
+        cd cpp/build
+        if [ -f benchmarks/benchmark_drawing ]; then
+          echo "Running C++ benchmarks..."
+          ./benchmarks/benchmark_drawing --benchmark_out=benchmark_results.json --benchmark_out_format=json
+        else
+          echo "C++ benchmarks not built, skipping..."
+        fi
+      continue-on-error: true
+    
     - name: Upload test results
       uses: actions/upload-artifact@v4
       if: always()
       with:
         name: cpp-test-results
-        path: cpp/build/test_results.xml
+        path: |
+          cpp/build/test_results.xml
+          cpp/build/benchmark_results.json
   
   python-bindings:
     runs-on: ubuntu-latest
@@ -120,11 +135,58 @@ jobs:
         echo "Running Python binding performance tests..."
         python -c "from python.drawing_cpp_wrapper import compare_performance; compare_performance()"
     
-    - name: Check performance targets
+    - name: Run benchmarking suite
       run: |
-        # This could be expanded to parse output and verify targets
-        echo "Performance targets:"
-        echo "- Memory: <100 bytes/object (target: 32 bytes achieved)"
-        echo "- Load 1M objects: <100ms"
-        echo "- Save 1M objects: <50ms"
-        echo "- Batch operations: >10M objects/second"
+        echo "Running comprehensive benchmarks..."
+        python benchmarks/simple_benchmark.py
+        
+        echo "Running spatial benchmarks..."
+        python benchmarks/spatial_benchmark.py
+    
+    - name: Verify performance targets
+      run: |
+        # Parse benchmark results and verify targets
+        python -c "
+import json
+with open('benchmark_results_simple.json', 'r') as f:
+    results = json.load(f)
+
+# Check memory usage
+creation_results = [r for r in results if r['benchmark'] == 'creation']
+if creation_results:
+    largest = max(creation_results, key=lambda x: x['num_objects'])
+    bytes_per_obj = largest['memory_bytes'] / largest['num_objects']
+    assert bytes_per_obj <= 100, f'Memory usage {bytes_per_obj} exceeds 100 bytes/object'
+    print(f'✓ Memory usage: {bytes_per_obj:.1f} bytes/object')
+
+# Check creation speed
+best_creation = max([r for r in results if r['benchmark'] == 'creation'], 
+                   key=lambda x: x['objects_per_sec'])
+assert best_creation['objects_per_sec'] > 1e6, 'Creation speed below 1M objects/sec'
+print(f'✓ Creation speed: {best_creation[\"objects_per_sec\"]/1e6:.1f}M objects/sec')
+
+# Check save/load speed for 1M objects
+save_1m = [r for r in results if r['benchmark'] == 'save_binary' and r['num_objects'] == 1000000]
+if save_1m:
+    assert save_1m[0]['time_ms'] < 50, f'Save time {save_1m[0][\"time_ms\"]}ms exceeds 50ms'
+    print(f'✓ Save 1M objects: {save_1m[0][\"time_ms\"]:.1f}ms')
+
+# Check batch operations
+batch_results = [r for r in results if 'batch' in r['benchmark']]
+if batch_results:
+    best_batch = max(batch_results, key=lambda x: x['objects_per_sec'])
+    assert best_batch['objects_per_sec'] > 10e6, 'Batch operations below 10M objects/sec'
+    print(f'✓ Batch operations: {best_batch[\"objects_per_sec\"]/1e6:.1f}M objects/sec')
+
+print('\\n✅ All performance targets verified!')
+"
+    
+    - name: Upload benchmark results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: benchmark-results-${{ matrix.python-version }}
+        path: |
+          benchmark_results_simple.json
+          benchmark_results.json
+          benchmark_report.md

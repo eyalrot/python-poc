@@ -1,0 +1,197 @@
+[
+  {
+    "benchmark": "creation",
+    "num_objects": 100,
+    "time_ms": 0.06925099296495318,
+    "objects_per_sec": 1444022.6156844913,
+    "memory_bytes": 3464
+  },
+  {
+    "benchmark": "creation",
+    "num_objects": 1000,
+    "time_ms": 0.7259559934027493,
+    "objects_per_sec": 1377493.9653197618,
+    "memory_bytes": 32264
+  },
+  {
+    "benchmark": "creation",
+    "num_objects": 10000,
+    "time_ms": 6.967472960241139,
+    "objects_per_sec": 1435240.5896748407,
+    "memory_bytes": 320264
+  },
+  {
+    "benchmark": "creation",
+    "num_objects": 100000,
+    "time_ms": 73.38020502356812,
+    "objects_per_sec": 1362765.3393429765,
+    "memory_bytes": 3200264
+  },
+  {
+    "benchmark": "creation",
+    "num_objects": 1000000,
+    "time_ms": 733.670704998076,
+    "objects_per_sec": 1363009.3081099952,
+    "memory_bytes": 32000264
+  },
+  {
+    "benchmark": "save_binary",
+    "num_objects": 100,
+    "time_ms": 0.14462496619671583,
+    "objects_per_sec": 691443.5496840988,
+    "file_size_bytes": 3654
+  },
+  {
+    "benchmark": "load_binary",
+    "num_objects": 100,
+    "time_ms": 0.030074967071413994,
+    "objects_per_sec": 3325024.421890362,
+    "file_size_bytes": 3654
+  },
+  {
+    "benchmark": "save_binary",
+    "num_objects": 1000,
+    "time_ms": 0.44230796629562974,
+    "objects_per_sec": 2260868.164720371,
+    "file_size_bytes": 36054
+  },
+  {
+    "benchmark": "load_binary",
+    "num_objects": 1000,
+    "time_ms": 0.04768505459651351,
+    "objects_per_sec": 20970931.216530785,
+    "file_size_bytes": 36054
+  },
+  {
+    "benchmark": "save_binary",
+    "num_objects": 10000,
+    "time_ms": 0.4450389533303678,
+    "objects_per_sec": 22469943.192987546,
+    "file_size_bytes": 360054
+  },
+  {
+    "benchmark": "load_binary",
+    "num_objects": 10000,
+    "time_ms": 0.10004796786233783,
+    "objects_per_sec": 99952055.13578863,
+    "file_size_bytes": 360054
+  },
+  {
+    "benchmark": "save_binary",
+    "num_objects": 100000,
+    "time_ms": 2.7019940316677094,
+    "objects_per_sec": 37009704.251004055,
+    "file_size_bytes": 3600054
+  },
+  {
+    "benchmark": "load_binary",
+    "num_objects": 100000,
+    "time_ms": 1.1350319837220013,
+    "objects_per_sec": 88103244.16769262,
+    "file_size_bytes": 3600054
+  },
+  {
+    "benchmark": "save_binary",
+    "num_objects": 1000000,
+    "time_ms": 21.92672697128728,
+    "objects_per_sec": 45606441.914905265,
+    "file_size_bytes": 36000054
+  },
+  {
+    "benchmark": "load_binary",
+    "num_objects": 1000000,
+    "time_ms": 26.34156699059531,
+    "objects_per_sec": 37962813.69126706,
+    "file_size_bytes": 36000054
+  },
+  {
+    "benchmark": "batch_translate",
+    "num_objects": 100,
+    "time_ms": 0.00969303073361516,
+    "objects_per_sec": 10316690.69749287
+  },
+  {
+    "benchmark": "batch_scale",
+    "num_objects": 100,
+    "time_ms": 0.005443987902253866,
+    "objects_per_sec": 18368887.256086476
+  },
+  {
+    "benchmark": "batch_calc_bbox",
+    "num_objects": 100,
+    "time_ms": 0.004749977961182594,
+    "objects_per_sec": 21052729.258369688
+  },
+  {
+    "benchmark": "batch_translate",
+    "num_objects": 1000,
+    "time_ms": 0.019289960619062185,
+    "objects_per_sec": 51840437.6114593
+  },
+  {
+    "benchmark": "batch_scale",
+    "num_objects": 1000,
+    "time_ms": 0.016250007320195436,
+    "objects_per_sec": 61538433.81702385
+  },
+  {
+    "benchmark": "batch_calc_bbox",
+    "num_objects": 1000,
+    "time_ms": 0.01650000922381878,
+    "objects_per_sec": 60606026.72612076
+  },
+  {
+    "benchmark": "batch_translate",
+    "num_objects": 10000,
+    "time_ms": 0.17575500532984734,
+    "objects_per_sec": 56897383.8396952
+  },
+  {
+    "benchmark": "batch_scale",
+    "num_objects": 10000,
+    "time_ms": 0.1479610218666494,
+    "objects_per_sec": 67585367.23957306
+  },
+  {
+    "benchmark": "batch_calc_bbox",
+    "num_objects": 10000,
+    "time_ms": 0.15022698789834976,
+    "objects_per_sec": 66565935.58786151
+  },
+  {
+    "benchmark": "batch_translate",
+    "num_objects": 100000,
+    "time_ms": 2.1552819525822997,
+    "objects_per_sec": 46397641.79354232
+  },
+  {
+    "benchmark": "batch_scale",
+    "num_objects": 100000,
+    "time_ms": 1.7117979587055743,
+    "objects_per_sec": 58418109.15326591
+  },
+  {
+    "benchmark": "batch_calc_bbox",
+    "num_objects": 100000,
+    "time_ms": 1.8256100011058152,
+    "objects_per_sec": 54776211.753566004
+  },
+  {
+    "benchmark": "batch_translate",
+    "num_objects": 1000000,
+    "time_ms": 21.306484995875508,
+    "objects_per_sec": 46934067.26607318
+  },
+  {
+    "benchmark": "batch_scale",
+    "num_objects": 1000000,
+    "time_ms": 18.758575024548918,
+    "objects_per_sec": 53308953.302227
+  },
+  {
+    "benchmark": "batch_calc_bbox",
+    "num_objects": 1000000,
+    "time_ms": 18.63221201347187,
+    "objects_per_sec": 53670492.761512056
+  }
+]
