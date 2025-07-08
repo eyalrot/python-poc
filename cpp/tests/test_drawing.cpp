@@ -50,8 +50,8 @@ TEST(DrawingTest, MultipleLayersWithObjects) {
     
     // Add objects to different layers
     drawing.add_circle(100, 100, 50, bg_layer);
-    drawing.add_rectangle(200, 200, 100, 80, bg_layer);
-    drawing.add_line(0, 0, 300, 300, fg_layer);
+    drawing.add_rectangle(200, 200, 100, 80, 0, bg_layer);
+    drawing.add_line(0, 0, 300, 300, LineStyle::Solid, fg_layer);
     
     EXPECT_EQ(drawing.total_objects(), 3);
     EXPECT_EQ(drawing.get_layer(bg_layer)->object_count(), 2);

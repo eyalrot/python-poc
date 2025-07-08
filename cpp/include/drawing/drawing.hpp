@@ -111,8 +111,8 @@ public:
         return id;
     }
     
-    ObjectID add_rectangle(float x, float y, float w, float h, uint8_t layer_id = 0) {
-        auto id = storage.add_rectangle(x, y, w, h);
+    ObjectID add_rectangle(float x, float y, float w, float h, float corner_radius = 0, uint8_t layer_id = 0) {
+        auto id = storage.add_rectangle(x, y, w, h, corner_radius);
         if (auto* layer = get_layer(layer_id)) {
             layer->add_object(id);
             if (auto* rect = storage.get_rectangle(id)) {
@@ -122,8 +122,8 @@ public:
         return id;
     }
     
-    ObjectID add_line(float x1, float y1, float x2, float y2, uint8_t layer_id = 0) {
-        auto id = storage.add_line(x1, y1, x2, y2);
+    ObjectID add_line(float x1, float y1, float x2, float y2, LineStyle line_style = LineStyle::Solid, uint8_t layer_id = 0) {
+        auto id = storage.add_line(x1, y1, x2, y2, line_style);
         if (auto* layer = get_layer(layer_id)) {
             layer->add_object(id);
             if (auto* line = storage.get_line(id)) {
@@ -133,8 +133,8 @@ public:
         return id;
     }
     
-    ObjectID add_polygon(const std::vector<Point>& points, uint8_t layer_id = 0) {
-        auto id = storage.add_polygon(points);
+    ObjectID add_polygon(const std::vector<Point>& points, bool closed = true, uint8_t layer_id = 0) {
+        auto id = storage.add_polygon(points, closed);
         if (auto* layer = get_layer(layer_id)) {
             layer->add_object(id);
             if (auto* poly = storage.get_polygon(id)) {
@@ -155,8 +155,8 @@ public:
         return id;
     }
     
-    ObjectID add_polyline(const std::vector<Point>& points, uint8_t layer_id = 0) {
-        auto id = storage.add_polyline(points);
+    ObjectID add_polyline(const std::vector<Point>& points, LineStyle line_style = LineStyle::Solid, uint8_t layer_id = 0) {
+        auto id = storage.add_polyline(points, line_style);
         if (auto* layer = get_layer(layer_id)) {
             layer->add_object(id);
             if (auto* polyline = storage.get_polyline(id)) {
@@ -229,6 +229,51 @@ public:
     
     void add_to_group(ObjectID group_id, ObjectID child_id) {
         storage.add_to_group(group_id, child_id);
+    }
+    
+    // Gradient support
+    uint16_t add_linear_gradient(const std::vector<GradientStop>& stops, float angle = 0.0f) {
+        return storage.add_linear_gradient(stops, angle);
+    }
+    
+    uint16_t add_radial_gradient(const std::vector<GradientStop>& stops, 
+                                float center_x, float center_y, float radius) {
+        return storage.add_radial_gradient(stops, center_x, center_y, radius);
+    }
+    
+    void set_object_gradient(ObjectID id, uint16_t gradient_id) {
+        storage.set_object_gradient(id, gradient_id);
+    }
+    
+    // Pattern support
+    uint16_t add_pattern(const std::string& pattern_name) {
+        return storage.add_pattern(pattern_name);
+    }
+    
+    void set_object_pattern(ObjectID id, uint16_t pattern_id) {
+        storage.set_object_pattern(id, pattern_id);
+    }
+    
+    // Object naming
+    void set_object_name(ObjectID id, const std::string& name) {
+        storage.set_object_name(id, name);
+    }
+    
+    std::string get_object_name(ObjectID id) const {
+        return storage.get_object_name(id);
+    }
+    
+    // Metadata support
+    void set_object_metadata(ObjectID id, const std::string& key, const std::string& value) {
+        storage.set_object_metadata(id, key, value);
+    }
+    
+    std::string get_object_metadata(ObjectID id, const std::string& key) const {
+        return storage.get_object_metadata(id, key);
+    }
+    
+    std::vector<std::pair<std::string, std::string>> get_all_object_metadata(ObjectID id) const {
+        return storage.get_all_object_metadata(id);
     }
     
     // Access to storage for advanced operations

@@ -61,6 +61,18 @@ PYBIND11_MODULE(drawing_cpp, m) {
         .def("expand", py::overload_cast<const Point&>(&BoundingBox::expand))
         .def("expand", py::overload_cast<const BoundingBox&>(&BoundingBox::expand));
     
+    // LineStyle enum
+    py::enum_<LineStyle>(m, "LineStyle")
+        .value("Solid", LineStyle::Solid)
+        .value("Dashed", LineStyle::Dashed)
+        .value("Dotted", LineStyle::Dotted)
+        .value("DashDot", LineStyle::DashDot);
+    
+    // GradientType enum
+    py::enum_<GradientType>(m, "GradientType")
+        .value("Linear", GradientType::Linear)
+        .value("Radial", GradientType::Radial);
+    
     // ObjectType enum
     py::enum_<ObjectType>(m, "ObjectType")
         .value("None", ObjectType::None)
@@ -86,6 +98,19 @@ PYBIND11_MODULE(drawing_cpp, m) {
         .value("Middle", TextBaseline::Middle)
         .value("Bottom", TextBaseline::Bottom)
         .value("Alphabetic", TextBaseline::Alphabetic);
+    
+    // GradientStop class
+    py::class_<GradientStop>(m, "GradientStop")
+        .def(py::init<>())
+        .def(py::init<float, Color>(), py::arg("offset"), py::arg("color"))
+        .def_readwrite("offset", &GradientStop::offset)
+        .def_readwrite("color", &GradientStop::color)
+        .def("__repr__", [](const GradientStop& gs) {
+            return "GradientStop(offset=" + std::to_string(gs.offset) + 
+                   ", color=Color(" + std::to_string(gs.color.r) + "," + 
+                   std::to_string(gs.color.g) + "," + std::to_string(gs.color.b) + "," + 
+                   std::to_string(gs.color.a) + "))";
+        });
     
     // Layer class
     py::class_<Layer>(m, "Layer")
@@ -116,16 +141,18 @@ PYBIND11_MODULE(drawing_cpp, m) {
         .def("add_circle", &Drawing::add_circle, 
              py::arg("x"), py::arg("y"), py::arg("radius"), py::arg("layer_id")=0)
         .def("add_rectangle", &Drawing::add_rectangle,
-             py::arg("x"), py::arg("y"), py::arg("width"), py::arg("height"), py::arg("layer_id")=0)
+             py::arg("x"), py::arg("y"), py::arg("width"), py::arg("height"), 
+             py::arg("corner_radius")=0, py::arg("layer_id")=0)
         .def("add_line", &Drawing::add_line,
-             py::arg("x1"), py::arg("y1"), py::arg("x2"), py::arg("y2"), py::arg("layer_id")=0)
+             py::arg("x1"), py::arg("y1"), py::arg("x2"), py::arg("y2"), 
+             py::arg("line_style")=LineStyle::Solid, py::arg("layer_id")=0)
         .def("add_polygon", &Drawing::add_polygon,
-             py::arg("points"), py::arg("layer_id")=0)
+             py::arg("points"), py::arg("closed")=true, py::arg("layer_id")=0)
         .def("add_ellipse", &Drawing::add_ellipse,
              py::arg("x"), py::arg("y"), py::arg("rx"), py::arg("ry"), 
              py::arg("rotation")=0, py::arg("layer_id")=0)
         .def("add_polyline", &Drawing::add_polyline,
-             py::arg("points"), py::arg("layer_id")=0)
+             py::arg("points"), py::arg("line_style")=LineStyle::Solid, py::arg("layer_id")=0)
         .def("add_arc", &Drawing::add_arc,
              py::arg("x"), py::arg("y"), py::arg("radius"), 
              py::arg("start_angle"), py::arg("end_angle"), py::arg("layer_id")=0)
@@ -142,6 +169,26 @@ PYBIND11_MODULE(drawing_cpp, m) {
              py::arg("children"), py::arg("layer_id")=0)
         .def("add_to_group", &Drawing::add_to_group,
              py::arg("group_id"), py::arg("child_id"))
+        .def("add_linear_gradient", &Drawing::add_linear_gradient,
+             py::arg("stops"), py::arg("angle")=0.0f)
+        .def("add_radial_gradient", &Drawing::add_radial_gradient,
+             py::arg("stops"), py::arg("center_x"), py::arg("center_y"), py::arg("radius"))
+        .def("set_object_gradient", &Drawing::set_object_gradient,
+             py::arg("object_id"), py::arg("gradient_id"))
+        .def("add_pattern", &Drawing::add_pattern,
+             py::arg("pattern_name"))
+        .def("set_object_pattern", &Drawing::set_object_pattern,
+             py::arg("object_id"), py::arg("pattern_id"))
+        .def("set_object_name", &Drawing::set_object_name,
+             py::arg("object_id"), py::arg("name"))
+        .def("get_object_name", &Drawing::get_object_name,
+             py::arg("object_id"))
+        .def("set_object_metadata", &Drawing::set_object_metadata,
+             py::arg("object_id"), py::arg("key"), py::arg("value"))
+        .def("get_object_metadata", &Drawing::get_object_metadata,
+             py::arg("object_id"), py::arg("key"))
+        .def("get_all_object_metadata", &Drawing::get_all_object_metadata,
+             py::arg("object_id"))
         .def("get_bounding_box", &Drawing::get_bounding_box)
         .def("find_objects_in_rect", &Drawing::find_objects_in_rect)
         .def("total_objects", &Drawing::total_objects)
@@ -163,7 +210,27 @@ PYBIND11_MODULE(drawing_cpp, m) {
         .def("set_opacity", &ObjectStorage::set_opacity)
         .def("find_in_rect", &ObjectStorage::find_in_rect)
         .def("find_at_point", &ObjectStorage::find_at_point, 
-             py::arg("point"), py::arg("tolerance")=1.0f);
+             py::arg("point"), py::arg("tolerance")=1.0f)
+        .def("add_linear_gradient", &ObjectStorage::add_linear_gradient,
+             py::arg("stops"), py::arg("angle")=0.0f)
+        .def("add_radial_gradient", &ObjectStorage::add_radial_gradient,
+             py::arg("stops"), py::arg("center_x"), py::arg("center_y"), py::arg("radius"))
+        .def("set_object_gradient", &ObjectStorage::set_object_gradient,
+             py::arg("object_id"), py::arg("gradient_id"))
+        .def("add_pattern", &ObjectStorage::add_pattern,
+             py::arg("pattern_name"))
+        .def("set_object_pattern", &ObjectStorage::set_object_pattern,
+             py::arg("object_id"), py::arg("pattern_id"))
+        .def("set_object_name", &ObjectStorage::set_object_name,
+             py::arg("object_id"), py::arg("name"))
+        .def("get_object_name", &ObjectStorage::get_object_name,
+             py::arg("object_id"))
+        .def("set_object_metadata", &ObjectStorage::set_object_metadata,
+             py::arg("object_id"), py::arg("key"), py::arg("value"))
+        .def("get_object_metadata", &ObjectStorage::get_object_metadata,
+             py::arg("object_id"), py::arg("key"))
+        .def("get_all_object_metadata", &ObjectStorage::get_all_object_metadata,
+             py::arg("object_id"));
     
     // Serialization functions
     m.def("save_binary", &save_binary, "Save drawing to binary format",
