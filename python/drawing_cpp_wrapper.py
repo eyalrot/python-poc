@@ -169,6 +169,33 @@ class DrawingCpp:
                 
         return obj_id
     
+    def add_polyline(self, points: List[Tuple[float, float]],
+                     stroke_color: Optional[Tuple[int, int, int]] = None,
+                     stroke_width: float = 1.0,
+                     layer_id: Optional[int] = None) -> int:
+        """Add a polyline (open path) to the drawing.
+        
+        Args:
+            points: List of (x, y) coordinate tuples
+            stroke_color: Optional stroke color as (r, g, b)
+            stroke_width: Stroke width (not used yet)
+            layer_id: Optional layer ID
+        """
+        if layer_id is None:
+            layer_id = self._default_layer_id
+            
+        # Convert points to drawing_cpp.Point objects
+        cpp_points = [drawing_cpp.Point(x, y) for x, y in points]
+        obj_id = self._drawing.add_polyline(cpp_points, layer_id)
+        
+        # Set stroke color if provided (polylines typically don't have fill)
+        if stroke_color:
+            storage = self._drawing.get_storage()
+            color = drawing_cpp.Color(*stroke_color)
+            storage.set_stroke_color([obj_id], color)
+                
+        return obj_id
+    
     def find_objects_at_point(self, x: float, y: float, tolerance: float = 1.0) -> List[int]:
         """Find objects at the given point."""
         storage = self._drawing.get_storage()

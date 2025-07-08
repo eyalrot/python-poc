@@ -155,6 +155,17 @@ public:
         return id;
     }
     
+    ObjectStorage::ObjectID add_polyline(const std::vector<Point>& points, uint8_t layer_id = 0) {
+        auto id = storage.add_polyline(points);
+        if (auto* layer = get_layer(layer_id)) {
+            layer->add_object(id);
+            if (auto* polyline = storage.get_polyline(id)) {
+                polyline->base.layer_id = layer_id;
+            }
+        }
+        return id;
+    }
+    
     // Access to storage for advanced operations
     ObjectStorage& get_storage() { return storage; }
     const ObjectStorage& get_storage() const { return storage; }

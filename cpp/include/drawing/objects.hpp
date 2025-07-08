@@ -98,6 +98,15 @@ struct CompactPolygon {
     CompactPolygon() : base(ObjectType::Polygon), point_offset(0), point_count(0) {}
 };
 
+// Compact Polyline (28 bytes total) - same structure as polygon but open path
+struct CompactPolyline {
+    CompactObject base;     // 20 bytes
+    uint32_t point_offset;  // 4 bytes - offset into point array
+    uint32_t point_count;   // 4 bytes
+    
+    CompactPolyline() : base(ObjectType::Polyline), point_offset(0), point_count(0) {}
+};
+
 // Object storage using Structure-of-Arrays for better cache performance
 class ObjectStorage {
 public:
@@ -107,9 +116,11 @@ public:
     std::vector<CompactLine> lines;
     std::vector<CompactEllipse> ellipses;
     std::vector<CompactPolygon> polygons;
+    std::vector<CompactPolyline> polylines;
     
     // Variable data storage (public for serialization)
     std::vector<Point> polygon_points;
+    std::vector<Point> polyline_points;
     
 private:
     std::vector<Transform2D> transforms;
@@ -161,6 +172,15 @@ public:
         polygon_points.insert(polygon_points.end(), points.begin(), points.end());
         polygons.push_back(poly);
         return make_id(ObjectType::Polygon, polygons.size() - 1);
+    }
+    
+    ObjectID add_polyline(const std::vector<Point>& points) {
+        CompactPolyline polyline;
+        polyline.point_offset = polyline_points.size();
+        polyline.point_count = points.size();
+        polyline_points.insert(polyline_points.end(), points.begin(), points.end());
+        polylines.push_back(polyline);
+        return make_id(ObjectType::Polyline, polylines.size() - 1);
     }
     
     // Get objects
@@ -224,12 +244,32 @@ public:
         return idx < polygons.size() ? &polygons[idx] : nullptr;
     }
     
+    CompactPolyline* get_polyline(ObjectID id) {
+        if (get_type(id) != ObjectType::Polyline) return nullptr;
+        uint32_t idx = get_index(id);
+        return idx < polylines.size() ? &polylines[idx] : nullptr;
+    }
+    
+    const CompactPolyline* get_polyline(ObjectID id) const {
+        if (get_type(id) != ObjectType::Polyline) return nullptr;
+        uint32_t idx = get_index(id);
+        return idx < polylines.size() ? &polylines[idx] : nullptr;
+    }
+    
     // Get polygon points
     std::pair<const Point*, size_t> get_polygon_points(const CompactPolygon& poly) const {
         if (poly.point_offset + poly.point_count > polygon_points.size()) {
             return {nullptr, 0};
         }
         return {&polygon_points[poly.point_offset], poly.point_count};
+    }
+    
+    // Get polyline points
+    std::pair<const Point*, size_t> get_polyline_points(const CompactPolyline& polyline) const {
+        if (polyline.point_offset + polyline.point_count > polyline_points.size()) {
+            return {nullptr, 0};
+        }
+        return {&polyline_points[polyline.point_offset], polyline.point_count};
     }
     
     // Batch operations
@@ -243,7 +283,8 @@ public:
     
     // Statistics
     size_t total_objects() const {
-        return circles.size() + rectangles.size() + lines.size() + ellipses.size() + polygons.size();
+        return circles.size() + rectangles.size() + lines.size() + ellipses.size() + 
+               polygons.size() + polylines.size();
     }
     
     size_t memory_usage() const {
@@ -252,7 +293,9 @@ public:
                sizeof(CompactLine) * lines.size() +
                sizeof(CompactEllipse) * ellipses.size() +
                sizeof(CompactPolygon) * polygons.size() +
+               sizeof(CompactPolyline) * polylines.size() +
                sizeof(Point) * polygon_points.size() +
+               sizeof(Point) * polyline_points.size() +
                sizeof(Transform2D) * transforms.size();
     }
 };

@@ -112,6 +112,8 @@ PYBIND11_MODULE(drawing_cpp, m) {
         .def("add_ellipse", &Drawing::add_ellipse,
              py::arg("x"), py::arg("y"), py::arg("rx"), py::arg("ry"), 
              py::arg("rotation")=0, py::arg("layer_id")=0)
+        .def("add_polyline", &Drawing::add_polyline,
+             py::arg("points"), py::arg("layer_id")=0)
         .def("get_bounding_box", &Drawing::get_bounding_box)
         .def("find_objects_in_rect", &Drawing::find_objects_in_rect)
         .def("total_objects", &Drawing::total_objects)
@@ -151,6 +153,7 @@ PYBIND11_MODULE(drawing_cpp, m) {
         sizes["CompactLine"] = sizeof(CompactLine);
         sizes["CompactEllipse"] = sizeof(CompactEllipse);
         sizes["CompactPolygon"] = sizeof(CompactPolygon);
+        sizes["CompactPolyline"] = sizeof(CompactPolyline);
         sizes["Color"] = sizeof(Color);
         sizes["Point"] = sizeof(Point);
         return sizes;
@@ -198,4 +201,5 @@ PYBIND11_MODULE(drawing_cpp, m) {
     m.attr("BYTES_PER_LINE") = sizeof(CompactLine);
     m.attr("BYTES_PER_ELLIPSE") = sizeof(CompactEllipse);
     m.attr("BYTES_PER_POLYGON") = sizeof(CompactPolygon);
+    m.attr("BYTES_PER_POLYLINE") = sizeof(CompactPolyline);
 }

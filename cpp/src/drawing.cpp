@@ -42,10 +42,35 @@ BoundingBox Drawing::get_bounding_box() const {
                     }
                     break;
                     
-                case ObjectType::Polygon:
-                    // Polygon handling would go here
-                    // For now, skip as it requires friend access or public polygon array
+                case ObjectType::Polygon: {
+                    if (auto* poly = storage.get_polygon(obj_id)) {
+                        auto [points, count] = storage.get_polygon_points(*poly);
+                        if (points && count > 0) {
+                            BoundingBox poly_bbox(points[0].x, points[0].y, points[0].x, points[0].y);
+                            for (size_t i = 1; i < count; ++i) {
+                                poly_bbox.expand(points[i]);
+                            }
+                            obj_bbox = poly_bbox;
+                            has_bbox = true;
+                        }
+                    }
                     break;
+                }
+                    
+                case ObjectType::Polyline: {
+                    if (auto* polyline = storage.get_polyline(obj_id)) {
+                        auto [points, count] = storage.get_polyline_points(*polyline);
+                        if (points && count > 0) {
+                            BoundingBox polyline_bbox(points[0].x, points[0].y, points[0].x, points[0].y);
+                            for (size_t i = 1; i < count; ++i) {
+                                polyline_bbox.expand(points[i]);
+                            }
+                            obj_bbox = polyline_bbox;
+                            has_bbox = true;
+                        }
+                    }
+                    break;
+                }
                     
                 default:
                     break;

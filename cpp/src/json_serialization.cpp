@@ -282,6 +282,25 @@ void save_json(const Drawing& drawing, const std::string& filename) {
                     break;
                 }
                 
+                case ObjectType::Polyline: {
+                    auto* polyline = storage.get_polyline(obj_id);
+                    if (polyline) {
+                        write_object_base(writer, polyline->base, obj_id);
+                        writer.write_key("points");
+                        writer.begin_array();
+                        
+                        auto [points, count] = storage.get_polyline_points(*polyline);
+                        for (size_t i = 0; i < count; ++i) {
+                            writer.write_comma();
+                            writer.write_indent();
+                            writer.write_point(points[i]);
+                        }
+                        
+                        writer.end_array();
+                    }
+                    break;
+                }
+                
                 default:
                     break;
             }

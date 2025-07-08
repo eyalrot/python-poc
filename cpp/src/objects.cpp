@@ -30,6 +30,11 @@ void ObjectStorage::set_fill_color(const std::vector<ObjectID>& ids, Color color
                     polygons[idx].base.fill_color = color;
                 }
                 break;
+            case ObjectType::Polyline:
+                if (uint32_t idx = get_index(id); idx < polylines.size()) {
+                    polylines[idx].base.fill_color = color;
+                }
+                break;
             default:
                 break;
         }
@@ -54,6 +59,11 @@ void ObjectStorage::set_stroke_color(const std::vector<ObjectID>& ids, Color col
             case ObjectType::Polygon:
                 if (uint32_t idx = get_index(id); idx < polygons.size()) {
                     polygons[idx].base.stroke_color = color;
+                }
+                break;
+            case ObjectType::Polyline:
+                if (uint32_t idx = get_index(id); idx < polylines.size()) {
+                    polylines[idx].base.stroke_color = color;
                 }
                 break;
             default:
@@ -82,6 +92,11 @@ void ObjectStorage::set_opacity(const std::vector<ObjectID>& ids, float opacity)
             case ObjectType::Polygon:
                 if (uint32_t idx = get_index(id); idx < polygons.size()) {
                     polygons[idx].base.opacity = opacity;
+                }
+                break;
+            case ObjectType::Polyline:
+                if (uint32_t idx = get_index(id); idx < polylines.size()) {
+                    polylines[idx].base.opacity = opacity;
                 }
                 break;
             default:
@@ -131,6 +146,20 @@ std::vector<ObjectStorage::ObjectID> ObjectStorage::find_in_rect(const BoundingB
             }
             if (rect.intersects(poly_bbox)) {
                 result.push_back(make_id(ObjectType::Polygon, i));
+            }
+        }
+    }
+    
+    // Check polylines
+    for (size_t i = 0; i < polylines.size(); ++i) {
+        auto [points, count] = get_polyline_points(polylines[i]);
+        if (points && count > 0) {
+            BoundingBox polyline_bbox(points[0].x, points[0].y, points[0].x, points[0].y);
+            for (size_t j = 1; j < count; ++j) {
+                polyline_bbox.expand(points[j]);
+            }
+            if (rect.intersects(polyline_bbox)) {
+                result.push_back(make_id(ObjectType::Polyline, i));
             }
         }
     }
@@ -229,6 +258,34 @@ std::vector<ObjectStorage::ObjectID> ObjectStorage::find_at_point(const Point& p
         
         if (outer_check <= 1.0f && (rx_inner == 0 || ry_inner == 0 || inner_check >= 1.0f)) {
             result.push_back(make_id(ObjectType::Ellipse, i));
+        }
+    }
+    
+    // Check polylines (point near any segment)
+    for (size_t i = 0; i < polylines.size(); ++i) {
+        auto [points, count] = get_polyline_points(polylines[i]);
+        if (points && count >= 2) {
+            // Check each segment
+            for (size_t j = 0; j < count - 1; ++j) {
+                float dx = points[j + 1].x - points[j].x;
+                float dy = points[j + 1].y - points[j].y;
+                float len_sq = dx * dx + dy * dy;
+                
+                if (len_sq > 0) {
+                    float t = std::clamp(
+                        ((point.x - points[j].x) * dx + (point.y - points[j].y) * dy) / len_sq,
+                        0.0f, 1.0f
+                    );
+                    float px = points[j].x + t * dx;
+                    float py = points[j].y + t * dy;
+                    float dist_sq = (point.x - px) * (point.x - px) + (point.y - py) * (point.y - py);
+                    
+                    if (dist_sq <= tol_sq) {
+                        result.push_back(make_id(ObjectType::Polyline, i));
+                        break; // Found a hit, no need to check other segments
+                    }
+                }
+            }
         }
     }
     
