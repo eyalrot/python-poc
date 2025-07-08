@@ -18,7 +18,7 @@ from python.data import (
 )
 
 
-def create_sample_drawing():
+def create_sample_drawing() -> Drawing:
     # Create a new drawing
     drawing = Drawing(name="Sample Drawing", width=1000, height=800)
 
@@ -110,7 +110,7 @@ def create_sample_drawing():
     return drawing
 
 
-def demonstrate_usage():
+def demonstrate_usage() -> None:
     # Create drawing
     drawing = create_sample_drawing()
 
