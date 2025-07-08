@@ -5,6 +5,7 @@ include(FetchContent)
 FetchContent_Declare(
     benchmark
     URL https://github.com/google/benchmark/archive/v1.8.0.tar.gz
+    DOWNLOAD_EXTRACT_TIMESTAMP TRUE
 )
 set(BENCHMARK_ENABLE_TESTING OFF CACHE BOOL "Disable benchmark tests")
 FetchContent_MakeAvailable(benchmark)
@@ -21,5 +22,5 @@ target_link_libraries(benchmark_drawing
 
 # Set optimization flags
 target_compile_options(benchmark_drawing PRIVATE
-    $<$<CXX_COMPILER_ID:GNU,Clang>:-O3 -march=native>
+    $<$<CXX_COMPILER_ID:GNU,Clang>:-O3>
 )

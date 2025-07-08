@@ -8,7 +8,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 # Compiler flags
 if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
-    add_compile_options(-Wall -Wextra -Wpedantic -O3 -march=native)
+    add_compile_options(-Wall -Wextra -Wpedantic -O3)
 endif()
 
 # Include directories

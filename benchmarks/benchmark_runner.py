@@ -10,21 +10,38 @@ import os
 import statistics
 from typing import Dict, List, Any, Callable
 from dataclasses import dataclass
-import matplotlib.pyplot as plt
-import pandas as pd
+try:
+    import matplotlib.pyplot as plt
+    import pandas as pd
+    PLOTTING_AVAILABLE = True
+except ImportError:
+    PLOTTING_AVAILABLE = False
+    print("Warning: matplotlib and/or pandas not available. Plotting features disabled.")
 
 # Add parent directory to path
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # Import both implementations
-from python.data.drawing import Drawing as PyDrawing
-from python.data.shapes import Circle as PyCircle, Rectangle as PyRectangle
-from python.data.basic_models import Point as PyPoint, Color as PyColor
+from python.data.models import (
+    Drawing as PyDrawing, 
+    Circle as PyCircle, 
+    Rectangle as PyRectangle,
+    Point as PyPoint, 
+    Color as PyColor
+)
 
 # Import C++ implementation
 sys.path.insert(0, 'cpp')
-import drawing_cpp
-from python.drawing_cpp_wrapper import DrawingCpp
+try:
+    import drawing_cpp
+    from python.drawing_cpp_wrapper import DrawingCpp
+    CPP_AVAILABLE = True
+except ImportError:
+    print("Error: C++ bindings not available. This benchmark requires C++ bindings.")
+    print("Please build them first:")
+    print("  cd cpp")
+    print("  python setup.py build_ext --inplace")
+    sys.exit(1)
 
 
 @dataclass

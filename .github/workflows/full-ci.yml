@@ -39,6 +39,8 @@ jobs:
     
     - name: Run integration tests
       run: |
+        export PYTHONPATH=${{ github.workspace }}:$PYTHONPATH
+        
         # Test that Python version still works
         python create_drawing.py
         
@@ -60,6 +62,7 @@ print(f'Memory usage: {d.memory_usage} bytes')
     
     - name: Performance comparison
       run: |
+        export PYTHONPATH=${{ github.workspace }}:$PYTHONPATH
         python -c "
 from python.drawing_cpp_wrapper import compare_performance
 compare_performance()

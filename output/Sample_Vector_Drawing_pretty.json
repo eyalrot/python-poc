@@ -1,5 +1,5 @@
 {
-    "id": "469afb91-5274-4fae-9549-bf2e4bcb8a3a",
+    "id": "4cec0d01-1067-4f21-b2c0-ccc061195e05",
     "name": "Sample Vector Drawing",
     "width": 800.0,
     "height": 600.0,
@@ -11,14 +11,14 @@
     },
     "layers": [
         {
-            "id": "5bac129a-56f1-43a7-960a-fd188f904aa9",
+            "id": "4a8dadbe-a556-4fd0-92ca-7dd1112238ea",
             "name": "Background",
             "visible": true,
             "locked": false,
             "opacity": 1.0,
             "objects": [
                 {
-                    "id": "54e3f36a-9b53-4fcc-ac84-38c7e69129f9",
+                    "id": "02bbc2d6-5f12-4a10-8580-c1912a55ad88",
                     "name": "Gradient Background",
                     "stroke_color": {
                         "r": 0,
@@ -60,7 +60,7 @@
                     "opacity": 1.0,
                     "visible": true,
                     "locked": false,
-                    "layer_id": "5bac129a-56f1-43a7-960a-fd188f904aa9",
+                    "layer_id": "4a8dadbe-a556-4fd0-92ca-7dd1112238ea",
                     "transform": {
                         "translate_x": 0.0,
                         "translate_y": 0.0,
@@ -73,8 +73,8 @@
                         "scale_z": 1.0
                     },
                     "metadata": {},
-                    "created_at": "2025-07-08 12:23:59.672570",
-                    "updated_at": "2025-07-08 12:23:59.672570",
+                    "created_at": "2025-07-08 13:58:57.692897",
+                    "updated_at": "2025-07-08 13:58:57.692898",
                     "top_left": {
                         "x": 0.0,
                         "y": 0.0,
@@ -88,14 +88,14 @@
             "z_index": 0
         },
         {
-            "id": "63bd12fe-f41d-4b5e-b0c6-6e2b2d57f09b",
+            "id": "875f111a-3664-4670-aa23-353724e6beb7",
             "name": "Shapes",
             "visible": true,
             "locked": false,
             "opacity": 1.0,
             "objects": [
                 {
-                    "id": "c469c59c-6220-4037-930f-48f156676458",
+                    "id": "6055bfcd-0087-4b1f-9d37-4b0b21f97c63",
                     "name": "Sun",
                     "stroke_color": {
                         "r": 0,
@@ -108,7 +108,7 @@
                     "opacity": 1.0,
                     "visible": true,
                     "locked": false,
-                    "layer_id": "63bd12fe-f41d-4b5e-b0c6-6e2b2d57f09b",
+                    "layer_id": "875f111a-3664-4670-aa23-353724e6beb7",
                     "transform": {
                         "translate_x": 0.0,
                         "translate_y": 0.0,
@@ -121,11 +121,11 @@
                         "scale_z": 1.0
                     },
                     "metadata": {},
-                    "created_at": "2025-07-08 12:23:59.672630",
-                    "updated_at": "2025-07-08 12:23:59.672843",
+                    "created_at": "2025-07-08 13:58:57.692965",
+                    "updated_at": "2025-07-08 13:58:57.693277",
                     "objects": [
                         {
-                            "id": "201a27c5-fef5-49f3-a11e-b636bb94a2c8",
+                            "id": "837ce562-6823-4066-83ae-b239728b8a14",
                             "name": "Sun Body",
                             "stroke_color": {
                                 "r": 255,
@@ -160,8 +160,8 @@
                                 "scale_z": 1.0
                             },
                             "metadata": {},
-                            "created_at": "2025-07-08 12:23:59.672656",
-                            "updated_at": "2025-07-08 12:23:59.672656",
+                            "created_at": "2025-07-08 13:58:57.693005",
+                            "updated_at": "2025-07-08 13:58:57.693006",
                             "center": {
                                 "x": 650.0,
                                 "y": 100.0,
@@ -170,7 +170,7 @@
                             "radius": 40.0
                         },
                         {
-                            "id": "9edc6cf1-3c5e-4566-a586-287073ec892a",
+                            "id": "9e0ab802-7d77-4eda-acde-16eb5bcdc0cd",
                             "name": null,
                             "stroke_color": {
                                 "r": 255,
@@ -196,8 +196,8 @@
                                 "scale_z": 1.0
                             },
                             "metadata": {},
-                            "created_at": "2025-07-08 12:23:59.672711",
-                            "updated_at": "2025-07-08 12:23:59.672712",
+                            "created_at": "2025-07-08 13:58:57.693059",
+                            "updated_at": "2025-07-08 13:58:57.693060",
                             "start_point": {
                                 "x": 700.0,
                                 "y": 100.0,
@@ -211,7 +211,7 @@
                             "line_style": "solid"
                         },
                         {
-                            "id": "c2df6ca7-fa0d-4c15-aeeb-1a1ec422da85",
+                            "id": "0e835876-f93c-4f24-a86d-bf4c375a5b93",
                             "name": null,
                             "stroke_color": {
                                 "r": 255,
@@ -237,8 +237,8 @@
                                 "scale_z": 1.0
                             },
                             "metadata": {},
-                            "created_at": "2025-07-08 12:23:59.672736",
-                            "updated_at": "2025-07-08 12:23:59.672737",
+                            "created_at": "2025-07-08 13:58:57.693088",
+                            "updated_at": "2025-07-08 13:58:57.693089",
                             "start_point": {
                                 "x": 685.3553390593274,
                                 "y": 135.35533905932738,
@@ -252,7 +252,7 @@
                             "line_style": "solid"
                         },
                         {
-                            "id": "e13f00bb-e335-46c1-a121-adead831af6b",
+                            "id": "181adf78-376d-4c35-8d12-5e3029c81034",
                             "name": null,
                             "stroke_color": {
                                 "r": 255,
@@ -278,8 +278,8 @@
                                 "scale_z": 1.0
                             },
                             "metadata": {},
-                            "created_at": "2025-07-08 12:23:59.672755",
-                            "updated_at": "2025-07-08 12:23:59.672756",
+                            "created_at": "2025-07-08 13:58:57.693107",
+                            "updated_at": "2025-07-08 13:58:57.693108",
                             "start_point": {
                                 "x": 650.0,
                                 "y": 150.0,
@@ -293,7 +293,7 @@
                             "line_style": "solid"
                         },
                         {
-                            "id": "643bed12-8854-4d4d-8165-7e2b04596346",
+                            "id": "b1c99743-7e8e-4f74-a353-509849c920e1",
                             "name": null,
                             "stroke_color": {
                                 "r": 255,
@@ -319,8 +319,8 @@
                                 "scale_z": 1.0
                             },
                             "metadata": {},
-                            "created_at": "2025-07-08 12:23:59.672772",
-                            "updated_at": "2025-07-08 12:23:59.672772",
+                            "created_at": "2025-07-08 13:58:57.693128",
+                            "updated_at": "2025-07-08 13:58:57.693129",
                             "start_point": {
                                 "x": 614.6446609406727,
                                 "y": 135.35533905932738,
@@ -334,7 +334,7 @@
                             "line_style": "solid"
                         },
                         {
-                            "id": "cc1bb705-68d6-4f15-8876-990cc480ff83",
+                            "id": "cc1b939b-a14b-4d39-8e83-14df4dab1c24",
                             "name": null,
                             "stroke_color": {
                                 "r": 255,
@@ -360,8 +360,8 @@
                                 "scale_z": 1.0
                             },
                             "metadata": {},
-                            "created_at": "2025-07-08 12:23:59.672792",
-                            "updated_at": "2025-07-08 12:23:59.672792",
+                            "created_at": "2025-07-08 13:58:57.693181",
+                            "updated_at": "2025-07-08 13:58:57.693182",
                             "start_point": {
                                 "x": 600.0,
                                 "y": 100.0,
@@ -375,7 +375,7 @@
                             "line_style": "solid"
                         },
                         {
-                            "id": "d6ec590b-db14-48ef-b694-79d2ac1f37bf",
+                            "id": "71bd293f-db03-4526-888c-c02ef9fc5b3f",
                             "name": null,
                             "stroke_color": {
                                 "r": 255,
@@ -401,8 +401,8 @@
                                 "scale_z": 1.0
                             },
                             "metadata": {},
-                            "created_at": "2025-07-08 12:23:59.672808",
-                            "updated_at": "2025-07-08 12:23:59.672808",
+                            "created_at": "2025-07-08 13:58:57.693205",
+                            "updated_at": "2025-07-08 13:58:57.693205",
                             "start_point": {
                                 "x": 614.6446609406726,
                                 "y": 64.64466094067262,
@@ -416,7 +416,7 @@
                             "line_style": "solid"
                         },
                         {
-                            "id": "73aca23b-6110-450f-86a4-f066a4ae666a",
+                            "id": "e3a251db-ea77-42de-ab8c-7788900f3373",
                             "name": null,
                             "stroke_color": {
                                 "r": 255,
@@ -442,8 +442,8 @@
                                 "scale_z": 1.0
                             },
                             "metadata": {},
-                            "created_at": "2025-07-08 12:23:59.672823",
-                            "updated_at": "2025-07-08 12:23:59.672823",
+                            "created_at": "2025-07-08 13:58:57.693258",
+                            "updated_at": "2025-07-08 13:58:57.693258",
                             "start_point": {
                                 "x": 650.0,
                                 "y": 50.0,
@@ -457,7 +457,7 @@
                             "line_style": "solid"
                         },
                         {
-                            "id": "30849c2e-6c91-4d57-bba0-53bc632fe36e",
+                            "id": "01cd0d0c-ff5d-4be0-a757-d68651572d60",
                             "name": null,
                             "stroke_color": {
                                 "r": 255,
@@ -483,8 +483,8 @@
                                 "scale_z": 1.0
                             },
                             "metadata": {},
-                            "created_at": "2025-07-08 12:23:59.672838",
-                            "updated_at": "2025-07-08 12:23:59.672839",
+                            "created_at": "2025-07-08 13:58:57.693275",
+                            "updated_at": "2025-07-08 13:58:57.693275",
                             "start_point": {
                                 "x": 685.3553390593273,
                                 "y": 64.64466094067262,
@@ -500,7 +500,7 @@
                     ]
                 },
                 {
-                    "id": "308fe779-292d-49e0-8a6d-8462e7666de2",
+                    "id": "19f4d36e-ce15-47ea-a082-09959cb8e54a",
                     "name": "House",
                     "stroke_color": {
                         "r": 0,
@@ -513,7 +513,7 @@
                     "opacity": 1.0,
                     "visible": true,
                     "locked": false,
-                    "layer_id": "63bd12fe-f41d-4b5e-b0c6-6e2b2d57f09b",
+                    "layer_id": "875f111a-3664-4670-aa23-353724e6beb7",
                     "transform": {
                         "translate_x": 0.0,
                         "translate_y": 0.0,
@@ -526,11 +526,11 @@
                         "scale_z": 1.0
                     },
                     "metadata": {},
-                    "created_at": "2025-07-08 12:23:59.672880",
-                    "updated_at": "2025-07-08 12:23:59.672994",
+                    "created_at": "2025-07-08 13:58:57.693321",
+                    "updated_at": "2025-07-08 13:58:57.693462",
                     "objects": [
                         {
-                            "id": "34f2d2a8-dcc4-425b-9532-2d8ee1e8a94a",
+                            "id": "5d1fe830-0930-479c-99b6-dc910c855e91",
                             "name": "House Body",
                             "stroke_color": {
                                 "r": 150,
@@ -565,8 +565,8 @@
                                 "scale_z": 1.0
                             },
                             "metadata": {},
-                            "created_at": "2025-07-08 12:23:59.672899",
-                            "updated_at": "2025-07-08 12:23:59.672900",
+                            "created_at": "2025-07-08 13:58:57.693350",
+                            "updated_at": "2025-07-08 13:58:57.693351",
                             "top_left": {
                                 "x": 100.0,
                                 "y": 300.0,
@@ -577,7 +577,7 @@
                             "corner_radius": 0.0
                         },
                         {
-                            "id": "de042a4c-3300-428c-a18a-66d479be5a51",
+                            "id": "7ddb8663-9104-45ac-8c88-d84056ea6d58",
                             "name": "Roof",
                             "stroke_color": {
                                 "r": 120,
@@ -612,8 +612,8 @@
                                 "scale_z": 1.0
                             },
                             "metadata": {},
-                            "created_at": "2025-07-08 12:23:59.672926",
-                            "updated_at": "2025-07-08 12:23:59.672927",
+                            "created_at": "2025-07-08 13:58:57.693386",
+                            "updated_at": "2025-07-08 13:58:57.693386",
                             "points": [
                                 {
                                     "x": 80.0,
@@ -634,7 +634,7 @@
                             "closed": true
                         },
                         {
-                            "id": "3f591ad3-4848-4a05-a4c1-a8faa10c1d24",
+                            "id": "4975be3a-dcbc-4e7b-bcd3-580b6d529df1",
                             "name": "Door",
                             "stroke_color": {
                                 "r": 60,
@@ -669,8 +669,8 @@
                                 "scale_z": 1.0
                             },
                             "metadata": {},
-                            "created_at": "2025-07-08 12:23:59.672948",
-                            "updated_at": "2025-07-08 12:23:59.672948",
+                            "created_at": "2025-07-08 13:58:57.693414",
+                            "updated_at": "2025-07-08 13:58:57.693415",
                             "top_left": {
                                 "x": 180.0,
                                 "y": 380.0,
@@ -681,7 +681,7 @@
                             "corner_radius": 0.0
                         },
                         {
-                            "id": "0da45f6a-6d77-4b6d-a08b-c2a6407544eb",
+                            "id": "000c1c23-0a1a-4103-8095-ce84994afcd5",
                             "name": "Window 1",
                             "stroke_color": {
                                 "r": 100,
@@ -716,8 +716,8 @@
                                 "scale_z": 1.0
                             },
                             "metadata": {},
-                            "created_at": "2025-07-08 12:23:59.672971",
-                            "updated_at": "2025-07-08 12:23:59.672971",
+                            "created_at": "2025-07-08 13:58:57.693437",
+                            "updated_at": "2025-07-08 13:58:57.693437",
                             "top_left": {
                                 "x": 130.0,
                                 "y": 330.0,
@@ -728,7 +728,7 @@
                             "corner_radius": 0.0
                         },
                         {
-                            "id": "1bb1d598-9c28-4186-9a02-80cfa130cd3f",
+                            "id": "9afa11b6-21a9-4729-95c0-37eb4b3422eb",
                             "name": "Window 2",
                             "stroke_color": {
                                 "r": 100,
@@ -763,8 +763,8 @@
                                 "scale_z": 1.0
                             },
                             "metadata": {},
-                            "created_at": "2025-07-08 12:23:59.672990",
-                            "updated_at": "2025-07-08 12:23:59.672991",
+                            "created_at": "2025-07-08 13:58:57.693457",
+                            "updated_at": "2025-07-08 13:58:57.693458",
                             "top_left": {
                                 "x": 240.0,
                                 "y": 330.0,
@@ -777,7 +777,7 @@
                     ]
                 },
                 {
-                    "id": "ed3d021d-3bf2-4079-a275-d3061bb81d42",
+                    "id": "7ff8fecb-61bd-404d-a12b-3326937c08d5",
                     "name": "Tree",
                     "stroke_color": {
                         "r": 0,
@@ -790,7 +790,7 @@
                     "opacity": 1.0,
                     "visible": true,
                     "locked": false,
-                    "layer_id": "63bd12fe-f41d-4b5e-b0c6-6e2b2d57f09b",
+                    "layer_id": "875f111a-3664-4670-aa23-353724e6beb7",
                     "transform": {
                         "translate_x": 0.0,
                         "translate_y": 0.0,
@@ -803,11 +803,11 @@
                         "scale_z": 1.0
                     },
                     "metadata": {},
-                    "created_at": "2025-07-08 12:23:59.673013",
-                    "updated_at": "2025-07-08 12:23:59.673141",
+                    "created_at": "2025-07-08 13:58:57.693488",
+                    "updated_at": "2025-07-08 13:58:57.693867",
                     "objects": [
                         {
-                            "id": "bd365206-a46a-4e30-9cf3-83edb544510c",
+                            "id": "dc902d1e-07d1-415b-9e08-eb722a87e6b0",
                             "name": "Tree Trunk",
                             "stroke_color": {
                                 "r": 60,
@@ -842,8 +842,8 @@
                                 "scale_z": 1.0
                             },
                             "metadata": {},
-                            "created_at": "2025-07-08 12:23:59.673030",
-                            "updated_at": "2025-07-08 12:23:59.673030",
+                            "created_at": "2025-07-08 13:58:57.693506",
+                            "updated_at": "2025-07-08 13:58:57.693507",
                             "top_left": {
                                 "x": 480.0,
                                 "y": 380.0,
@@ -854,7 +854,7 @@
                             "corner_radius": 0.0
                         },
                         {
-                            "id": "0e304e34-f3ce-49d7-a7f9-081a6889057b",
+                            "id": "acb39735-23d7-4129-85e6-bdd84cf88ea5",
                             "name": null,
                             "stroke_color": {
                                 "r": 20,
@@ -889,8 +889,8 @@
                                 "scale_z": 1.0
                             },
                             "metadata": {},
-                            "created_at": "2025-07-08 12:23:59.673050",
-                            "updated_at": "2025-07-08 12:23:59.673050",
+                            "created_at": "2025-07-08 13:58:57.693533",
+                            "updated_at": "2025-07-08 13:58:57.693533",
                             "center": {
                                 "x": 500.0,
                                 "y": 340.0,
@@ -899,7 +899,7 @@
                             "radius": 35.0
                         },
                         {
-                            "id": "d184c16d-c9aa-4122-ae4c-1c61bc4613f7",
+                            "id": "5e98fe8d-7f79-41e2-9679-4bd7a139d759",
                             "name": null,
                             "stroke_color": {
                                 "r": 20,
@@ -934,8 +934,8 @@
                                 "scale_z": 1.0
                             },
                             "metadata": {},
-                            "created_at": "2025-07-08 12:23:59.673071",
-                            "updated_at": "2025-07-08 12:23:59.673071",
+                            "created_at": "2025-07-08 13:58:57.693554",
+                            "updated_at": "2025-07-08 13:58:57.693555",
                             "center": {
                                 "x": 480.0,
                                 "y": 350.0,
@@ -944,7 +944,7 @@
                             "radius": 30.0
                         },
                         {
-                            "id": "eb1b3587-b4a8-4430-bbd4-5145b99ecb7e",
+                            "id": "df99747c-8c95-4b08-a05e-d7d1cb5ad63b",
                             "name": null,
                             "stroke_color": {
                                 "r": 20,
@@ -979,8 +979,8 @@
                                 "scale_z": 1.0
                             },
                             "metadata": {},
-                            "created_at": "2025-07-08 12:23:59.673088",
-                            "updated_at": "2025-07-08 12:23:59.673089",
+                            "created_at": "2025-07-08 13:58:57.693582",
+                            "updated_at": "2025-07-08 13:58:57.693583",
                             "center": {
                                 "x": 520.0,
                                 "y": 350.0,
@@ -989,7 +989,7 @@
                             "radius": 30.0
                         },
                         {
-                            "id": "aa4264e4-32fe-40a2-869f-99939b1a93fe",
+                            "id": "664f6256-0dcf-4942-ad77-273536d30b01",
                             "name": null,
                             "stroke_color": {
                                 "r": 20,
@@ -1024,8 +1024,8 @@
                                 "scale_z": 1.0
                             },
                             "metadata": {},
-                            "created_at": "2025-07-08 12:23:59.673105",
-                            "updated_at": "2025-07-08 12:23:59.673106",
+                            "created_at": "2025-07-08 13:58:57.693806",
+                            "updated_at": "2025-07-08 13:58:57.693808",
                             "center": {
                                 "x": 500.0,
                                 "y": 320.0,
@@ -1034,7 +1034,7 @@
                             "radius": 30.0
                         },
                         {
-                            "id": "5d979768-32c5-41c6-8aa6-e1f3fade1b94",
+                            "id": "46842006-8a7c-4f5b-a682-0c10071b9a38",
                             "name": null,
                             "stroke_color": {
                                 "r": 20,
@@ -1069,8 +1069,8 @@
                                 "scale_z": 1.0
                             },
                             "metadata": {},
-                            "created_at": "2025-07-08 12:23:59.673122",
-                            "updated_at": "2025-07-08 12:23:59.673123",
+                            "created_at": "2025-07-08 13:58:57.693845",
+                            "updated_at": "2025-07-08 13:58:57.693845",
                             "center": {
                                 "x": 485.0,
                                 "y": 330.0,
@@ -1079,7 +1079,7 @@
                             "radius": 25.0
                         },
                         {
-                            "id": "421f2c06-c4cd-4539-bc02-0c8eda792783",
+                            "id": "0209a12d-ef5c-4886-87ca-897ec715219d",
                             "name": null,
                             "stroke_color": {
                                 "r": 20,
@@ -1114,8 +1114,8 @@
                                 "scale_z": 1.0
                             },
                             "metadata": {},
-                            "created_at": "2025-07-08 12:23:59.673139",
-                            "updated_at": "2025-07-08 12:23:59.673139",
+                            "created_at": "2025-07-08 13:58:57.693864",
+                            "updated_at": "2025-07-08 13:58:57.693865",
                             "center": {
                                 "x": 515.0,
                                 "y": 330.0,
@@ -1126,7 +1126,7 @@
                     ]
                 },
                 {
-                    "id": "1e255315-2986-4848-a182-4dd59bfabea5",
+                    "id": "580631e3-be7b-47e2-a781-1de70864029e",
                     "name": "Ellipse",
                     "stroke_color": {
                         "r": 200,
@@ -1148,7 +1148,7 @@
                     "opacity": 1.0,
                     "visible": true,
                     "locked": false,
-                    "layer_id": "63bd12fe-f41d-4b5e-b0c6-6e2b2d57f09b",
+                    "layer_id": "875f111a-3664-4670-aa23-353724e6beb7",
                     "transform": {
                         "translate_x": 0.0,
                         "translate_y": 0.0,
@@ -1161,8 +1161,8 @@
                         "scale_z": 1.0
                     },
                     "metadata": {},
-                    "created_at": "2025-07-08 12:23:59.673164",
-                    "updated_at": "2025-07-08 12:23:59.673165",
+                    "created_at": "2025-07-08 13:58:57.693898",
+                    "updated_at": "2025-07-08 13:58:57.693898",
                     "center": {
                         "x": 400.0,
                         "y": 150.0,
@@ -1173,7 +1173,7 @@
                     "rotation": 30.0
                 },
                 {
-                    "id": "c14ccd6c-3623-4485-9552-f7675e83850e",
+                    "id": "ec77b780-4874-490f-be8c-cb96af1f257c",
                     "name": "Rainbow",
                     "stroke_color": {
                         "r": 147,
@@ -1186,7 +1186,7 @@
                     "opacity": 1.0,
                     "visible": true,
                     "locked": false,
-                    "layer_id": "63bd12fe-f41d-4b5e-b0c6-6e2b2d57f09b",
+                    "layer_id": "875f111a-3664-4670-aa23-353724e6beb7",
                     "transform": {
                         "translate_x": 0.0,
                         "translate_y": 0.0,
@@ -1199,8 +1199,8 @@
                         "scale_z": 1.0
                     },
                     "metadata": {},
-                    "created_at": "2025-07-08 12:23:59.673193",
-                    "updated_at": "2025-07-08 12:23:59.673193",
+                    "created_at": "2025-07-08 13:58:57.693940",
+                    "updated_at": "2025-07-08 13:58:57.693941",
                     "center": {
                         "x": 400.0,
                         "y": 500.0,
@@ -1211,7 +1211,7 @@
                     "end_angle": 360.0
                 },
                 {
-                    "id": "29ca5868-4d78-4a04-a3fe-f139d654d9c5",
+                    "id": "96c0fc82-a9c2-4efe-9651-3de2300ff92f",
                     "name": "Mountain",
                     "stroke_color": {
                         "r": 100,
@@ -1224,7 +1224,7 @@
                     "opacity": 1.0,
                     "visible": true,
                     "locked": false,
-                    "layer_id": "63bd12fe-f41d-4b5e-b0c6-6e2b2d57f09b",
+                    "layer_id": "875f111a-3664-4670-aa23-353724e6beb7",
                     "transform": {
                         "translate_x": 0.0,
                         "translate_y": 0.0,
@@ -1237,8 +1237,8 @@
                         "scale_z": 1.0
                     },
                     "metadata": {},
-                    "created_at": "2025-07-08 12:23:59.673258",
-                    "updated_at": "2025-07-08 12:23:59.673259",
+                    "created_at": "2025-07-08 13:58:57.693982",
+                    "updated_at": "2025-07-08 13:58:57.693983",
                     "points": [
                         {
                             "x": 50.0,
@@ -1277,14 +1277,14 @@
             "z_index": 1
         },
         {
-            "id": "4bd6b888-1a49-4f54-80d8-dca6bc87b33f",
+            "id": "60725f4d-1733-471d-b511-5419009ee1c8",
             "name": "Text",
             "visible": true,
             "locked": false,
             "opacity": 1.0,
             "objects": [
                 {
-                    "id": "35ed7fa6-2303-4f10-a015-5d4948d7cc2f",
+                    "id": "9766a440-15c2-463e-a0ce-bb19738e10e9",
                     "name": "Title",
                     "stroke_color": {
                         "r": 50,
@@ -1297,7 +1297,7 @@
                     "opacity": 1.0,
                     "visible": true,
                     "locked": false,
-                    "layer_id": "4bd6b888-1a49-4f54-80d8-dca6bc87b33f",
+                    "layer_id": "60725f4d-1733-471d-b511-5419009ee1c8",
                     "transform": {
                         "translate_x": 0.0,
                         "translate_y": 0.0,
@@ -1310,8 +1310,8 @@
                         "scale_z": 1.0
                     },
                     "metadata": {},
-                    "created_at": "2025-07-08 12:23:59.673297",
-                    "updated_at": "2025-07-08 12:23:59.673297",
+                    "created_at": "2025-07-08 13:58:57.694027",
+                    "updated_at": "2025-07-08 13:58:57.694027",
                     "position": {
                         "x": 400.0,
                         "y": 50.0,
@@ -1326,7 +1326,7 @@
                     "vertical_alignment": "bottom"
                 },
                 {
-                    "id": "e94f9a51-8e61-4e8f-965e-92b753c9402c",
+                    "id": "c809bf8a-5099-44ca-a3a5-8b6dd8eb1a1e",
                     "name": null,
                     "stroke_color": {
                         "r": 100,
@@ -1339,7 +1339,7 @@
                     "opacity": 1.0,
                     "visible": true,
                     "locked": false,
-                    "layer_id": "4bd6b888-1a49-4f54-80d8-dca6bc87b33f",
+                    "layer_id": "60725f4d-1733-471d-b511-5419009ee1c8",
                     "transform": {
                         "translate_x": 0.0,
                         "translate_y": 0.0,
@@ -1352,8 +1352,8 @@
                         "scale_z": 1.0
                     },
                     "metadata": {},
-                    "created_at": "2025-07-08 12:23:59.673321",
-                    "updated_at": "2025-07-08 12:23:59.673322",
+                    "created_at": "2025-07-08 13:58:57.694052",
+                    "updated_at": "2025-07-08 13:58:57.694052",
                     "position": {
                         "x": 200.0,
                         "y": 480.0,
@@ -1368,7 +1368,7 @@
                     "vertical_alignment": "bottom"
                 },
                 {
-                    "id": "2702cb31-9247-4e48-9599-c4286867b455",
+                    "id": "9fc26c78-5475-4731-9efd-79d83634b2cf",
                     "name": null,
                     "stroke_color": {
                         "r": 100,
@@ -1381,7 +1381,7 @@
                     "opacity": 1.0,
                     "visible": true,
                     "locked": false,
-                    "layer_id": "4bd6b888-1a49-4f54-80d8-dca6bc87b33f",
+                    "layer_id": "60725f4d-1733-471d-b511-5419009ee1c8",
                     "transform": {
                         "translate_x": 0.0,
                         "translate_y": 0.0,
@@ -1394,8 +1394,8 @@
                         "scale_z": 1.0
                     },
                     "metadata": {},
-                    "created_at": "2025-07-08 12:23:59.673335",
-                    "updated_at": "2025-07-08 12:23:59.673336",
+                    "created_at": "2025-07-08 13:58:57.694066",
+                    "updated_at": "2025-07-08 13:58:57.694066",
                     "position": {
                         "x": 500.0,
                         "y": 480.0,
@@ -1410,7 +1410,7 @@
                     "vertical_alignment": "bottom"
                 },
                 {
-                    "id": "129a0301-1e6e-4bc4-9eb9-46567005561d",
+                    "id": "b2f5df9e-512a-4cef-8ffd-56877a5f4f76",
                     "name": null,
                     "stroke_color": {
                         "r": 150,
@@ -1423,7 +1423,7 @@
                     "opacity": 1.0,
                     "visible": true,
                     "locked": false,
-                    "layer_id": "4bd6b888-1a49-4f54-80d8-dca6bc87b33f",
+                    "layer_id": "60725f4d-1733-471d-b511-5419009ee1c8",
                     "transform": {
                         "translate_x": 0.0,
                         "translate_y": 0.0,
@@ -1436,8 +1436,8 @@
                         "scale_z": 1.0
                     },
                     "metadata": {},
-                    "created_at": "2025-07-08 12:23:59.673352",
-                    "updated_at": "2025-07-08 12:23:59.673353",
+                    "created_at": "2025-07-08 13:58:57.694091",
+                    "updated_at": "2025-07-08 13:58:57.694091",
                     "position": {
                         "x": 700.0,
                         "y": 580.0,
@@ -1456,6 +1456,6 @@
         }
     ],
     "metadata": {},
-    "created_at": "2025-07-08 12:23:59.672462",
-    "updated_at": "2025-07-08 12:23:59.673497"
+    "created_at": "2025-07-08 13:58:57.692771",
+    "updated_at": "2025-07-08 13:58:57.694111"
 }
