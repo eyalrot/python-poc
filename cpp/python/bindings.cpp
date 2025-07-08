@@ -75,6 +75,18 @@ PYBIND11_MODULE(drawing_cpp, m) {
         .value("Path", ObjectType::Path)
         .value("Group", ObjectType::Group);
     
+    // Text alignment enums
+    py::enum_<TextAlign>(m, "TextAlign")
+        .value("Left", TextAlign::Left)
+        .value("Center", TextAlign::Center)
+        .value("Right", TextAlign::Right);
+    
+    py::enum_<TextBaseline>(m, "TextBaseline")
+        .value("Top", TextBaseline::Top)
+        .value("Middle", TextBaseline::Middle)
+        .value("Bottom", TextBaseline::Bottom)
+        .value("Alphabetic", TextBaseline::Alphabetic);
+    
     // Layer class
     py::class_<Layer>(m, "Layer")
         .def("get_id", &Layer::get_id)
@@ -117,6 +129,11 @@ PYBIND11_MODULE(drawing_cpp, m) {
         .def("add_arc", &Drawing::add_arc,
              py::arg("x"), py::arg("y"), py::arg("radius"), 
              py::arg("start_angle"), py::arg("end_angle"), py::arg("layer_id")=0)
+        .def("add_text", &Drawing::add_text,
+             py::arg("x"), py::arg("y"), py::arg("text"), 
+             py::arg("font_size")=16.0f, py::arg("font_name")="Arial",
+             py::arg("align")=TextAlign::Left, py::arg("baseline")=TextBaseline::Alphabetic,
+             py::arg("layer_id")=0)
         .def("get_bounding_box", &Drawing::get_bounding_box)
         .def("find_objects_in_rect", &Drawing::find_objects_in_rect)
         .def("total_objects", &Drawing::total_objects)
@@ -158,6 +175,7 @@ PYBIND11_MODULE(drawing_cpp, m) {
         sizes["CompactPolygon"] = sizeof(CompactPolygon);
         sizes["CompactPolyline"] = sizeof(CompactPolyline);
         sizes["CompactArc"] = sizeof(CompactArc);
+        sizes["CompactText"] = sizeof(CompactText);
         sizes["Color"] = sizeof(Color);
         sizes["Point"] = sizeof(Point);
         return sizes;
@@ -207,4 +225,5 @@ PYBIND11_MODULE(drawing_cpp, m) {
     m.attr("BYTES_PER_POLYGON") = sizeof(CompactPolygon);
     m.attr("BYTES_PER_POLYLINE") = sizeof(CompactPolyline);
     m.attr("BYTES_PER_ARC") = sizeof(CompactArc);
+    m.attr("BYTES_PER_TEXT") = sizeof(CompactText);
 }

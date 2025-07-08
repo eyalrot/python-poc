@@ -25,6 +25,9 @@ namespace BinaryFormat {
         Polylines = 9,
         PolylinePoints = 10,
         Arcs = 11,
+        Texts = 12,
+        TextStrings = 13,
+        FontNames = 14,
         End = 999
     };
 }
@@ -136,6 +139,26 @@ public:
         if (!storage.arcs.empty()) {
             write_pod(BinaryFormat::ChunkType::Arcs);
             write_vector(storage.arcs);
+        }
+        
+        // Texts
+        if (!storage.texts.empty()) {
+            write_pod(BinaryFormat::ChunkType::Texts);
+            write_vector(storage.texts);
+            
+            // Text strings
+            write_pod(BinaryFormat::ChunkType::TextStrings);
+            write_pod(static_cast<uint32_t>(storage.text_strings.size()));
+            for (const auto& str : storage.text_strings) {
+                write_string(str);
+            }
+            
+            // Font names
+            write_pod(BinaryFormat::ChunkType::FontNames);
+            write_pod(static_cast<uint32_t>(storage.font_names.size()));
+            for (const auto& font : storage.font_names) {
+                write_string(font);
+            }
         }
         
         // End marker
@@ -288,6 +311,37 @@ public:
                 case BinaryFormat::ChunkType::Arcs: {
                     if (!read_vector(drawing->get_storage().arcs)) {
                         return nullptr;
+                    }
+                    break;
+                }
+                
+                case BinaryFormat::ChunkType::Texts: {
+                    if (!read_vector(drawing->get_storage().texts)) {
+                        return nullptr;
+                    }
+                    break;
+                }
+                
+                case BinaryFormat::ChunkType::TextStrings: {
+                    uint32_t count;
+                    if (!read_pod(count)) return nullptr;
+                    drawing->get_storage().text_strings.resize(count);
+                    for (uint32_t i = 0; i < count; ++i) {
+                        if (!read_string(drawing->get_storage().text_strings[i])) {
+                            return nullptr;
+                        }
+                    }
+                    break;
+                }
+                
+                case BinaryFormat::ChunkType::FontNames: {
+                    uint32_t count;
+                    if (!read_pod(count)) return nullptr;
+                    drawing->get_storage().font_names.resize(count);
+                    for (uint32_t i = 0; i < count; ++i) {
+                        if (!read_string(drawing->get_storage().font_names[i])) {
+                            return nullptr;
+                        }
                     }
                     break;
                 }

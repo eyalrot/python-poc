@@ -69,7 +69,26 @@ public:
     }
     
     void write_string(const std::string& value) {
-        stream << "\"" << value << "\"";
+        stream << "\"";
+        for (char c : value) {
+            switch (c) {
+                case '"': stream << "\\\""; break;
+                case '\\': stream << "\\\\"; break;
+                case '\b': stream << "\\b"; break;
+                case '\f': stream << "\\f"; break;
+                case '\n': stream << "\\n"; break;
+                case '\r': stream << "\\r"; break;
+                case '\t': stream << "\\t"; break;
+                default:
+                    if (c >= 0x20 && c <= 0x7E) {
+                        stream << c;
+                    } else {
+                        // Unicode characters - pass through as-is for now
+                        stream << c;
+                    }
+            }
+        }
+        stream << "\"";
     }
     
     void write_number(float value) {
@@ -310,6 +329,36 @@ void save_json(const Drawing& drawing, const std::string& filename) {
                         writer.write_key("radius"); writer.write_number(arc->radius);
                         writer.write_key("start_angle"); writer.write_number(arc->start_angle);
                         writer.write_key("end_angle"); writer.write_number(arc->end_angle);
+                    }
+                    break;
+                }
+                
+                case ObjectType::Text: {
+                    auto* text = storage.get_text(obj_id);
+                    if (text) {
+                        write_object_base(writer, text->base, obj_id);
+                        writer.write_key("position"); 
+                        writer.write_point(Point(text->x, text->y));
+                        writer.write_key("text"); writer.write_string(storage.get_text_string(*text));
+                        writer.write_key("font_size"); writer.write_number(text->font_size);
+                        writer.write_key("font_family"); writer.write_string(storage.get_font_name(*text));
+                        
+                        // Text align
+                        writer.write_key("text_align");
+                        switch (static_cast<TextAlign>(text->align)) {
+                            case TextAlign::Left: writer.write_string("left"); break;
+                            case TextAlign::Center: writer.write_string("center"); break;
+                            case TextAlign::Right: writer.write_string("right"); break;
+                        }
+                        
+                        // Text baseline
+                        writer.write_key("text_baseline");
+                        switch (static_cast<TextBaseline>(text->baseline)) {
+                            case TextBaseline::Top: writer.write_string("top"); break;
+                            case TextBaseline::Middle: writer.write_string("middle"); break;
+                            case TextBaseline::Bottom: writer.write_string("bottom"); break;
+                            case TextBaseline::Alphabetic: writer.write_string("alphabetic"); break;
+                        }
                     }
                     break;
                 }

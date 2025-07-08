@@ -177,6 +177,22 @@ public:
         return id;
     }
     
+    ObjectStorage::ObjectID add_text(float x, float y, const std::string& text, 
+                                     float font_size = 16.0f, 
+                                     const std::string& font_name = "Arial",
+                                     TextAlign align = TextAlign::Left,
+                                     TextBaseline baseline = TextBaseline::Alphabetic,
+                                     uint8_t layer_id = 0) {
+        auto id = storage.add_text(x, y, text, font_size, font_name, align, baseline);
+        if (auto* layer = get_layer(layer_id)) {
+            layer->add_object(id);
+            if (auto* txt = storage.get_text(id)) {
+                txt->base.layer_id = layer_id;
+            }
+        }
+        return id;
+    }
+    
     // Access to storage for advanced operations
     ObjectStorage& get_storage() { return storage; }
     const ObjectStorage& get_storage() const { return storage; }

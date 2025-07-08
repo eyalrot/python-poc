@@ -231,6 +231,63 @@ class DrawingCpp:
                 
         return obj_id
     
+    def add_text(self, x: float, y: float, text: str,
+                 font_size: float = 16.0,
+                 font_family: str = "Arial",
+                 text_align: str = "left",
+                 text_baseline: str = "alphabetic",
+                 fill_color: Optional[Tuple[int, int, int]] = None,
+                 stroke_color: Optional[Tuple[int, int, int]] = None,
+                 stroke_width: float = 1.0,
+                 layer_id: Optional[int] = None) -> int:
+        """Add text to the drawing.
+        
+        Args:
+            x, y: Text position
+            text: Text string to display
+            font_size: Font size in pixels
+            font_family: Font family name
+            text_align: Horizontal alignment ("left", "center", "right")
+            text_baseline: Vertical alignment ("top", "middle", "bottom", "alphabetic")
+            fill_color: Optional fill color as (r, g, b)
+            stroke_color: Optional stroke color as (r, g, b)
+            stroke_width: Stroke width (not used yet)
+            layer_id: Optional layer ID
+        """
+        if layer_id is None:
+            layer_id = self._default_layer_id
+        
+        # Convert string alignment to enum
+        align_map = {
+            "left": drawing_cpp.TextAlign.Left,
+            "center": drawing_cpp.TextAlign.Center,
+            "right": drawing_cpp.TextAlign.Right
+        }
+        align = align_map.get(text_align.lower(), drawing_cpp.TextAlign.Left)
+        
+        baseline_map = {
+            "top": drawing_cpp.TextBaseline.Top,
+            "middle": drawing_cpp.TextBaseline.Middle,
+            "bottom": drawing_cpp.TextBaseline.Bottom,
+            "alphabetic": drawing_cpp.TextBaseline.Alphabetic
+        }
+        baseline = baseline_map.get(text_baseline.lower(), drawing_cpp.TextBaseline.Alphabetic)
+        
+        obj_id = self._drawing.add_text(x, y, text, font_size, font_family, 
+                                        align, baseline, layer_id)
+        
+        # Set colors if provided
+        if fill_color or stroke_color:
+            storage = self._drawing.get_storage()
+            if fill_color:
+                color = drawing_cpp.Color(*fill_color)
+                storage.set_fill_color([obj_id], color)
+            if stroke_color:
+                color = drawing_cpp.Color(*stroke_color)
+                storage.set_stroke_color([obj_id], color)
+                
+        return obj_id
+    
     def find_objects_at_point(self, x: float, y: float, tolerance: float = 1.0) -> List[int]:
         """Find objects at the given point."""
         storage = self._drawing.get_storage()

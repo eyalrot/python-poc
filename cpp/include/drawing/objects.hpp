@@ -3,6 +3,8 @@
 #include "types.hpp"
 #include <memory>
 #include <vector>
+#include <algorithm>
+#include <string>
 
 namespace drawing {
 
@@ -127,6 +129,65 @@ struct CompactArc {
     }
 };
 
+// Text alignment flags
+enum class TextAlign : uint8_t {
+    Left = 0,
+    Center = 1,
+    Right = 2
+};
+
+enum class TextBaseline : uint8_t {
+    Top = 0,
+    Middle = 1,
+    Bottom = 2,
+    Alphabetic = 3
+};
+
+// Compact Text (40 bytes total)
+struct CompactText {
+    CompactObject base;     // 20 bytes
+    float x, y;             // 8 bytes - position
+    uint32_t text_index;    // 4 bytes - index into text storage
+    float font_size;        // 4 bytes
+    uint16_t font_index;    // 2 bytes - index into font name storage
+    uint8_t align;          // 1 byte - TextAlign
+    uint8_t baseline;       // 1 byte - TextBaseline
+    
+    CompactText() : base(ObjectType::Text), x(0), y(0), text_index(0), 
+                    font_size(16), font_index(0), align(0), baseline(0) {}
+    CompactText(float x, float y, uint32_t text_idx, float size, uint16_t font_idx,
+                TextAlign align = TextAlign::Left, TextBaseline baseline = TextBaseline::Alphabetic)
+        : base(ObjectType::Text), x(x), y(y), text_index(text_idx), 
+          font_size(size), font_index(font_idx), 
+          align(static_cast<uint8_t>(align)), baseline(static_cast<uint8_t>(baseline)) {}
+    
+    BoundingBox get_bounding_box() const {
+        // Approximate bounding box - would need font metrics for exact bounds
+        float estimated_width = font_size * 0.6f * 10; // Rough estimate
+        float estimated_height = font_size * 1.2f;
+        
+        float left = x;
+        if (align == static_cast<uint8_t>(TextAlign::Center)) {
+            left = x - estimated_width / 2;
+        } else if (align == static_cast<uint8_t>(TextAlign::Right)) {
+            left = x - estimated_width;
+        }
+        
+        float top = y;
+        if (baseline == static_cast<uint8_t>(TextBaseline::Middle)) {
+            top = y - estimated_height / 2;
+        } else if (baseline == static_cast<uint8_t>(TextBaseline::Top)) {
+            top = y;
+        } else if (baseline == static_cast<uint8_t>(TextBaseline::Bottom)) {
+            top = y - estimated_height;
+        } else { // Alphabetic
+            top = y - estimated_height * 0.8f;
+        }
+        
+        return BoundingBox(left, top, left + estimated_width, top + estimated_height);
+    }
+};
+
 // Object storage using Structure-of-Arrays for better cache performance
 class ObjectStorage {
 public:
@@ -138,10 +199,13 @@ public:
     std::vector<CompactPolygon> polygons;
     std::vector<CompactPolyline> polylines;
     std::vector<CompactArc> arcs;
+    std::vector<CompactText> texts;
     
     // Variable data storage (public for serialization)
     std::vector<Point> polygon_points;
     std::vector<Point> polyline_points;
+    std::vector<std::string> text_strings;
+    std::vector<std::string> font_names;
     
 private:
     std::vector<Transform2D> transforms;
@@ -207,6 +271,28 @@ public:
     ObjectID add_arc(float x, float y, float radius, float start_angle, float end_angle) {
         arcs.emplace_back(x, y, radius, start_angle, end_angle);
         return make_id(ObjectType::Arc, arcs.size() - 1);
+    }
+    
+    ObjectID add_text(float x, float y, const std::string& text, float font_size = 16.0f,
+                      const std::string& font_name = "Arial", 
+                      TextAlign align = TextAlign::Left,
+                      TextBaseline baseline = TextBaseline::Alphabetic) {
+        // Store text string
+        uint32_t text_idx = text_strings.size();
+        text_strings.push_back(text);
+        
+        // Store or find font name
+        uint16_t font_idx = 0;
+        auto it = std::find(font_names.begin(), font_names.end(), font_name);
+        if (it != font_names.end()) {
+            font_idx = std::distance(font_names.begin(), it);
+        } else {
+            font_idx = font_names.size();
+            font_names.push_back(font_name);
+        }
+        
+        texts.emplace_back(x, y, text_idx, font_size, font_idx, align, baseline);
+        return make_id(ObjectType::Text, texts.size() - 1);
     }
     
     // Get objects
@@ -294,6 +380,30 @@ public:
         return idx < arcs.size() ? &arcs[idx] : nullptr;
     }
     
+    CompactText* get_text(ObjectID id) {
+        if (get_type(id) != ObjectType::Text) return nullptr;
+        uint32_t idx = get_index(id);
+        return idx < texts.size() ? &texts[idx] : nullptr;
+    }
+    
+    const CompactText* get_text(ObjectID id) const {
+        if (get_type(id) != ObjectType::Text) return nullptr;
+        uint32_t idx = get_index(id);
+        return idx < texts.size() ? &texts[idx] : nullptr;
+    }
+    
+    // Get text string
+    const std::string& get_text_string(const CompactText& text) const {
+        return text.text_index < text_strings.size() ? 
+               text_strings[text.text_index] : text_strings[0];
+    }
+    
+    // Get font name
+    const std::string& get_font_name(const CompactText& text) const {
+        return text.font_index < font_names.size() ? 
+               font_names[text.font_index] : font_names[0];
+    }
+    
     // Get polygon points
     std::pair<const Point*, size_t> get_polygon_points(const CompactPolygon& poly) const {
         if (poly.point_offset + poly.point_count > polygon_points.size()) {
@@ -322,20 +432,28 @@ public:
     // Statistics
     size_t total_objects() const {
         return circles.size() + rectangles.size() + lines.size() + ellipses.size() + 
-               polygons.size() + polylines.size() + arcs.size();
+               polygons.size() + polylines.size() + arcs.size() + texts.size();
     }
     
     size_t memory_usage() const {
-        return sizeof(CompactCircle) * circles.size() +
+        size_t base_size = sizeof(CompactCircle) * circles.size() +
                sizeof(CompactRectangle) * rectangles.size() +
                sizeof(CompactLine) * lines.size() +
                sizeof(CompactEllipse) * ellipses.size() +
                sizeof(CompactPolygon) * polygons.size() +
                sizeof(CompactPolyline) * polylines.size() +
                sizeof(CompactArc) * arcs.size() +
+               sizeof(CompactText) * texts.size() +
                sizeof(Point) * polygon_points.size() +
                sizeof(Point) * polyline_points.size() +
                sizeof(Transform2D) * transforms.size();
+        
+        // Add string storage
+        size_t string_size = 0;
+        for (const auto& s : text_strings) string_size += s.size();
+        for (const auto& s : font_names) string_size += s.size();
+        
+        return base_size + string_size;
     }
 };
 

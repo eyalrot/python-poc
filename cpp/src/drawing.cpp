@@ -79,6 +79,13 @@ BoundingBox Drawing::get_bounding_box() const {
                     }
                     break;
                     
+                case ObjectType::Text:
+                    if (auto* text = storage.get_text(obj_id)) {
+                        obj_bbox = text->get_bounding_box();
+                        has_bbox = true;
+                    }
+                    break;
+                    
                 default:
                     break;
             }
