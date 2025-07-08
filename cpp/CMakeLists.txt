@@ -26,6 +26,9 @@ set(DRAWING_SOURCES
 # Create static library
 add_library(drawing_cpp STATIC ${DRAWING_SOURCES})
 
+# Set position independent code for the static library
+set_property(TARGET drawing_cpp PROPERTY POSITION_INDEPENDENT_CODE ON)
+
 # Tests
 option(BUILD_TESTS "Build tests" ON)
 if(BUILD_TESTS)
