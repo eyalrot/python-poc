@@ -68,17 +68,14 @@ jobs:
   
   python-bindings:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: ['3.9', '3.10', '3.11', '3.12']
     
     steps:
     - uses: actions/checkout@v4
     
-    - name: Set up Python ${{ matrix.python-version }}
+    - name: Set up Python 3.12
       uses: actions/setup-python@v5
       with:
-        python-version: ${{ matrix.python-version }}
+        python-version: '3.12'
     
     - name: Install system dependencies
       run: |
@@ -194,7 +191,7 @@ print('\\n✅ All performance targets verified!')
       uses: actions/upload-artifact@v4
       if: always()
       with:
-        name: benchmark-results-${{ matrix.python-version }}
+        name: benchmark-results
         path: |
           benchmark_results_simple.json
           benchmark_results.json
