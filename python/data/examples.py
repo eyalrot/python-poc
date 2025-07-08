@@ -145,8 +145,6 @@ def demonstrate_usage() -> None:
         first_object.opacity = 0.5
         print(f"\nModified {first_object.__class__.__name__} opacity to 0.5")
 
-    return drawing
-
 
 if __name__ == "__main__":
-    drawing = demonstrate_usage()
+    demonstrate_usage()

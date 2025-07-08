@@ -114,8 +114,11 @@ def render_circle(circle: Circle, defs: list[str]) -> str:
     attrs.append(f'cy="{circle.center.y}"')
     attrs.append(f'r="{circle.radius}"')
 
-    fill = fill_to_svg(circle.fill, defs, str(circle.id))
-    attrs.append(f'fill="{fill}"')
+    if circle.fill:
+        fill = fill_to_svg(circle.fill, defs, str(circle.id))
+        attrs.append(f'fill="{fill}"')
+    else:
+        attrs.append('fill="none"')
 
     if circle.stroke_color:
         attrs.append(f'stroke="{color_to_svg(circle.stroke_color)}"')
@@ -140,8 +143,11 @@ def render_ellipse(ellipse: Ellipse, defs: list[str]) -> str:
             f'transform="rotate({ellipse.rotation} {ellipse.center.x} {ellipse.center.y})"'
         )
 
-    fill = fill_to_svg(ellipse.fill, defs, str(ellipse.id))
-    attrs.append(f'fill="{fill}"')
+    if ellipse.fill:
+        fill = fill_to_svg(ellipse.fill, defs, str(ellipse.id))
+        attrs.append(f'fill="{fill}"')
+    else:
+        attrs.append('fill="none"')
 
     if ellipse.stroke_color:
         attrs.append(f'stroke="{color_to_svg(ellipse.stroke_color)}"')
@@ -165,8 +171,11 @@ def render_rectangle(rect: Rectangle, defs: list[str]) -> str:
         attrs.append(f'rx="{rect.corner_radius}"')
         attrs.append(f'ry="{rect.corner_radius}"')
 
-    fill = fill_to_svg(rect.fill, defs, str(rect.id))
-    attrs.append(f'fill="{fill}"')
+    if rect.fill:
+        fill = fill_to_svg(rect.fill, defs, str(rect.id))
+        attrs.append(f'fill="{fill}"')
+    else:
+        attrs.append('fill="none"')
 
     if rect.stroke_color:
         attrs.append(f'stroke="{color_to_svg(rect.stroke_color)}"')
@@ -185,8 +194,11 @@ def render_polygon(polygon: Polygon, defs: list[str]) -> str:
     attrs = []
     attrs.append(f'points="{points}"')
 
-    fill = fill_to_svg(polygon.fill, defs, str(polygon.id))
-    attrs.append(f'fill="{fill}"')
+    if polygon.fill:
+        fill = fill_to_svg(polygon.fill, defs, str(polygon.id))
+        attrs.append(f'fill="{fill}"')
+    else:
+        attrs.append('fill="none"')
 
     if polygon.stroke_color:
         attrs.append(f'stroke="{color_to_svg(polygon.stroke_color)}"')
@@ -308,8 +320,11 @@ def render_path(path: Path, defs: list[str]) -> str:
     attrs = []
     attrs.append(f'd="{" ".join(path_data)}"')
 
-    fill = fill_to_svg(path.fill, defs, str(path.id))
-    attrs.append(f'fill="{fill}"')
+    if path.fill:
+        fill = fill_to_svg(path.fill, defs, str(path.id))
+        attrs.append(f'fill="{fill}"')
+    else:
+        attrs.append('fill="none"')
 
     if path.stroke_color:
         attrs.append(f'stroke="{color_to_svg(path.stroke_color)}"')
@@ -378,7 +393,7 @@ def render_layer(layer: Layer, defs: list[str]) -> str:
 
 def drawing_to_svg(drawing: Drawing) -> str:
     """Convert Drawing to complete SVG string"""
-    defs = []
+    defs: list[str] = []
     svg_parts = [
         f'<svg width="{drawing.width}" height="{drawing.height}" xmlns="http://www.w3.org/2000/svg">',
         f'<rect width="{drawing.width}" height="{drawing.height}" fill="{drawing.background_color.to_hex()}"/>',
