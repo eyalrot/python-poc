@@ -6,21 +6,30 @@ import os
 import subprocess
 import importlib.util
 
-# Check if drawing_cpp module is available
-cpp_module_path = os.path.join(
-    os.path.dirname(__file__), "..", "..", "cpp", "drawing_cpp.cpython*.so"
-)
-import glob
+# Add cpp directory to Python path first
+cpp_dir = os.path.join(os.path.dirname(__file__), "..", "..", "cpp")
+sys.path.insert(0, cpp_dir)
 
-cpp_modules = glob.glob(cpp_module_path)
+# Check if drawing_cpp module is available
+cpp_module_patterns = [
+    os.path.join(cpp_dir, "drawing_cpp.cpython*.so"),
+    os.path.join(cpp_dir, "build", "lib.*", "drawing_cpp.cpython*.so"),
+]
+
+cpp_modules = []
+for pattern in cpp_module_patterns:
+    cpp_modules.extend(glob.glob(pattern))
+
 if not cpp_modules:
     print("ERROR: C++ module not found. Please build it first:")
     print("  cd cpp")
     print("  python setup.py build_ext --inplace")
+    print("\nSearched in:")
+    for pattern in cpp_module_patterns:
+        print(f"  {pattern}")
     sys.exit(1)
 
-# Add cpp directory to Python path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "cpp"))
+print(f"Found C++ module: {cpp_modules[0]}")
 
 # Run all test files
 test_files = [
