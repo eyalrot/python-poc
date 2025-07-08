@@ -96,8 +96,9 @@ jobs:
     - name: Test Python bindings
       run: |
         export PYTHONPATH=${{ github.workspace }}:$PYTHONPATH
-        python test_cpp_bindings.py
-        python test_batch_operations.py
+        cd ${{ github.workspace }}
+        python tests/cpp_integration/test_cpp_bindings.py
+        python tests/cpp_integration/test_batch_operations.py
     
   performance-check:
     runs-on: ubuntu-latest

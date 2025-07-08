@@ -45,8 +45,8 @@ jobs:
         python create_drawing.py
         
         # Test C++ bindings
-        python test_cpp_bindings.py
-        python test_batch_operations.py
+        python tests/cpp_integration/test_cpp_bindings.py
+        python tests/cpp_integration/test_batch_operations.py
         
         # Test interoperability
         python -c "
