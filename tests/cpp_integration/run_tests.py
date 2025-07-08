@@ -7,9 +7,11 @@ import subprocess
 import importlib.util
 import glob
 
-# Add cpp directory to Python path first
-cpp_dir = os.path.join(os.path.dirname(__file__), "..", "..", "cpp")
+# Add project root and cpp directory to Python path
+project_root = os.path.join(os.path.dirname(__file__), "..", "..")
+cpp_dir = os.path.join(project_root, "cpp")
 sys.path.insert(0, cpp_dir)
+sys.path.insert(0, project_root)
 
 # Check if drawing_cpp module is available
 cpp_module_patterns = [
@@ -44,12 +46,21 @@ test_files = [
 ]
 
 failed = False
+
+# Set up environment with both project root and cpp directory in PYTHONPATH
+env = os.environ.copy()
+python_paths = f"{project_root}{os.pathsep}{cpp_dir}"
+if 'PYTHONPATH' in env:
+    env['PYTHONPATH'] = f"{python_paths}{os.pathsep}{env['PYTHONPATH']}"
+else:
+    env['PYTHONPATH'] = python_paths
+
 for test_file in test_files:
     print(f"\n{'='*60}")
     print(f"Running {test_file}")
     print(f"{'='*60}")
 
-    result = subprocess.run([sys.executable, test_file], cwd=os.path.dirname(__file__))
+    result = subprocess.run([sys.executable, test_file], cwd=os.path.dirname(__file__), env=env)
     if result.returncode != 0:
         failed = True
         print(f"FAILED: {test_file}")
