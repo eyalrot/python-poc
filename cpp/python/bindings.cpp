@@ -134,6 +134,8 @@ PYBIND11_MODULE(drawing_cpp, m) {
              py::arg("font_size")=16.0f, py::arg("font_name")="Arial",
              py::arg("align")=TextAlign::Left, py::arg("baseline")=TextBaseline::Alphabetic,
              py::arg("layer_id")=0)
+        .def("add_path", &Drawing::add_path,
+             py::arg("path_data"), py::arg("layer_id")=0)
         .def("get_bounding_box", &Drawing::get_bounding_box)
         .def("find_objects_in_rect", &Drawing::find_objects_in_rect)
         .def("total_objects", &Drawing::total_objects)
@@ -176,6 +178,8 @@ PYBIND11_MODULE(drawing_cpp, m) {
         sizes["CompactPolyline"] = sizeof(CompactPolyline);
         sizes["CompactArc"] = sizeof(CompactArc);
         sizes["CompactText"] = sizeof(CompactText);
+        sizes["CompactPath"] = sizeof(CompactPath);
+        sizes["PathSegment"] = sizeof(PathSegment);
         sizes["Color"] = sizeof(Color);
         sizes["Point"] = sizeof(Point);
         return sizes;
@@ -226,4 +230,5 @@ PYBIND11_MODULE(drawing_cpp, m) {
     m.attr("BYTES_PER_POLYLINE") = sizeof(CompactPolyline);
     m.attr("BYTES_PER_ARC") = sizeof(CompactArc);
     m.attr("BYTES_PER_TEXT") = sizeof(CompactText);
+    m.attr("BYTES_PER_PATH") = sizeof(CompactPath);
 }

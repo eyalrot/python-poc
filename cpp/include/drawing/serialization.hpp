@@ -28,6 +28,9 @@ namespace BinaryFormat {
         Texts = 12,
         TextStrings = 13,
         FontNames = 14,
+        Paths = 15,
+        PathSegments = 16,
+        PathParameters = 17,
         End = 999
     };
 }
@@ -159,6 +162,20 @@ public:
             for (const auto& font : storage.font_names) {
                 write_string(font);
             }
+        }
+        
+        // Paths
+        if (!storage.paths.empty()) {
+            write_pod(BinaryFormat::ChunkType::Paths);
+            write_vector(storage.paths);
+            
+            // Path segments
+            write_pod(BinaryFormat::ChunkType::PathSegments);
+            write_vector(storage.path_segments);
+            
+            // Path parameters
+            write_pod(BinaryFormat::ChunkType::PathParameters);
+            write_vector(storage.path_parameters);
         }
         
         // End marker
@@ -342,6 +359,27 @@ public:
                         if (!read_string(drawing->get_storage().font_names[i])) {
                             return nullptr;
                         }
+                    }
+                    break;
+                }
+                
+                case BinaryFormat::ChunkType::Paths: {
+                    if (!read_vector(drawing->get_storage().paths)) {
+                        return nullptr;
+                    }
+                    break;
+                }
+                
+                case BinaryFormat::ChunkType::PathSegments: {
+                    if (!read_vector(drawing->get_storage().path_segments)) {
+                        return nullptr;
+                    }
+                    break;
+                }
+                
+                case BinaryFormat::ChunkType::PathParameters: {
+                    if (!read_vector(drawing->get_storage().path_parameters)) {
+                        return nullptr;
                     }
                     break;
                 }

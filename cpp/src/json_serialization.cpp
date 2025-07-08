@@ -363,6 +363,63 @@ void save_json(const Drawing& drawing, const std::string& filename) {
                     break;
                 }
                 
+                case ObjectType::Path: {
+                    auto* path = storage.get_path(obj_id);
+                    if (path) {
+                        write_object_base(writer, path->base, obj_id);
+                        
+                        // Reconstruct SVG path string
+                        writer.write_key("d");
+                        std::string path_str;
+                        auto [segments, seg_count] = storage.get_path_segments(*path);
+                        
+                        for (size_t i = 0; i < seg_count; ++i) {
+                            const auto& seg = segments[i];
+                            const float* params = storage.get_segment_params(seg);
+                            
+                            switch (seg.cmd) {
+                                case PathCommand::MoveTo:
+                                    path_str += "M " + std::to_string(params[0]) + " " + 
+                                               std::to_string(params[1]) + " ";
+                                    break;
+                                case PathCommand::LineTo:
+                                    path_str += "L " + std::to_string(params[0]) + " " + 
+                                               std::to_string(params[1]) + " ";
+                                    break;
+                                case PathCommand::CurveTo:
+                                    path_str += "C " + std::to_string(params[0]) + " " + 
+                                               std::to_string(params[1]) + " " +
+                                               std::to_string(params[2]) + " " + 
+                                               std::to_string(params[3]) + " " +
+                                               std::to_string(params[4]) + " " + 
+                                               std::to_string(params[5]) + " ";
+                                    break;
+                                case PathCommand::QuadTo:
+                                    path_str += "Q " + std::to_string(params[0]) + " " + 
+                                               std::to_string(params[1]) + " " +
+                                               std::to_string(params[2]) + " " + 
+                                               std::to_string(params[3]) + " ";
+                                    break;
+                                case PathCommand::ArcTo:
+                                    path_str += "A " + std::to_string(params[0]) + " " + 
+                                               std::to_string(params[1]) + " " +
+                                               std::to_string(params[2]) + " " + 
+                                               std::to_string(params[3]) + " " +
+                                               std::to_string(params[4]) + " " + 
+                                               std::to_string(params[5]) + " " +
+                                               std::to_string(params[6]) + " ";
+                                    break;
+                                case PathCommand::Close:
+                                    path_str += "Z ";
+                                    break;
+                            }
+                        }
+                        
+                        writer.write_string(path_str);
+                    }
+                    break;
+                }
+                
                 default:
                     break;
             }

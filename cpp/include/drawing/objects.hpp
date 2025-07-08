@@ -5,6 +5,7 @@
 #include <vector>
 #include <algorithm>
 #include <string>
+#include <cctype>
 
 namespace drawing {
 
@@ -188,6 +189,107 @@ struct CompactText {
     }
 };
 
+// Path command types (simplified SVG subset)
+enum class PathCommand : uint8_t {
+    MoveTo = 0,      // M x y
+    LineTo = 1,      // L x y
+    CurveTo = 2,     // C x1 y1 x2 y2 x y
+    QuadTo = 3,      // Q x1 y1 x y
+    ArcTo = 4,       // A rx ry rot large sweep x y
+    Close = 5        // Z
+};
+
+// Compact path command storage
+struct PathSegment {
+    PathCommand cmd;
+    uint8_t param_count;  // Number of parameters for this command
+    uint16_t param_offset; // Offset into path parameters array
+    
+    PathSegment() : cmd(PathCommand::MoveTo), param_count(0), param_offset(0) {}
+    PathSegment(PathCommand c, uint8_t count, uint16_t offset) 
+        : cmd(c), param_count(count), param_offset(offset) {}
+};
+
+// Compact Path (32 bytes total)
+struct CompactPath {
+    CompactObject base;     // 20 bytes
+    uint32_t segment_offset; // 4 bytes - offset into path segments
+    uint16_t segment_count;  // 2 bytes - number of segments
+    uint16_t param_offset;   // 2 bytes - offset into path parameters
+    uint16_t param_count;    // 2 bytes - total parameter count
+    uint16_t flags;          // 2 bytes - reserved for future use
+    
+    CompactPath() : base(ObjectType::Path), segment_offset(0), segment_count(0),
+                    param_offset(0), param_count(0), flags(0) {}
+    
+    CompactPath(uint32_t seg_offset, uint16_t seg_count, 
+                uint16_t par_offset, uint16_t par_count)
+        : base(ObjectType::Path), segment_offset(seg_offset), segment_count(seg_count),
+          param_offset(par_offset), param_count(par_count), flags(0) {}
+    
+    // Calculate bounding box from path data (requires access to segments and params)
+    BoundingBox calculate_bbox(const std::vector<PathSegment>& segments, 
+                              const std::vector<float>& params) const {
+        BoundingBox bbox;
+        float current_x = 0, current_y = 0;
+        bool has_points = false;
+        
+        for (uint16_t i = 0; i < segment_count; ++i) {
+            const auto& seg = segments[segment_offset + i];
+            const float* p = &params[seg.param_offset];
+            
+            switch (seg.cmd) {
+                case PathCommand::MoveTo:
+                    current_x = p[0];
+                    current_y = p[1];
+                    if (!has_points) {
+                        bbox = BoundingBox(current_x, current_y, current_x, current_y);
+                        has_points = true;
+                    } else {
+                        bbox.expand(Point(current_x, current_y));
+                    }
+                    break;
+                    
+                case PathCommand::LineTo:
+                    current_x = p[0];
+                    current_y = p[1];
+                    bbox.expand(Point(current_x, current_y));
+                    break;
+                    
+                case PathCommand::CurveTo:
+                    // Include control points and end point
+                    bbox.expand(Point(p[0], p[1]));
+                    bbox.expand(Point(p[2], p[3]));
+                    current_x = p[4];
+                    current_y = p[5];
+                    bbox.expand(Point(current_x, current_y));
+                    break;
+                    
+                case PathCommand::QuadTo:
+                    // Include control point and end point
+                    bbox.expand(Point(p[0], p[1]));
+                    current_x = p[2];
+                    current_y = p[3];
+                    bbox.expand(Point(current_x, current_y));
+                    break;
+                    
+                case PathCommand::ArcTo:
+                    // Simplified - just use the end point
+                    current_x = p[5];
+                    current_y = p[6];
+                    bbox.expand(Point(current_x, current_y));
+                    break;
+                    
+                case PathCommand::Close:
+                    // No new points
+                    break;
+            }
+        }
+        
+        return bbox;
+    }
+};
+
 // Object storage using Structure-of-Arrays for better cache performance
 class ObjectStorage {
 public:
@@ -200,12 +302,15 @@ public:
     std::vector<CompactPolyline> polylines;
     std::vector<CompactArc> arcs;
     std::vector<CompactText> texts;
+    std::vector<CompactPath> paths;
     
     // Variable data storage (public for serialization)
     std::vector<Point> polygon_points;
     std::vector<Point> polyline_points;
     std::vector<std::string> text_strings;
     std::vector<std::string> font_names;
+    std::vector<PathSegment> path_segments;
+    std::vector<float> path_parameters;
     
 private:
     std::vector<Transform2D> transforms;
@@ -293,6 +398,86 @@ public:
         
         texts.emplace_back(x, y, text_idx, font_size, font_idx, align, baseline);
         return make_id(ObjectType::Text, texts.size() - 1);
+    }
+    
+    ObjectID add_path(const std::string& path_data) {
+        // Parse SVG path string and create path
+        uint32_t seg_offset = path_segments.size();
+        uint16_t param_offset = path_parameters.size();
+        
+        // Simple SVG path parser
+        size_t i = 0;
+        PathCommand current_cmd = PathCommand::MoveTo;
+        
+        while (i < path_data.length()) {
+            // Skip whitespace
+            while (i < path_data.length() && std::isspace(path_data[i])) i++;
+            if (i >= path_data.length()) break;
+            
+            // Check for command letter
+            char c = path_data[i];
+            if (std::isalpha(c)) {
+                switch (std::toupper(c)) {
+                    case 'M': current_cmd = PathCommand::MoveTo; break;
+                    case 'L': current_cmd = PathCommand::LineTo; break;
+                    case 'C': current_cmd = PathCommand::CurveTo; break;
+                    case 'Q': current_cmd = PathCommand::QuadTo; break;
+                    case 'A': current_cmd = PathCommand::ArcTo; break;
+                    case 'Z': 
+                        path_segments.emplace_back(PathCommand::Close, 0, path_parameters.size());
+                        i++;
+                        continue;
+                    default:
+                        i++; // Skip unknown commands
+                        continue;
+                }
+                i++;
+            }
+            
+            // Parse parameters based on command
+            std::vector<float> params;
+            int expected_params = 0;
+            switch (current_cmd) {
+                case PathCommand::MoveTo:
+                case PathCommand::LineTo:
+                    expected_params = 2; break;
+                case PathCommand::QuadTo:
+                    expected_params = 4; break;
+                case PathCommand::CurveTo:
+                    expected_params = 6; break;
+                case PathCommand::ArcTo:
+                    expected_params = 7; break;
+                default:
+                    break;
+            }
+            
+            // Parse numbers
+            for (int p = 0; p < expected_params; ++p) {
+                // Skip whitespace and commas
+                while (i < path_data.length() && 
+                       (std::isspace(path_data[i]) || path_data[i] == ',')) i++;
+                
+                if (i >= path_data.length()) break;
+                
+                // Parse number
+                size_t end;
+                float value = std::stof(path_data.substr(i), &end);
+                params.push_back(value);
+                i += end;
+            }
+            
+            if (params.size() == static_cast<size_t>(expected_params)) {
+                uint16_t param_idx = path_parameters.size();
+                path_segments.emplace_back(current_cmd, params.size(), param_idx);
+                path_parameters.insert(path_parameters.end(), params.begin(), params.end());
+            }
+        }
+        
+        uint16_t seg_count = path_segments.size() - seg_offset;
+        uint16_t param_count = path_parameters.size() - param_offset;
+        
+        paths.emplace_back(seg_offset, seg_count, param_offset, param_count);
+        return make_id(ObjectType::Path, paths.size() - 1);
     }
     
     // Get objects
@@ -404,6 +589,34 @@ public:
                font_names[text.font_index] : font_names[0];
     }
     
+    CompactPath* get_path(ObjectID id) {
+        if (get_type(id) != ObjectType::Path) return nullptr;
+        uint32_t idx = get_index(id);
+        return idx < paths.size() ? &paths[idx] : nullptr;
+    }
+    
+    const CompactPath* get_path(ObjectID id) const {
+        if (get_type(id) != ObjectType::Path) return nullptr;
+        uint32_t idx = get_index(id);
+        return idx < paths.size() ? &paths[idx] : nullptr;
+    }
+    
+    // Get path segments
+    std::pair<const PathSegment*, size_t> get_path_segments(const CompactPath& path) const {
+        if (path.segment_offset + path.segment_count > path_segments.size()) {
+            return {nullptr, 0};
+        }
+        return {&path_segments[path.segment_offset], path.segment_count};
+    }
+    
+    // Get path parameters for a segment
+    const float* get_segment_params(const PathSegment& segment) const {
+        if (segment.param_offset + segment.param_count > path_parameters.size()) {
+            return nullptr;
+        }
+        return &path_parameters[segment.param_offset];
+    }
+    
     // Get polygon points
     std::pair<const Point*, size_t> get_polygon_points(const CompactPolygon& poly) const {
         if (poly.point_offset + poly.point_count > polygon_points.size()) {
@@ -432,7 +645,7 @@ public:
     // Statistics
     size_t total_objects() const {
         return circles.size() + rectangles.size() + lines.size() + ellipses.size() + 
-               polygons.size() + polylines.size() + arcs.size() + texts.size();
+               polygons.size() + polylines.size() + arcs.size() + texts.size() + paths.size();
     }
     
     size_t memory_usage() const {
@@ -444,8 +657,11 @@ public:
                sizeof(CompactPolyline) * polylines.size() +
                sizeof(CompactArc) * arcs.size() +
                sizeof(CompactText) * texts.size() +
+               sizeof(CompactPath) * paths.size() +
                sizeof(Point) * polygon_points.size() +
                sizeof(Point) * polyline_points.size() +
+               sizeof(PathSegment) * path_segments.size() +
+               sizeof(float) * path_parameters.size() +
                sizeof(Transform2D) * transforms.size();
         
         // Add string storage

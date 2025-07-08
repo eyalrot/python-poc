@@ -41,6 +41,9 @@ void ObjectStorage::set_fill_color(const std::vector<ObjectID>& ids, Color color
             case ObjectType::Text:
                 if (auto* obj = get_text(id)) obj->base.fill_color = color;
                 break;
+            case ObjectType::Path:
+                if (auto* obj = get_path(id)) obj->base.fill_color = color;
+                break;
             default:
                 break;
         }
@@ -77,6 +80,9 @@ void ObjectStorage::set_stroke_color(const std::vector<ObjectID>& ids, Color col
                 break;
             case ObjectType::Text:
                 if (auto* obj = get_text(id)) obj->base.stroke_color = color;
+                break;
+            case ObjectType::Path:
+                if (auto* obj = get_path(id)) obj->base.stroke_color = color;
                 break;
             default:
                 break;
@@ -116,6 +122,9 @@ void ObjectStorage::set_opacity(const std::vector<ObjectID>& ids, float opacity)
                 break;
             case ObjectType::Text:
                 if (auto* obj = get_text(id)) obj->base.opacity = opacity;
+                break;
+            case ObjectType::Path:
+                if (auto* obj = get_path(id)) obj->base.opacity = opacity;
                 break;
             default:
                 break;
@@ -193,6 +202,14 @@ std::vector<ObjectStorage::ObjectID> ObjectStorage::find_in_rect(const BoundingB
     for (size_t i = 0; i < texts.size(); ++i) {
         if (rect.intersects(texts[i].get_bounding_box())) {
             result.push_back(make_id(ObjectType::Text, i));
+        }
+    }
+    
+    // Check paths
+    for (size_t i = 0; i < paths.size(); ++i) {
+        BoundingBox path_bbox = paths[i].calculate_bbox(path_segments, path_parameters);
+        if (rect.intersects(path_bbox)) {
+            result.push_back(make_id(ObjectType::Path, i));
         }
     }
     
@@ -371,6 +388,19 @@ std::vector<ObjectStorage::ObjectID> ObjectStorage::find_at_point(const Point& p
         
         if (expanded.contains(point)) {
             result.push_back(make_id(ObjectType::Text, i));
+        }
+    }
+    
+    // Check paths (simplified - just check bounding box)
+    for (size_t i = 0; i < paths.size(); ++i) {
+        BoundingBox path_bbox = paths[i].calculate_bbox(path_segments, path_parameters);
+        BoundingBox expanded(
+            path_bbox.min_x - tolerance, path_bbox.min_y - tolerance,
+            path_bbox.max_x + tolerance, path_bbox.max_y + tolerance
+        );
+        
+        if (expanded.contains(point)) {
+            result.push_back(make_id(ObjectType::Path, i));
         }
     }
     

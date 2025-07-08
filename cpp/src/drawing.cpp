@@ -86,6 +86,14 @@ BoundingBox Drawing::get_bounding_box() const {
                     }
                     break;
                     
+                case ObjectType::Path:
+                    if (auto* path = storage.get_path(obj_id)) {
+                        obj_bbox = path->calculate_bbox(storage.path_segments, 
+                                                       storage.path_parameters);
+                        has_bbox = true;
+                    }
+                    break;
+                    
                 default:
                     break;
             }

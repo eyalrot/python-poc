@@ -288,6 +288,45 @@ class DrawingCpp:
                 
         return obj_id
     
+    def add_path(self, path_data: str,
+                 fill_color: Optional[Tuple[int, int, int]] = None,
+                 stroke_color: Optional[Tuple[int, int, int]] = None,
+                 stroke_width: float = 1.0,
+                 layer_id: Optional[int] = None) -> int:
+        """Add a path to the drawing using SVG path syntax.
+        
+        Args:
+            path_data: SVG path string (e.g., "M 10 10 L 20 20 C 30 30 40 40 50 50 Z")
+            fill_color: Optional fill color as (r, g, b)
+            stroke_color: Optional stroke color as (r, g, b)
+            stroke_width: Stroke width (not used yet)
+            layer_id: Optional layer ID
+            
+        Supported commands:
+            M/m: MoveTo
+            L/l: LineTo
+            C/c: CurveTo (cubic Bezier)
+            Q/q: QuadTo (quadratic Bezier)
+            A/a: ArcTo
+            Z/z: Close path
+        """
+        if layer_id is None:
+            layer_id = self._default_layer_id
+            
+        obj_id = self._drawing.add_path(path_data, layer_id)
+        
+        # Set colors if provided
+        if fill_color or stroke_color:
+            storage = self._drawing.get_storage()
+            if fill_color:
+                color = drawing_cpp.Color(*fill_color)
+                storage.set_fill_color([obj_id], color)
+            if stroke_color:
+                color = drawing_cpp.Color(*stroke_color)
+                storage.set_stroke_color([obj_id], color)
+                
+        return obj_id
+    
     def find_objects_at_point(self, x: float, y: float, tolerance: float = 1.0) -> List[int]:
         """Find objects at the given point."""
         storage = self._drawing.get_storage()

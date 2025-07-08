@@ -193,6 +193,17 @@ public:
         return id;
     }
     
+    ObjectStorage::ObjectID add_path(const std::string& path_data, uint8_t layer_id = 0) {
+        auto id = storage.add_path(path_data);
+        if (auto* layer = get_layer(layer_id)) {
+            layer->add_object(id);
+            if (auto* path = storage.get_path(id)) {
+                path->base.layer_id = layer_id;
+            }
+        }
+        return id;
+    }
+    
     // Access to storage for advanced operations
     ObjectStorage& get_storage() { return storage; }
     const ObjectStorage& get_storage() const { return storage; }
