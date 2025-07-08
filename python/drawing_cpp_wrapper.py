@@ -118,7 +118,7 @@ class DrawingCpp:
         if layer_id is None:
             layer_id = self._default_layer_id
 
-        obj_id = self._drawing.add_line(x1, y1, x2, y2, layer_id)
+        obj_id = self._drawing.add_line(x1, y1, x2, y2, drawing_cpp.LineStyle.Solid, layer_id)
 
         # Set stroke color if provided
         if stroke_color:
@@ -216,7 +216,7 @@ class DrawingCpp:
 
         # Convert points to drawing_cpp.Point objects
         cpp_points = [drawing_cpp.Point(x, y) for x, y in points]
-        obj_id = self._drawing.add_polyline(cpp_points, layer_id)
+        obj_id = self._drawing.add_polyline(cpp_points, drawing_cpp.LineStyle.Solid, layer_id)
 
         # Set stroke color if provided (polylines typically don't have fill)
         if stroke_color:
