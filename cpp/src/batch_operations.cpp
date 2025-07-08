@@ -9,7 +9,7 @@ namespace drawing {
 BatchOperations::PerformanceStats BatchOperations::last_operation_stats = {0, 0.0, 0.0};
 
 // Helper implementations
-Point BatchOperations::get_object_center(const ObjectStorage& storage, ObjectStorage::ObjectID id) {
+Point BatchOperations::get_object_center(const ObjectStorage& storage, ObjectID id) {
     switch (ObjectStorage::get_type(id)) {
         case ObjectType::Circle: {
             auto* circle = storage.get_circle(id);
@@ -28,7 +28,7 @@ Point BatchOperations::get_object_center(const ObjectStorage& storage, ObjectSto
     }
 }
 
-void BatchOperations::set_object_position(ObjectStorage& storage, ObjectStorage::ObjectID id, 
+void BatchOperations::set_object_position(ObjectStorage& storage, ObjectID id, 
                                          float x, float y) {
     switch (ObjectStorage::get_type(id)) {
         case ObjectType::Circle: {
@@ -64,7 +64,7 @@ void BatchOperations::set_object_position(ObjectStorage& storage, ObjectStorage:
     }
 }
 
-BoundingBox BatchOperations::get_object_bbox(const ObjectStorage& storage, ObjectStorage::ObjectID id) {
+BoundingBox BatchOperations::get_object_bbox(const ObjectStorage& storage, ObjectID id) {
     switch (ObjectStorage::get_type(id)) {
         case ObjectType::Circle: {
             auto* circle = storage.get_circle(id);
@@ -85,7 +85,7 @@ BoundingBox BatchOperations::get_object_bbox(const ObjectStorage& storage, Objec
 
 // Batch transform operations
 void BatchOperations::translate_objects(ObjectStorage& storage, 
-                                       const std::vector<ObjectStorage::ObjectID>& ids,
+                                       const std::vector<ObjectID>& ids,
                                        float dx, float dy) {
     auto start = std::chrono::high_resolution_clock::now();
     
@@ -155,7 +155,7 @@ void BatchOperations::translate_objects(ObjectStorage& storage,
 }
 
 void BatchOperations::scale_objects(ObjectStorage& storage,
-                                   const std::vector<ObjectStorage::ObjectID>& ids,
+                                   const std::vector<ObjectID>& ids,
                                    float sx, float sy,
                                    const Point& center) {
     for (auto id : ids) {
@@ -200,7 +200,7 @@ void BatchOperations::scale_objects(ObjectStorage& storage,
 }
 
 void BatchOperations::rotate_objects(ObjectStorage& storage,
-                                    const std::vector<ObjectStorage::ObjectID>& ids,
+                                    const std::vector<ObjectID>& ids,
                                     float angle_radians,
                                     const Point& center) {
     float cos_a = std::cos(angle_radians);
@@ -241,7 +241,7 @@ void BatchOperations::rotate_objects(ObjectStorage& storage,
 
 // Batch bounding box calculation
 BoundingBox BatchOperations::calculate_bounding_box(const ObjectStorage& storage,
-                                                   const std::vector<ObjectStorage::ObjectID>& ids) {
+                                                   const std::vector<ObjectID>& ids) {
     if (ids.empty()) return BoundingBox();
     
     BoundingBox result = get_object_bbox(storage, ids[0]);
@@ -255,7 +255,7 @@ BoundingBox BatchOperations::calculate_bounding_box(const ObjectStorage& storage
 
 // Batch alignment operations
 void BatchOperations::align_objects_left(ObjectStorage& storage,
-                                        const std::vector<ObjectStorage::ObjectID>& ids) {
+                                        const std::vector<ObjectID>& ids) {
     if (ids.empty()) return;
     
     // Find leftmost edge
@@ -294,14 +294,14 @@ void BatchOperations::align_objects_left(ObjectStorage& storage,
 }
 
 // Pattern generation
-std::vector<ObjectStorage::ObjectID> BatchOperations::create_grid(
+std::vector<ObjectID> BatchOperations::create_grid(
     ObjectStorage& storage,
     ObjectType type,
     int rows, int cols,
     float cell_width, float cell_height,
     float x_offset, float y_offset) {
     
-    std::vector<ObjectStorage::ObjectID> result;
+    std::vector<ObjectID> result;
     result.reserve(rows * cols);
     
     for (int row = 0; row < rows; ++row) {
@@ -309,7 +309,7 @@ std::vector<ObjectStorage::ObjectID> BatchOperations::create_grid(
             float x = x_offset + col * cell_width + cell_width / 2;
             float y = y_offset + row * cell_height + cell_height / 2;
             
-            ObjectStorage::ObjectID id = 0;
+            ObjectID id = 0;
             
             switch (type) {
                 case ObjectType::Circle:

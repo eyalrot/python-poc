@@ -125,7 +125,7 @@ public:
 };
 
 // Generate UUID-like string for compatibility
-std::string generate_id_string(ObjectStorage::ObjectID id) {
+std::string generate_id_string(ObjectID id) {
     std::stringstream ss;
     ss << std::hex << std::setfill('0');
     ss << std::setw(8) << id << "-0000-0000-0000-";
@@ -134,7 +134,7 @@ std::string generate_id_string(ObjectStorage::ObjectID id) {
 }
 
 // Write object base properties
-void write_object_base(JsonWriter& writer, const CompactObject& obj, ObjectStorage::ObjectID id) {
+void write_object_base(JsonWriter& writer, const CompactObject& obj, ObjectID id) {
     writer.write_key("id"); writer.write_string(generate_id_string(id));
     writer.write_key("type"); writer.write_string("object");
     
@@ -416,6 +416,31 @@ void save_json(const Drawing& drawing, const std::string& filename) {
                         }
                         
                         writer.write_string(path_str);
+                    }
+                    break;
+                }
+                
+                case ObjectType::Group: {
+                    auto* group = storage.get_group(obj_id);
+                    if (group) {
+                        write_object_base(writer, group->base, obj_id);
+                        
+                        // Write group children
+                        writer.write_key("children");
+                        writer.begin_array();
+                        
+                        auto [children, count] = storage.get_group_children(*group);
+                        for (size_t i = 0; i < count; ++i) {
+                            writer.write_comma();
+                            writer.write_indent();
+                            writer.write_string(generate_id_string(children[i]));
+                        }
+                        
+                        writer.end_array();
+                        
+                        // Write pivot point
+                        writer.write_key("pivot");
+                        writer.write_point(Point(group->pivot_x, group->pivot_y));
                     }
                     break;
                 }

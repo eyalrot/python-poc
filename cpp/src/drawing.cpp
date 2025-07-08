@@ -94,6 +94,13 @@ BoundingBox Drawing::get_bounding_box() const {
                     }
                     break;
                     
+                case ObjectType::Group:
+                    if (auto* group = storage.get_group(obj_id)) {
+                        obj_bbox = group->calculate_bbox(storage.group_children, storage);
+                        has_bbox = true;
+                    }
+                    break;
+                    
                 default:
                     break;
             }

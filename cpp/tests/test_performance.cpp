@@ -66,7 +66,7 @@ TEST_F(PerformanceTest, SpatialQuery) {
 
 TEST_F(PerformanceTest, BatchColorUpdate) {
     Drawing drawing;
-    std::vector<ObjectStorage::ObjectID> ids;
+    std::vector<ObjectID> ids;
     
     // Create many objects
     for (int i = 0; i < 10000; ++i) {

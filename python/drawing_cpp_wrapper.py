@@ -327,6 +327,33 @@ class DrawingCpp:
                 
         return obj_id
     
+    def add_group(self, children: Optional[List[int]] = None, layer_id: Optional[int] = None) -> int:
+        """Add a group to the drawing.
+        
+        Args:
+            children: Optional list of object IDs to add as children
+            layer_id: Optional layer ID
+            
+        Returns:
+            Group ID
+        """
+        if layer_id is None:
+            layer_id = self._default_layer_id
+            
+        if children:
+            return self._drawing.add_group(children, layer_id)
+        else:
+            return self._drawing.add_group(layer_id)
+    
+    def add_to_group(self, group_id: int, child_id: int):
+        """Add an object to an existing group.
+        
+        Args:
+            group_id: ID of the group
+            child_id: ID of the object to add
+        """
+        self._drawing.add_to_group(group_id, child_id)
+    
     def find_objects_at_point(self, x: float, y: float, tolerance: float = 1.0) -> List[int]:
         """Find objects at the given point."""
         storage = self._drawing.get_storage()

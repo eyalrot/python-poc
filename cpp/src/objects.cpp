@@ -44,6 +44,9 @@ void ObjectStorage::set_fill_color(const std::vector<ObjectID>& ids, Color color
             case ObjectType::Path:
                 if (auto* obj = get_path(id)) obj->base.fill_color = color;
                 break;
+            case ObjectType::Group:
+                if (auto* obj = get_group(id)) obj->base.fill_color = color;
+                break;
             default:
                 break;
         }
@@ -83,6 +86,9 @@ void ObjectStorage::set_stroke_color(const std::vector<ObjectID>& ids, Color col
                 break;
             case ObjectType::Path:
                 if (auto* obj = get_path(id)) obj->base.stroke_color = color;
+                break;
+            case ObjectType::Group:
+                if (auto* obj = get_group(id)) obj->base.stroke_color = color;
                 break;
             default:
                 break;
@@ -126,13 +132,16 @@ void ObjectStorage::set_opacity(const std::vector<ObjectID>& ids, float opacity)
             case ObjectType::Path:
                 if (auto* obj = get_path(id)) obj->base.opacity = opacity;
                 break;
+            case ObjectType::Group:
+                if (auto* obj = get_group(id)) obj->base.opacity = opacity;
+                break;
             default:
                 break;
         }
     }
 }
 
-std::vector<ObjectStorage::ObjectID> ObjectStorage::find_in_rect(const BoundingBox& rect) const {
+std::vector<ObjectID> ObjectStorage::find_in_rect(const BoundingBox& rect) const {
     std::vector<ObjectID> result;
     
     // Check circles
@@ -213,10 +222,18 @@ std::vector<ObjectStorage::ObjectID> ObjectStorage::find_in_rect(const BoundingB
         }
     }
     
+    // Check groups
+    for (size_t i = 0; i < groups.size(); ++i) {
+        BoundingBox group_bbox = groups[i].calculate_bbox(group_children, *this);
+        if (rect.intersects(group_bbox)) {
+            result.push_back(make_id(ObjectType::Group, i));
+        }
+    }
+    
     return result;
 }
 
-std::vector<ObjectStorage::ObjectID> ObjectStorage::find_at_point(const Point& point, float tolerance) const {
+std::vector<ObjectID> ObjectStorage::find_at_point(const Point& point, float tolerance) const {
     std::vector<ObjectID> result;
     float tol_sq = tolerance * tolerance;
     
@@ -404,7 +421,136 @@ std::vector<ObjectStorage::ObjectID> ObjectStorage::find_at_point(const Point& p
         }
     }
     
+    // Check groups (simplified - just check bounding box)
+    for (size_t i = 0; i < groups.size(); ++i) {
+        BoundingBox group_bbox = groups[i].calculate_bbox(group_children, *this);
+        BoundingBox expanded(
+            group_bbox.min_x - tolerance, group_bbox.min_y - tolerance,
+            group_bbox.max_x + tolerance, group_bbox.max_y + tolerance
+        );
+        
+        if (expanded.contains(point)) {
+            result.push_back(make_id(ObjectType::Group, i));
+        }
+    }
+    
     return result;
+}
+
+BoundingBox CompactGroup::calculate_bbox(const std::vector<ObjectID>& children,
+                                        const ObjectStorage& storage) const {
+    BoundingBox bbox;
+    bool first = true;
+    
+    // Get children for this group
+    if (child_count > 0 && child_offset + child_count <= children.size()) {
+        for (size_t i = 0; i < child_count; ++i) {
+            ObjectID child_id = children[child_offset + i];
+            BoundingBox child_bbox;
+            bool has_bbox = false;
+            
+            switch (ObjectStorage::get_type(child_id)) {
+                case ObjectType::Circle:
+                    if (auto* circle = storage.get_circle(child_id)) {
+                        child_bbox = circle->get_bounding_box();
+                        has_bbox = true;
+                    }
+                    break;
+                    
+                case ObjectType::Rectangle:
+                    if (auto* rect = storage.get_rectangle(child_id)) {
+                        child_bbox = rect->get_bounding_box();
+                        has_bbox = true;
+                    }
+                    break;
+                    
+                case ObjectType::Line:
+                    if (auto* line = storage.get_line(child_id)) {
+                        child_bbox = line->get_bounding_box();
+                        has_bbox = true;
+                    }
+                    break;
+                    
+                case ObjectType::Ellipse:
+                    if (auto* ellipse = storage.get_ellipse(child_id)) {
+                        child_bbox = ellipse->get_bounding_box();
+                        has_bbox = true;
+                    }
+                    break;
+                    
+                case ObjectType::Polygon:
+                    if (auto* poly = storage.get_polygon(child_id)) {
+                        auto [points, count] = storage.get_polygon_points(*poly);
+                        if (points && count > 0) {
+                            BoundingBox poly_bbox(points[0].x, points[0].y, points[0].x, points[0].y);
+                            for (size_t j = 1; j < count; ++j) {
+                                poly_bbox.expand(points[j]);
+                            }
+                            child_bbox = poly_bbox;
+                            has_bbox = true;
+                        }
+                    }
+                    break;
+                    
+                case ObjectType::Polyline:
+                    if (auto* polyline = storage.get_polyline(child_id)) {
+                        auto [points, count] = storage.get_polyline_points(*polyline);
+                        if (points && count > 0) {
+                            BoundingBox polyline_bbox(points[0].x, points[0].y, points[0].x, points[0].y);
+                            for (size_t j = 1; j < count; ++j) {
+                                polyline_bbox.expand(points[j]);
+                            }
+                            child_bbox = polyline_bbox;
+                            has_bbox = true;
+                        }
+                    }
+                    break;
+                    
+                case ObjectType::Arc:
+                    if (auto* arc = storage.get_arc(child_id)) {
+                        child_bbox = arc->get_bounding_box();
+                        has_bbox = true;
+                    }
+                    break;
+                    
+                case ObjectType::Text:
+                    if (auto* text = storage.get_text(child_id)) {
+                        child_bbox = text->get_bounding_box();
+                        has_bbox = true;
+                    }
+                    break;
+                    
+                case ObjectType::Path:
+                    if (auto* path = storage.get_path(child_id)) {
+                        child_bbox = path->calculate_bbox(storage.path_segments, 
+                                                         storage.path_parameters);
+                        has_bbox = true;
+                    }
+                    break;
+                    
+                case ObjectType::Group:
+                    if (auto* group = storage.get_group(child_id)) {
+                        child_bbox = group->calculate_bbox(children, storage);
+                        has_bbox = true;
+                    }
+                    break;
+                    
+                default:
+                    break;
+            }
+            
+            if (has_bbox) {
+                if (first) {
+                    bbox = child_bbox;
+                    first = false;
+                } else {
+                    bbox.expand(child_bbox);
+                }
+            }
+        }
+    }
+    
+    return bbox;
 }
 
 } // namespace drawing

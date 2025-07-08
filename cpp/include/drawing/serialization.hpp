@@ -31,6 +31,8 @@ namespace BinaryFormat {
         Paths = 15,
         PathSegments = 16,
         PathParameters = 17,
+        Groups = 18,
+        GroupChildren = 19,
         End = 999
     };
 }
@@ -88,7 +90,7 @@ public:
             const auto& objects = layer->get_objects();
             write_pod(static_cast<uint32_t>(objects.size()));
             stream.write(reinterpret_cast<const char*>(objects.data()), 
-                        sizeof(ObjectStorage::ObjectID) * objects.size());
+                        sizeof(ObjectID) * objects.size());
         }
         
         // Write object arrays
@@ -178,6 +180,16 @@ public:
             write_vector(storage.path_parameters);
         }
         
+        // Groups
+        if (!storage.groups.empty()) {
+            write_pod(BinaryFormat::ChunkType::Groups);
+            write_vector(storage.groups);
+            
+            // Group children
+            write_pod(BinaryFormat::ChunkType::GroupChildren);
+            write_vector(storage.group_children);
+        }
+        
         // End marker
         write_pod(BinaryFormat::ChunkType::End);
     }
@@ -263,7 +275,7 @@ public:
                     }
                     
                     // Skip object IDs for now - will reconstruct later
-                    stream.seekg(obj_count * sizeof(ObjectStorage::ObjectID), 
+                    stream.seekg(obj_count * sizeof(ObjectID), 
                                std::ios::cur);
                     break;
                 }
@@ -379,6 +391,20 @@ public:
                 
                 case BinaryFormat::ChunkType::PathParameters: {
                     if (!read_vector(drawing->get_storage().path_parameters)) {
+                        return nullptr;
+                    }
+                    break;
+                }
+                
+                case BinaryFormat::ChunkType::Groups: {
+                    if (!read_vector(drawing->get_storage().groups)) {
+                        return nullptr;
+                    }
+                    break;
+                }
+                
+                case BinaryFormat::ChunkType::GroupChildren: {
+                    if (!read_vector(drawing->get_storage().group_children)) {
                         return nullptr;
                     }
                     break;

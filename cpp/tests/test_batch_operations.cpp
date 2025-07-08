@@ -7,7 +7,7 @@ using namespace drawing;
 class BatchOperationsTest : public ::testing::Test {
 protected:
     ObjectStorage storage;
-    std::vector<ObjectStorage::ObjectID> test_objects;
+    std::vector<ObjectID> test_objects;
     
     void SetUp() override {
         // Create test objects
@@ -55,7 +55,7 @@ TEST_F(BatchOperationsTest, ScaleObjects) {
 TEST_F(BatchOperationsTest, RotateObjects) {
     // Create a simple line for rotation test
     auto line_id = storage.add_line(0, 0, 100, 0);
-    std::vector<ObjectStorage::ObjectID> line_vec = {line_id};
+    std::vector<ObjectID> line_vec = {line_id};
     
     // Rotate 90 degrees around origin
     BatchOperations::rotate_objects(storage, line_vec, M_PI/2, Point(0, 0));
@@ -121,7 +121,7 @@ TEST_F(BatchOperationsTest, CreateGrid) {
 TEST_F(BatchOperationsTest, PerformanceBatchTranslate) {
     // Create many objects
     ObjectStorage perf_storage;
-    std::vector<ObjectStorage::ObjectID> many_objects;
+    std::vector<ObjectID> many_objects;
     
     const int num_objects = 100000;
     for (int i = 0; i < num_objects; ++i) {
@@ -148,7 +148,7 @@ TEST_F(BatchOperationsTest, PerformanceBatchTranslate) {
 TEST_F(BatchOperationsTest, PerformanceVsIndividual) {
     const int num_objects = 10000;
     ObjectStorage storage1, storage2;
-    std::vector<ObjectStorage::ObjectID> ids1, ids2;
+    std::vector<ObjectID> ids1, ids2;
     
     // Create identical objects in both storages
     for (int i = 0; i < num_objects; ++i) {

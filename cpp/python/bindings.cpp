@@ -136,6 +136,12 @@ PYBIND11_MODULE(drawing_cpp, m) {
              py::arg("layer_id")=0)
         .def("add_path", &Drawing::add_path,
              py::arg("path_data"), py::arg("layer_id")=0)
+        .def("add_group", py::overload_cast<uint8_t>(&Drawing::add_group),
+             py::arg("layer_id")=0)
+        .def("add_group", py::overload_cast<const std::vector<ObjectID>&, uint8_t>(&Drawing::add_group),
+             py::arg("children"), py::arg("layer_id")=0)
+        .def("add_to_group", &Drawing::add_to_group,
+             py::arg("group_id"), py::arg("child_id"))
         .def("get_bounding_box", &Drawing::get_bounding_box)
         .def("find_objects_in_rect", &Drawing::find_objects_in_rect)
         .def("total_objects", &Drawing::total_objects)
@@ -231,4 +237,5 @@ PYBIND11_MODULE(drawing_cpp, m) {
     m.attr("BYTES_PER_ARC") = sizeof(CompactArc);
     m.attr("BYTES_PER_TEXT") = sizeof(CompactText);
     m.attr("BYTES_PER_PATH") = sizeof(CompactPath);
+    m.attr("BYTES_PER_GROUP") = sizeof(CompactGroup);
 }

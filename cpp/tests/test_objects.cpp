@@ -106,7 +106,7 @@ TEST(ObjectsTest, BatchOperations) {
     auto id2 = storage.add_rectangle(10, 10, 20, 20);
     auto id3 = storage.add_line(0, 0, 30, 30);
     
-    std::vector<ObjectStorage::ObjectID> ids = {id1, id2, id3};
+    std::vector<ObjectID> ids = {id1, id2, id3};
     
     // Set fill color
     Color red(255, 0, 0);

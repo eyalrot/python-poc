@@ -18,7 +18,7 @@ private:
     bool visible;
     bool locked;
     float opacity;
-    std::vector<ObjectStorage::ObjectID> object_ids;
+    std::vector<ObjectID> object_ids;
     
 public:
     Layer(uint8_t id, const std::string& name = "") 
@@ -34,18 +34,18 @@ public:
     void set_locked(bool l) { locked = l; }
     void set_opacity(float o) { opacity = std::clamp(o, 0.0f, 1.0f); }
     
-    void add_object(ObjectStorage::ObjectID id) {
+    void add_object(ObjectID id) {
         object_ids.push_back(id);
     }
     
-    void remove_object(ObjectStorage::ObjectID id) {
+    void remove_object(ObjectID id) {
         object_ids.erase(
             std::remove(object_ids.begin(), object_ids.end(), id), 
             object_ids.end()
         );
     }
     
-    const std::vector<ObjectStorage::ObjectID>& get_objects() const { 
+    const std::vector<ObjectID>& get_objects() const { 
         return object_ids; 
     }
     
@@ -100,7 +100,7 @@ public:
     }
     
     // Object creation shortcuts (adds to current/first layer)
-    ObjectStorage::ObjectID add_circle(float x, float y, float radius, uint8_t layer_id = 0) {
+    ObjectID add_circle(float x, float y, float radius, uint8_t layer_id = 0) {
         auto id = storage.add_circle(x, y, radius);
         if (auto* layer = get_layer(layer_id)) {
             layer->add_object(id);
@@ -111,7 +111,7 @@ public:
         return id;
     }
     
-    ObjectStorage::ObjectID add_rectangle(float x, float y, float w, float h, uint8_t layer_id = 0) {
+    ObjectID add_rectangle(float x, float y, float w, float h, uint8_t layer_id = 0) {
         auto id = storage.add_rectangle(x, y, w, h);
         if (auto* layer = get_layer(layer_id)) {
             layer->add_object(id);
@@ -122,7 +122,7 @@ public:
         return id;
     }
     
-    ObjectStorage::ObjectID add_line(float x1, float y1, float x2, float y2, uint8_t layer_id = 0) {
+    ObjectID add_line(float x1, float y1, float x2, float y2, uint8_t layer_id = 0) {
         auto id = storage.add_line(x1, y1, x2, y2);
         if (auto* layer = get_layer(layer_id)) {
             layer->add_object(id);
@@ -133,7 +133,7 @@ public:
         return id;
     }
     
-    ObjectStorage::ObjectID add_polygon(const std::vector<Point>& points, uint8_t layer_id = 0) {
+    ObjectID add_polygon(const std::vector<Point>& points, uint8_t layer_id = 0) {
         auto id = storage.add_polygon(points);
         if (auto* layer = get_layer(layer_id)) {
             layer->add_object(id);
@@ -144,7 +144,7 @@ public:
         return id;
     }
     
-    ObjectStorage::ObjectID add_ellipse(float x, float y, float rx, float ry, float rotation = 0, uint8_t layer_id = 0) {
+    ObjectID add_ellipse(float x, float y, float rx, float ry, float rotation = 0, uint8_t layer_id = 0) {
         auto id = storage.add_ellipse(x, y, rx, ry, rotation);
         if (auto* layer = get_layer(layer_id)) {
             layer->add_object(id);
@@ -155,7 +155,7 @@ public:
         return id;
     }
     
-    ObjectStorage::ObjectID add_polyline(const std::vector<Point>& points, uint8_t layer_id = 0) {
+    ObjectID add_polyline(const std::vector<Point>& points, uint8_t layer_id = 0) {
         auto id = storage.add_polyline(points);
         if (auto* layer = get_layer(layer_id)) {
             layer->add_object(id);
@@ -166,7 +166,7 @@ public:
         return id;
     }
     
-    ObjectStorage::ObjectID add_arc(float x, float y, float radius, float start_angle, float end_angle, uint8_t layer_id = 0) {
+    ObjectID add_arc(float x, float y, float radius, float start_angle, float end_angle, uint8_t layer_id = 0) {
         auto id = storage.add_arc(x, y, radius, start_angle, end_angle);
         if (auto* layer = get_layer(layer_id)) {
             layer->add_object(id);
@@ -177,7 +177,7 @@ public:
         return id;
     }
     
-    ObjectStorage::ObjectID add_text(float x, float y, const std::string& text, 
+    ObjectID add_text(float x, float y, const std::string& text, 
                                      float font_size = 16.0f, 
                                      const std::string& font_name = "Arial",
                                      TextAlign align = TextAlign::Left,
@@ -193,7 +193,7 @@ public:
         return id;
     }
     
-    ObjectStorage::ObjectID add_path(const std::string& path_data, uint8_t layer_id = 0) {
+    ObjectID add_path(const std::string& path_data, uint8_t layer_id = 0) {
         auto id = storage.add_path(path_data);
         if (auto* layer = get_layer(layer_id)) {
             layer->add_object(id);
@@ -204,13 +204,40 @@ public:
         return id;
     }
     
+    ObjectID add_group(uint8_t layer_id = 0) {
+        auto id = storage.add_group();
+        if (auto* layer = get_layer(layer_id)) {
+            layer->add_object(id);
+            if (auto* group = storage.get_group(id)) {
+                group->base.layer_id = layer_id;
+            }
+        }
+        return id;
+    }
+    
+    ObjectID add_group(const std::vector<ObjectID>& children, 
+                                     uint8_t layer_id = 0) {
+        auto id = storage.add_group(children);
+        if (auto* layer = get_layer(layer_id)) {
+            layer->add_object(id);
+            if (auto* group = storage.get_group(id)) {
+                group->base.layer_id = layer_id;
+            }
+        }
+        return id;
+    }
+    
+    void add_to_group(ObjectID group_id, ObjectID child_id) {
+        storage.add_to_group(group_id, child_id);
+    }
+    
     // Access to storage for advanced operations
     ObjectStorage& get_storage() { return storage; }
     const ObjectStorage& get_storage() const { return storage; }
     
     // Drawing-wide operations
     BoundingBox get_bounding_box() const;
-    std::vector<ObjectStorage::ObjectID> find_objects_in_rect(const BoundingBox& rect) const {
+    std::vector<ObjectID> find_objects_in_rect(const BoundingBox& rect) const {
         return storage.find_in_rect(rect);
     }
     

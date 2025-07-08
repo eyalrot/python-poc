@@ -9,6 +9,12 @@
 
 namespace drawing {
 
+// Forward declarations
+class ObjectStorage;
+
+// Object ID is encoded as: [type:8bits][index:24bits]
+using ObjectID = uint32_t;
+
 // Base compact object header (20 bytes)
 struct CompactObject {
     ObjectType type;        // 1 byte
@@ -290,6 +296,25 @@ struct CompactPath {
     }
 };
 
+// Compact Group (32 bytes total) - container for nested objects
+struct CompactGroup {
+    CompactObject base;     // 20 bytes
+    uint32_t child_offset;  // 4 bytes - offset into group children array
+    uint16_t child_count;   // 2 bytes - number of children
+    uint16_t parent_id;     // 2 bytes - parent group ID (0xFFFF for no parent)
+    float pivot_x, pivot_y; // 8 bytes - transform pivot point
+    
+    CompactGroup() : base(ObjectType::Group), child_offset(0), child_count(0), 
+                     parent_id(0xFFFF), pivot_x(0), pivot_y(0) {}
+    
+    CompactGroup(uint32_t offset, uint16_t count)
+        : base(ObjectType::Group), child_offset(offset), child_count(count), 
+          parent_id(0xFFFF), pivot_x(0), pivot_y(0) {}
+    
+    BoundingBox calculate_bbox(const std::vector<ObjectID>& children,
+                              const class ObjectStorage& storage) const;
+};
+
 // Object storage using Structure-of-Arrays for better cache performance
 class ObjectStorage {
 public:
@@ -303,6 +328,7 @@ public:
     std::vector<CompactArc> arcs;
     std::vector<CompactText> texts;
     std::vector<CompactPath> paths;
+    std::vector<CompactGroup> groups;
     
     // Variable data storage (public for serialization)
     std::vector<Point> polygon_points;
@@ -311,6 +337,7 @@ public:
     std::vector<std::string> font_names;
     std::vector<PathSegment> path_segments;
     std::vector<float> path_parameters;
+    std::vector<ObjectID> group_children;
     
 private:
     std::vector<Transform2D> transforms;
@@ -319,9 +346,6 @@ private:
     // std::unique_ptr<RTree> spatial_index;
     
 public:
-    // Object ID is encoded as: [type:8bits][index:24bits]
-    using ObjectID = uint32_t;
-    
     static constexpr ObjectID make_id(ObjectType type, uint32_t index) {
         return (static_cast<uint32_t>(type) << 24) | (index & 0xFFFFFF);
     }
@@ -480,6 +504,53 @@ public:
         return make_id(ObjectType::Path, paths.size() - 1);
     }
     
+    ObjectID add_group() {
+        uint32_t child_offset = group_children.size();
+        groups.emplace_back(child_offset, 0);
+        return make_id(ObjectType::Group, groups.size() - 1);
+    }
+    
+    ObjectID add_group(const std::vector<ObjectID>& children) {
+        uint32_t child_offset = group_children.size();
+        uint16_t child_count = children.size();
+        
+        // Add children to the children array
+        group_children.insert(group_children.end(), children.begin(), children.end());
+        
+        groups.emplace_back(child_offset, child_count);
+        return make_id(ObjectType::Group, groups.size() - 1);
+    }
+    
+    void add_to_group(ObjectID group_id, ObjectID child_id) {
+        if (get_type(group_id) != ObjectType::Group) return;
+        uint32_t idx = get_index(group_id);
+        if (idx >= groups.size()) return;
+        
+        auto& group = groups[idx];
+        
+        // If this is the first child or we need to expand
+        if (group.child_count == 0) {
+            group.child_offset = group_children.size();
+            group_children.push_back(child_id);
+            group.child_count = 1;
+        } else {
+            // Insert at the end of this group's children
+            // This is simplified - in production we'd handle reallocation better
+            uint32_t insert_pos = group.child_offset + group.child_count;
+            if (insert_pos <= group_children.size()) {
+                group_children.insert(group_children.begin() + insert_pos, child_id);
+                group.child_count++;
+                
+                // Update offsets for subsequent groups
+                for (size_t i = idx + 1; i < groups.size(); ++i) {
+                    if (groups[i].child_offset >= insert_pos) {
+                        groups[i].child_offset++;
+                    }
+                }
+            }
+        }
+    }
+    
     // Get objects
     CompactCircle* get_circle(ObjectID id) {
         if (get_type(id) != ObjectType::Circle) return nullptr;
@@ -601,6 +672,26 @@ public:
         return idx < paths.size() ? &paths[idx] : nullptr;
     }
     
+    CompactGroup* get_group(ObjectID id) {
+        if (get_type(id) != ObjectType::Group) return nullptr;
+        uint32_t idx = get_index(id);
+        return idx < groups.size() ? &groups[idx] : nullptr;
+    }
+    
+    const CompactGroup* get_group(ObjectID id) const {
+        if (get_type(id) != ObjectType::Group) return nullptr;
+        uint32_t idx = get_index(id);
+        return idx < groups.size() ? &groups[idx] : nullptr;
+    }
+    
+    // Get group children
+    std::pair<const ObjectID*, size_t> get_group_children(const CompactGroup& group) const {
+        if (group.child_offset + group.child_count > group_children.size()) {
+            return {nullptr, 0};
+        }
+        return {&group_children[group.child_offset], group.child_count};
+    }
+    
     // Get path segments
     std::pair<const PathSegment*, size_t> get_path_segments(const CompactPath& path) const {
         if (path.segment_offset + path.segment_count > path_segments.size()) {
@@ -645,7 +736,8 @@ public:
     // Statistics
     size_t total_objects() const {
         return circles.size() + rectangles.size() + lines.size() + ellipses.size() + 
-               polygons.size() + polylines.size() + arcs.size() + texts.size() + paths.size();
+               polygons.size() + polylines.size() + arcs.size() + texts.size() + 
+               paths.size() + groups.size();
     }
     
     size_t memory_usage() const {
@@ -658,10 +750,12 @@ public:
                sizeof(CompactArc) * arcs.size() +
                sizeof(CompactText) * texts.size() +
                sizeof(CompactPath) * paths.size() +
+               sizeof(CompactGroup) * groups.size() +
                sizeof(Point) * polygon_points.size() +
                sizeof(Point) * polyline_points.size() +
                sizeof(PathSegment) * path_segments.size() +
                sizeof(float) * path_parameters.size() +
+               sizeof(ObjectID) * group_children.size() +
                sizeof(Transform2D) * transforms.size();
         
         // Add string storage

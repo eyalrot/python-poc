@@ -40,7 +40,7 @@ static void BM_BatchTranslate(benchmark::State& state) {
     const int num_objects = state.range(0);
     Drawing drawing(5000, 5000);
     
-    std::vector<ObjectStorage::ObjectID> ids;
+    std::vector<ObjectID> ids;
     for (int i = 0; i < num_objects; ++i) {
         ids.push_back(drawing.add_circle(i % 1000, i / 1000, 5.0f));
     }
@@ -143,7 +143,7 @@ static void BM_CalculateBoundingBox(benchmark::State& state) {
     const int num_objects = state.range(0);
     Drawing drawing(5000, 5000);
     
-    std::vector<ObjectStorage::ObjectID> ids;
+    std::vector<ObjectID> ids;
     for (int i = 0; i < num_objects; ++i) {
         ids.push_back(drawing.add_circle(
             (i % 100) * 50, (i / 100) * 50, 20.0f
