@@ -14,6 +14,8 @@ add_executable(test_drawing
     test_objects.cpp
     test_drawing.cpp
     test_performance.cpp
+    test_serialization.cpp
+    test_batch_operations.cpp
 )
 
 target_link_libraries(test_drawing

@@ -19,6 +19,8 @@ set(DRAWING_SOURCES
     src/objects.cpp
     src/drawing.cpp
     src/serialization.cpp
+    src/json_serialization.cpp
+    src/batch_operations.cpp
 )
 
 # Create static library
@@ -38,9 +40,15 @@ if(BUILD_BENCHMARKS)
 endif()
 
 # Python bindings
-option(BUILD_PYTHON_BINDINGS "Build Python bindings" OFF)
+option(BUILD_PYTHON_BINDINGS "Build Python bindings" ON)
 if(BUILD_PYTHON_BINDINGS)
     add_subdirectory(python)
+endif()
+
+# Examples
+option(BUILD_EXAMPLES "Build examples" ON)
+if(BUILD_EXAMPLES)
+    add_subdirectory(examples)
 endif()
 
 # Install rules

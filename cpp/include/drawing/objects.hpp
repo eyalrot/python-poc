@@ -88,9 +88,10 @@ public:
     std::vector<CompactLine> lines;
     std::vector<CompactPolygon> polygons;
     
-private:
-    // Variable data storage
+    // Variable data storage (public for serialization)
     std::vector<Point> polygon_points;
+    
+private:
     std::vector<Transform2D> transforms;
     
     // Spatial index (to be implemented)

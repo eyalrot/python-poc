@@ -1,0 +1,24 @@
+{
+  "width": 1000,
+  "height": 1000,
+  "background_color": {
+    "r": 255,
+    "g": 255,
+    "b": 255,
+    "a": 255
+  },
+  "metadata": {
+  },
+  "layers": [
+    {
+      "id": "00000000-0000-0000-0000-000000000000",
+      "name": "Default",
+      "visible": true,
+      "locked": false,
+      "opacity": 1,
+      "z_index": 0,
+      "objects": [
+      ]
+    }
+  ]
+}
