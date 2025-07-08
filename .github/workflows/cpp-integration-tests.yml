@@ -45,6 +45,8 @@ jobs:
       run: |
         cd cpp
         python setup.py build_ext --inplace
+        # Ensure the module is in the cpp directory
+        cp build/lib.*/drawing_cpp*.so . || true
     
     - name: Run C++ integration tests
       run: |
