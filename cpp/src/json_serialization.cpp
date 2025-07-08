@@ -301,6 +301,19 @@ void save_json(const Drawing& drawing, const std::string& filename) {
                     break;
                 }
                 
+                case ObjectType::Arc: {
+                    auto* arc = storage.get_arc(obj_id);
+                    if (arc) {
+                        write_object_base(writer, arc->base, obj_id);
+                        writer.write_key("center"); 
+                        writer.write_point(Point(arc->x, arc->y));
+                        writer.write_key("radius"); writer.write_number(arc->radius);
+                        writer.write_key("start_angle"); writer.write_number(arc->start_angle);
+                        writer.write_key("end_angle"); writer.write_number(arc->end_angle);
+                    }
+                    break;
+                }
+                
                 default:
                     break;
             }

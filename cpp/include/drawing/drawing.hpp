@@ -166,6 +166,17 @@ public:
         return id;
     }
     
+    ObjectStorage::ObjectID add_arc(float x, float y, float radius, float start_angle, float end_angle, uint8_t layer_id = 0) {
+        auto id = storage.add_arc(x, y, radius, start_angle, end_angle);
+        if (auto* layer = get_layer(layer_id)) {
+            layer->add_object(id);
+            if (auto* arc = storage.get_arc(id)) {
+                arc->base.layer_id = layer_id;
+            }
+        }
+        return id;
+    }
+    
     // Access to storage for advanced operations
     ObjectStorage& get_storage() { return storage; }
     const ObjectStorage& get_storage() const { return storage; }

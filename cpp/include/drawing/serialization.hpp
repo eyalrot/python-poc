@@ -21,6 +21,10 @@ namespace BinaryFormat {
         Lines = 5,
         Polygons = 6,
         PolygonPoints = 7,
+        Ellipses = 8,
+        Polylines = 9,
+        PolylinePoints = 10,
+        Arcs = 11,
         End = 999
     };
 }
@@ -110,6 +114,28 @@ public:
             // Polygon points
             write_pod(BinaryFormat::ChunkType::PolygonPoints);
             write_vector(storage.polygon_points);
+        }
+        
+        // Ellipses
+        if (!storage.ellipses.empty()) {
+            write_pod(BinaryFormat::ChunkType::Ellipses);
+            write_vector(storage.ellipses);
+        }
+        
+        // Polylines
+        if (!storage.polylines.empty()) {
+            write_pod(BinaryFormat::ChunkType::Polylines);
+            write_vector(storage.polylines);
+            
+            // Polyline points
+            write_pod(BinaryFormat::ChunkType::PolylinePoints);
+            write_vector(storage.polyline_points);
+        }
+        
+        // Arcs
+        if (!storage.arcs.empty()) {
+            write_pod(BinaryFormat::ChunkType::Arcs);
+            write_vector(storage.arcs);
         }
         
         // End marker
@@ -235,6 +261,34 @@ public:
                         return nullptr;
                     }
                     // TODO: Copy polygon points to storage
+                    break;
+                }
+                
+                case BinaryFormat::ChunkType::Ellipses: {
+                    if (!read_vector(drawing->get_storage().ellipses)) {
+                        return nullptr;
+                    }
+                    break;
+                }
+                
+                case BinaryFormat::ChunkType::Polylines: {
+                    if (!read_vector(drawing->get_storage().polylines)) {
+                        return nullptr;
+                    }
+                    break;
+                }
+                
+                case BinaryFormat::ChunkType::PolylinePoints: {
+                    if (!read_vector(drawing->get_storage().polyline_points)) {
+                        return nullptr;
+                    }
+                    break;
+                }
+                
+                case BinaryFormat::ChunkType::Arcs: {
+                    if (!read_vector(drawing->get_storage().arcs)) {
+                        return nullptr;
+                    }
                     break;
                 }
                 

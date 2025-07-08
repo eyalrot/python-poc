@@ -107,6 +107,26 @@ struct CompactPolyline {
     CompactPolyline() : base(ObjectType::Polyline), point_offset(0), point_count(0) {}
 };
 
+// Compact Arc (36 bytes total)
+struct CompactArc {
+    CompactObject base;     // 20 bytes
+    float x, y;             // 8 bytes - center position
+    float radius;           // 4 bytes
+    float start_angle;      // 4 bytes - in radians
+    float end_angle;        // 4 bytes - in radians
+    
+    CompactArc() : base(ObjectType::Arc), x(0), y(0), radius(0), start_angle(0), end_angle(0) {}
+    CompactArc(float x, float y, float radius, float start_angle, float end_angle)
+        : base(ObjectType::Arc), x(x), y(y), radius(radius), 
+          start_angle(start_angle), end_angle(end_angle) {}
+    
+    BoundingBox get_bounding_box() const {
+        // Simple approximation - use full circle bounds
+        // For exact bounds, we'd need to check which quadrants the arc spans
+        return BoundingBox(x - radius, y - radius, x + radius, y + radius);
+    }
+};
+
 // Object storage using Structure-of-Arrays for better cache performance
 class ObjectStorage {
 public:
@@ -117,6 +137,7 @@ public:
     std::vector<CompactEllipse> ellipses;
     std::vector<CompactPolygon> polygons;
     std::vector<CompactPolyline> polylines;
+    std::vector<CompactArc> arcs;
     
     // Variable data storage (public for serialization)
     std::vector<Point> polygon_points;
@@ -181,6 +202,11 @@ public:
         polyline_points.insert(polyline_points.end(), points.begin(), points.end());
         polylines.push_back(polyline);
         return make_id(ObjectType::Polyline, polylines.size() - 1);
+    }
+    
+    ObjectID add_arc(float x, float y, float radius, float start_angle, float end_angle) {
+        arcs.emplace_back(x, y, radius, start_angle, end_angle);
+        return make_id(ObjectType::Arc, arcs.size() - 1);
     }
     
     // Get objects
@@ -256,6 +282,18 @@ public:
         return idx < polylines.size() ? &polylines[idx] : nullptr;
     }
     
+    CompactArc* get_arc(ObjectID id) {
+        if (get_type(id) != ObjectType::Arc) return nullptr;
+        uint32_t idx = get_index(id);
+        return idx < arcs.size() ? &arcs[idx] : nullptr;
+    }
+    
+    const CompactArc* get_arc(ObjectID id) const {
+        if (get_type(id) != ObjectType::Arc) return nullptr;
+        uint32_t idx = get_index(id);
+        return idx < arcs.size() ? &arcs[idx] : nullptr;
+    }
+    
     // Get polygon points
     std::pair<const Point*, size_t> get_polygon_points(const CompactPolygon& poly) const {
         if (poly.point_offset + poly.point_count > polygon_points.size()) {
@@ -284,7 +322,7 @@ public:
     // Statistics
     size_t total_objects() const {
         return circles.size() + rectangles.size() + lines.size() + ellipses.size() + 
-               polygons.size() + polylines.size();
+               polygons.size() + polylines.size() + arcs.size();
     }
     
     size_t memory_usage() const {
@@ -294,6 +332,7 @@ public:
                sizeof(CompactEllipse) * ellipses.size() +
                sizeof(CompactPolygon) * polygons.size() +
                sizeof(CompactPolyline) * polylines.size() +
+               sizeof(CompactArc) * arcs.size() +
                sizeof(Point) * polygon_points.size() +
                sizeof(Point) * polyline_points.size() +
                sizeof(Transform2D) * transforms.size();

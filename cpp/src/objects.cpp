@@ -35,6 +35,9 @@ void ObjectStorage::set_fill_color(const std::vector<ObjectID>& ids, Color color
                     polylines[idx].base.fill_color = color;
                 }
                 break;
+            case ObjectType::Arc:
+                if (auto* obj = get_arc(id)) obj->base.fill_color = color;
+                break;
             default:
                 break;
         }
@@ -65,6 +68,9 @@ void ObjectStorage::set_stroke_color(const std::vector<ObjectID>& ids, Color col
                 if (uint32_t idx = get_index(id); idx < polylines.size()) {
                     polylines[idx].base.stroke_color = color;
                 }
+                break;
+            case ObjectType::Arc:
+                if (auto* obj = get_arc(id)) obj->base.stroke_color = color;
                 break;
             default:
                 break;
@@ -98,6 +104,9 @@ void ObjectStorage::set_opacity(const std::vector<ObjectID>& ids, float opacity)
                 if (uint32_t idx = get_index(id); idx < polylines.size()) {
                     polylines[idx].base.opacity = opacity;
                 }
+                break;
+            case ObjectType::Arc:
+                if (auto* obj = get_arc(id)) obj->base.opacity = opacity;
                 break;
             default:
                 break;
@@ -161,6 +170,13 @@ std::vector<ObjectStorage::ObjectID> ObjectStorage::find_in_rect(const BoundingB
             if (rect.intersects(polyline_bbox)) {
                 result.push_back(make_id(ObjectType::Polyline, i));
             }
+        }
+    }
+    
+    // Check arcs
+    for (size_t i = 0; i < arcs.size(); ++i) {
+        if (rect.intersects(arcs[i].get_bounding_box())) {
+            result.push_back(make_id(ObjectType::Arc, i));
         }
     }
     
@@ -285,6 +301,45 @@ std::vector<ObjectStorage::ObjectID> ObjectStorage::find_at_point(const Point& p
                         break; // Found a hit, no need to check other segments
                     }
                 }
+            }
+        }
+    }
+    
+    // Check arcs
+    for (size_t i = 0; i < arcs.size(); ++i) {
+        const auto& arc = arcs[i];
+        
+        // Calculate distance from center
+        float dx = point.x - arc.x;
+        float dy = point.y - arc.y;
+        float dist = std::sqrt(dx * dx + dy * dy);
+        
+        // Check if point is near the arc radius
+        if (std::abs(dist - arc.radius) <= tolerance) {
+            // Check if point is within the arc's angle range
+            float angle = std::atan2(dy, dx);
+            
+            // Normalize angles to [0, 2π]
+            auto normalize_angle = [](float a) {
+                while (a < 0) a += 2 * M_PI;
+                while (a >= 2 * M_PI) a -= 2 * M_PI;
+                return a;
+            };
+            
+            angle = normalize_angle(angle);
+            float start = normalize_angle(arc.start_angle);
+            float end = normalize_angle(arc.end_angle);
+            
+            bool in_range = false;
+            if (start <= end) {
+                in_range = (angle >= start && angle <= end);
+            } else {
+                // Arc crosses 0 degrees
+                in_range = (angle >= start || angle <= end);
+            }
+            
+            if (in_range) {
+                result.push_back(make_id(ObjectType::Arc, i));
             }
         }
     }

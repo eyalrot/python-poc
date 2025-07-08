@@ -71,6 +71,13 @@ BoundingBox Drawing::get_bounding_box() const {
                     }
                     break;
                 }
+                
+                case ObjectType::Arc:
+                    if (auto* arc = storage.get_arc(obj_id)) {
+                        obj_bbox = arc->get_bounding_box();
+                        has_bbox = true;
+                    }
+                    break;
                     
                 default:
                     break;
