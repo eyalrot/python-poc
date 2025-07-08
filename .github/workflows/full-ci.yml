@@ -1,0 +1,66 @@
+name: Full CI
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+  workflow_dispatch:
+
+jobs:
+  integration-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+    
+    - name: Install all dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y g++ python3-dev cmake
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pybind11 setuptools wheel
+    
+    - name: Build C++ library with Python bindings
+      run: |
+        cd cpp
+        mkdir -p build
+        cd build
+        cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=ON
+        make -j$(nproc)
+        cd ..
+        python setup.py build_ext --inplace
+    
+    - name: Run integration tests
+      run: |
+        # Test that Python version still works
+        python create_drawing.py
+        
+        # Test C++ bindings
+        python test_cpp_bindings.py
+        python test_batch_operations.py
+        
+        # Test interoperability
+        python -c "
+from python.drawing_cpp_wrapper import DrawingCpp
+d = DrawingCpp(800, 600)
+for i in range(1000):
+    d.add_circle(i % 100 * 8, i // 100 * 8, 3)
+d.save_binary('test.bin')
+d.save_json('test.json')
+print(f'Created drawing with {d.total_objects} objects')
+print(f'Memory usage: {d.memory_usage} bytes')
+"
+    
+    - name: Performance comparison
+      run: |
+        python -c "
+from python.drawing_cpp_wrapper import compare_performance
+compare_performance()
+"
