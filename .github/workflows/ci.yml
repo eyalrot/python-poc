@@ -86,7 +86,7 @@ jobs:
 
     - name: Run MyPy type checker
       run: |
-        mypy python --ignore-missing-imports
+        mypy python --ignore-missing-imports --explicit-package-bases
 
   validate-models:
     runs-on: ubuntu-latest
