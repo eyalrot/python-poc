@@ -388,7 +388,7 @@ def drawing_to_svg(drawing: Drawing) -> str:
     defs_placeholder = len(svg_parts)
 
     # Render layers in z-order
-    for layer in sorted(drawing.layers, key=lambda l: l.z_index):
+    for layer in sorted(drawing.layers, key=lambda layer: layer.z_index):
         layer_svg = render_layer(layer, defs)
         if layer_svg:
             svg_parts.append(layer_svg)

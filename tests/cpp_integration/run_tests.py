@@ -5,6 +5,7 @@ import sys
 import os
 import subprocess
 import importlib.util
+import glob
 
 # Add cpp directory to Python path first
 cpp_dir = os.path.join(os.path.dirname(__file__), "..", "..", "cpp")
