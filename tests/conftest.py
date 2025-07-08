@@ -1,6 +1,7 @@
 """
 Pytest configuration and shared fixtures
 """
+
 import pytest
 from python.data import Point, Color, FillStyle
 
