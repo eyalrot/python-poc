@@ -1,0 +1,13 @@
+Drawing: Simple Example
+Size: 400.0x300.0
+Layers: 1
+Total objects: 3
+
+
+Layer: Main
+  Visible: True
+  Z-index: 0
+  Objects: 3
+    - Circle: Unnamed
+    - Rectangle: Unnamed
+    - Line: Unnamed

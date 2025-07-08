@@ -1,0 +1,47 @@
+<svg width="800.0" height="600.0" xmlns="http://www.w3.org/2000/svg">
+<rect width="800.0" height="600.0" fill="#fafafa"/>
+<defs>
+  <linearGradient id="gradient_54e3f36a-9b53-4fcc-ac84-38c7e69129f9" x1="49.99999999999999%" y1="0.0%" x2="50.0%" y2="100.0%"><stop offset="0.0%" stop-color="#c8e6ff"/><stop offset="100.0%" stop-color="#ffffff"/></linearGradient>
+</defs>
+<g id="5bac129a-56f1-43a7-960a-fd188f904aa9" opacity="1.0">
+  <rect x="0.0" y="0.0" width="800.0" height="600.0" fill="url(#gradient_54e3f36a-9b53-4fcc-ac84-38c7e69129f9)" stroke="#000000" stroke-width="0.0"/>
+</g>
+<g id="63bd12fe-f41d-4b5e-b0c6-6e2b2d57f09b" opacity="1.0">
+  <g id="c469c59c-6220-4037-930f-48f156676458">
+  <circle cx="650.0" cy="100.0" r="40.0" fill="#ffc800" stroke="#ff9600" stroke-width="2.0"/>
+  <line x1="700.0" y1="100.0" x2="720.0" y2="100.0" stroke="#ffc800" stroke-width="3.0"/>
+  <line x1="685.3553390593274" y1="135.35533905932738" x2="699.4974746830583" y2="149.49747468305833" stroke="#ffc800" stroke-width="3.0"/>
+  <line x1="650.0" y1="150.0" x2="650.0" y2="170.0" stroke="#ffc800" stroke-width="3.0"/>
+  <line x1="614.6446609406727" y1="135.35533905932738" x2="600.5025253169417" y2="149.49747468305833" stroke="#ffc800" stroke-width="3.0"/>
+  <line x1="600.0" y1="100.0" x2="580.0" y2="100.00000000000001" stroke="#ffc800" stroke-width="3.0"/>
+  <line x1="614.6446609406726" y1="64.64466094067262" x2="600.5025253169416" y2="50.50252531694168" stroke="#ffc800" stroke-width="3.0"/>
+  <line x1="650.0" y1="50.0" x2="650.0" y2="30.0" stroke="#ffc800" stroke-width="3.0"/>
+  <line x1="685.3553390593273" y1="64.64466094067262" x2="699.4974746830583" y2="50.502525316941664" stroke="#ffc800" stroke-width="3.0"/>
+</g>
+  <g id="308fe779-292d-49e0-8a6d-8462e7666de2">
+  <rect x="100.0" y="300.0" width="200.0" height="150.0" fill="#dcb48c" stroke="#96643c" stroke-width="2.0"/>
+  <polygon points="80.0,300.0 200.0,200.0 320.0,300.0" fill="#b43c3c" stroke="#782828" stroke-width="2.0"/>
+  <rect x="180.0" y="380.0" width="40.0" height="70.0" fill="#643c28" stroke="#3c2814" stroke-width="2.0"/>
+  <rect x="130.0" y="330.0" width="30.0" height="30.0" fill="rgba(180,220,255,0.8)" stroke="#646464" stroke-width="2.0"/>
+  <rect x="240.0" y="330.0" width="30.0" height="30.0" fill="rgba(180,220,255,0.8)" stroke="#646464" stroke-width="2.0"/>
+</g>
+  <g id="ed3d021d-3bf2-4079-a275-d3061bb81d42">
+  <rect x="480.0" y="380.0" width="40.0" height="80.0" fill="#654321" stroke="#3c2814" stroke-width="2.0"/>
+  <circle cx="500.0" cy="340.0" r="35.0" fill="#228b22" stroke="#145a14" stroke-width="1.0"/>
+  <circle cx="480.0" cy="350.0" r="30.0" fill="#228b22" stroke="#145a14" stroke-width="1.0"/>
+  <circle cx="520.0" cy="350.0" r="30.0" fill="#228b22" stroke="#145a14" stroke-width="1.0"/>
+  <circle cx="500.0" cy="320.0" r="30.0" fill="#228b22" stroke="#145a14" stroke-width="1.0"/>
+  <circle cx="485.0" cy="330.0" r="25.0" fill="#228b22" stroke="#145a14" stroke-width="1.0"/>
+  <circle cx="515.0" cy="330.0" r="25.0" fill="#228b22" stroke="#145a14" stroke-width="1.0"/>
+</g>
+  <ellipse cx="400.0" cy="150.0" rx="60.0" ry="30.0" transform="rotate(30.0 400.0 150.0)" fill="rgba(255,100,100,0.6)" stroke="#c83232" stroke-width="2.0"/>
+  <path d="M 250.0 500.0 A 150.0 150.0 0 0 1 550.0 499.99999999999994" fill="none" stroke="#9370db" stroke-width="20.0"/>
+  <polyline points="50.0,500.0 150.0,400.0 200.0,450.0 300.0,350.0 350.0,400.0 450.0,500.0" fill="none" stroke="#646464" stroke-width="3.0"/>
+</g>
+<g id="4bd6b888-1a49-4f54-80d8-dca6bc87b33f" opacity="1.0">
+  <text x="400.0" y="50.0" text-anchor="middle" dominant-baseline="text-after-edge" font-family="Arial" font-size="32.0" font-weight="bold" fill="#323296">My Vector Drawing</text>
+  <text x="200.0" y="480.0" text-anchor="middle" dominant-baseline="text-after-edge" font-family="Arial" font-size="14.0" fill="#646464">House</text>
+  <text x="500.0" y="480.0" text-anchor="middle" dominant-baseline="text-after-edge" font-family="Arial" font-size="14.0" fill="#646464">Tree</text>
+  <text x="700.0" y="580.0" text-anchor="end" dominant-baseline="text-after-edge" font-family="Arial" font-size="10.0" font-style="italic" fill="#969696">Created with Python</text>
+</g>
+</svg>

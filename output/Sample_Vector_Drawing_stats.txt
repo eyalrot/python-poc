@@ -1,0 +1,52 @@
+Drawing: Sample Vector Drawing
+Size: 800.0x600.0
+Layers: 3
+Total objects: 11
+
+
+Layer: Background
+  Visible: True
+  Z-index: 0
+  Objects: 1
+    - Rectangle: Gradient Background
+
+Layer: Shapes
+  Visible: True
+  Z-index: 1
+  Objects: 6
+    - Group: Sun
+      - Circle: Sun Body
+      - Line: Unnamed
+      - Line: Unnamed
+      - Line: Unnamed
+      - Line: Unnamed
+      - Line: Unnamed
+      - Line: Unnamed
+      - Line: Unnamed
+      - Line: Unnamed
+    - Group: House
+      - Rectangle: House Body
+      - Polygon: Roof
+      - Rectangle: Door
+      - Rectangle: Window 1
+      - Rectangle: Window 2
+    - Group: Tree
+      - Rectangle: Tree Trunk
+      - Circle: Unnamed
+      - Circle: Unnamed
+      - Circle: Unnamed
+      - Circle: Unnamed
+      - Circle: Unnamed
+      - Circle: Unnamed
+    - Ellipse: Ellipse
+    - Arc: Rainbow
+    - Polyline: Mountain
+
+Layer: Text
+  Visible: True
+  Z-index: 2
+  Objects: 4
+    - Text: Title
+    - Text: Unnamed
+    - Text: Unnamed
+    - Text: Unnamed

@@ -1,0 +1,160 @@
+{
+  "id": "785604ce-c6bc-44f7-8896-23ce68fe6f28",
+  "name": "Simple Example",
+  "width": 400.0,
+  "height": 300.0,
+  "background_color": {
+    "r": 255,
+    "g": 255,
+    "b": 255,
+    "a": 1.0
+  },
+  "layers": [
+    {
+      "id": "1fc263d6-5c0c-478f-b0fa-aee12b77d11c",
+      "name": "Main",
+      "visible": true,
+      "locked": false,
+      "opacity": 1.0,
+      "objects": [
+        {
+          "id": "97747ff1-4d77-4bbb-aa0b-b56740255eda",
+          "name": null,
+          "stroke_color": {
+            "r": 100,
+            "g": 0,
+            "b": 0,
+            "a": 1.0
+          },
+          "stroke_width": 2.0,
+          "fill": {
+            "color": {
+              "r": 255,
+              "g": 0,
+              "b": 0,
+              "a": 0.7
+            },
+            "gradient": null,
+            "pattern": null
+          },
+          "opacity": 1.0,
+          "visible": true,
+          "locked": false,
+          "layer_id": "1fc263d6-5c0c-478f-b0fa-aee12b77d11c",
+          "transform": {
+            "translate_x": 0.0,
+            "translate_y": 0.0,
+            "translate_z": 0.0,
+            "rotate_x": 0.0,
+            "rotate_y": 0.0,
+            "rotate_z": 0.0,
+            "scale_x": 1.0,
+            "scale_y": 1.0,
+            "scale_z": 1.0
+          },
+          "metadata": {},
+          "created_at": "2025-07-08 12:23:59.680963",
+          "updated_at": "2025-07-08 12:23:59.680964",
+          "center": {
+            "x": 100.0,
+            "y": 150.0,
+            "z": 0.0
+          },
+          "radius": 50.0
+        },
+        {
+          "id": "28506c25-d7a6-4137-bf32-6d8d9b1a0e64",
+          "name": null,
+          "stroke_color": {
+            "r": 0,
+            "g": 100,
+            "b": 0,
+            "a": 1.0
+          },
+          "stroke_width": 2.0,
+          "fill": {
+            "color": {
+              "r": 0,
+              "g": 255,
+              "b": 0,
+              "a": 0.7
+            },
+            "gradient": null,
+            "pattern": null
+          },
+          "opacity": 1.0,
+          "visible": true,
+          "locked": false,
+          "layer_id": "1fc263d6-5c0c-478f-b0fa-aee12b77d11c",
+          "transform": {
+            "translate_x": 0.0,
+            "translate_y": 0.0,
+            "translate_z": 0.0,
+            "rotate_x": 0.0,
+            "rotate_y": 0.0,
+            "rotate_z": 0.0,
+            "scale_x": 1.0,
+            "scale_y": 1.0,
+            "scale_z": 1.0
+          },
+          "metadata": {},
+          "created_at": "2025-07-08 12:23:59.680987",
+          "updated_at": "2025-07-08 12:23:59.680987",
+          "top_left": {
+            "x": 200.0,
+            "y": 100.0,
+            "z": 0.0
+          },
+          "width": 100.0,
+          "height": 100.0,
+          "corner_radius": 10.0
+        },
+        {
+          "id": "69d32b9f-57fe-4ccf-a46e-d73b96a75756",
+          "name": null,
+          "stroke_color": {
+            "r": 0,
+            "g": 0,
+            "b": 255,
+            "a": 1.0
+          },
+          "stroke_width": 3.0,
+          "fill": null,
+          "opacity": 1.0,
+          "visible": true,
+          "locked": false,
+          "layer_id": "1fc263d6-5c0c-478f-b0fa-aee12b77d11c",
+          "transform": {
+            "translate_x": 0.0,
+            "translate_y": 0.0,
+            "translate_z": 0.0,
+            "rotate_x": 0.0,
+            "rotate_y": 0.0,
+            "rotate_z": 0.0,
+            "scale_x": 1.0,
+            "scale_y": 1.0,
+            "scale_z": 1.0
+          },
+          "metadata": {},
+          "created_at": "2025-07-08 12:23:59.681007",
+          "updated_at": "2025-07-08 12:23:59.681007",
+          "start_point": {
+            "x": 50.0,
+            "y": 250.0,
+            "z": 0.0
+          },
+          "end_point": {
+            "x": 350.0,
+            "y": 50.0,
+            "z": 0.0
+          },
+          "line_style": "dashed"
+        }
+      ],
+      "z_index": 0
+    }
+  ],
+  "metadata": {},
+  "created_at": "2025-07-08 12:23:59.680923",
+  "updated_at": "2025-07-08 12:23:59.681037"
+}

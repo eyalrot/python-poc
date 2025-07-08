@@ -1,0 +1,1461 @@
+{
+    "id": "469afb91-5274-4fae-9549-bf2e4bcb8a3a",
+    "name": "Sample Vector Drawing",
+    "width": 800.0,
+    "height": 600.0,
+    "background_color": {
+        "r": 250,
+        "g": 250,
+        "b": 250,
+        "a": 1.0
+    },
+    "layers": [
+        {
+            "id": "5bac129a-56f1-43a7-960a-fd188f904aa9",
+            "name": "Background",
+            "visible": true,
+            "locked": false,
+            "opacity": 1.0,
+            "objects": [
+                {
+                    "id": "54e3f36a-9b53-4fcc-ac84-38c7e69129f9",
+                    "name": "Gradient Background",
+                    "stroke_color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0,
+                        "a": 1.0
+                    },
+                    "stroke_width": 0.0,
+                    "fill": {
+                        "color": null,
+                        "gradient": {
+                            "type": "linear",
+                            "stops": [
+                                {
+                                    "offset": 0.0,
+                                    "color": {
+                                        "r": 200,
+                                        "g": 230,
+                                        "b": 255,
+                                        "a": 1.0
+                                    }
+                                },
+                                {
+                                    "offset": 1.0,
+                                    "color": {
+                                        "r": 255,
+                                        "g": 255,
+                                        "b": 255,
+                                        "a": 1.0
+                                    }
+                                }
+                            ],
+                            "angle": 90.0,
+                            "center": null,
+                            "radius": null
+                        },
+                        "pattern": null
+                    },
+                    "opacity": 1.0,
+                    "visible": true,
+                    "locked": false,
+                    "layer_id": "5bac129a-56f1-43a7-960a-fd188f904aa9",
+                    "transform": {
+                        "translate_x": 0.0,
+                        "translate_y": 0.0,
+                        "translate_z": 0.0,
+                        "rotate_x": 0.0,
+                        "rotate_y": 0.0,
+                        "rotate_z": 0.0,
+                        "scale_x": 1.0,
+                        "scale_y": 1.0,
+                        "scale_z": 1.0
+                    },
+                    "metadata": {},
+                    "created_at": "2025-07-08 12:23:59.672570",
+                    "updated_at": "2025-07-08 12:23:59.672570",
+                    "top_left": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "width": 800.0,
+                    "height": 600.0,
+                    "corner_radius": 0.0
+                }
+            ],
+            "z_index": 0
+        },
+        {
+            "id": "63bd12fe-f41d-4b5e-b0c6-6e2b2d57f09b",
+            "name": "Shapes",
+            "visible": true,
+            "locked": false,
+            "opacity": 1.0,
+            "objects": [
+                {
+                    "id": "c469c59c-6220-4037-930f-48f156676458",
+                    "name": "Sun",
+                    "stroke_color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0,
+                        "a": 1.0
+                    },
+                    "stroke_width": 1.0,
+                    "fill": null,
+                    "opacity": 1.0,
+                    "visible": true,
+                    "locked": false,
+                    "layer_id": "63bd12fe-f41d-4b5e-b0c6-6e2b2d57f09b",
+                    "transform": {
+                        "translate_x": 0.0,
+                        "translate_y": 0.0,
+                        "translate_z": 0.0,
+                        "rotate_x": 0.0,
+                        "rotate_y": 0.0,
+                        "rotate_z": 0.0,
+                        "scale_x": 1.0,
+                        "scale_y": 1.0,
+                        "scale_z": 1.0
+                    },
+                    "metadata": {},
+                    "created_at": "2025-07-08 12:23:59.672630",
+                    "updated_at": "2025-07-08 12:23:59.672843",
+                    "objects": [
+                        {
+                            "id": "201a27c5-fef5-49f3-a11e-b636bb94a2c8",
+                            "name": "Sun Body",
+                            "stroke_color": {
+                                "r": 255,
+                                "g": 150,
+                                "b": 0,
+                                "a": 1.0
+                            },
+                            "stroke_width": 2.0,
+                            "fill": {
+                                "color": {
+                                    "r": 255,
+                                    "g": 200,
+                                    "b": 0,
+                                    "a": 1.0
+                                },
+                                "gradient": null,
+                                "pattern": null
+                            },
+                            "opacity": 1.0,
+                            "visible": true,
+                            "locked": false,
+                            "layer_id": null,
+                            "transform": {
+                                "translate_x": 0.0,
+                                "translate_y": 0.0,
+                                "translate_z": 0.0,
+                                "rotate_x": 0.0,
+                                "rotate_y": 0.0,
+                                "rotate_z": 0.0,
+                                "scale_x": 1.0,
+                                "scale_y": 1.0,
+                                "scale_z": 1.0
+                            },
+                            "metadata": {},
+                            "created_at": "2025-07-08 12:23:59.672656",
+                            "updated_at": "2025-07-08 12:23:59.672656",
+                            "center": {
+                                "x": 650.0,
+                                "y": 100.0,
+                                "z": 0.0
+                            },
+                            "radius": 40.0
+                        },
+                        {
+                            "id": "9edc6cf1-3c5e-4566-a586-287073ec892a",
+                            "name": null,
+                            "stroke_color": {
+                                "r": 255,
+                                "g": 200,
+                                "b": 0,
+                                "a": 1.0
+                            },
+                            "stroke_width": 3.0,
+                            "fill": null,
+                            "opacity": 1.0,
+                            "visible": true,
+                            "locked": false,
+                            "layer_id": null,
+                            "transform": {
+                                "translate_x": 0.0,
+                                "translate_y": 0.0,
+                                "translate_z": 0.0,
+                                "rotate_x": 0.0,
+                                "rotate_y": 0.0,
+                                "rotate_z": 0.0,
+                                "scale_x": 1.0,
+                                "scale_y": 1.0,
+                                "scale_z": 1.0
+                            },
+                            "metadata": {},
+                            "created_at": "2025-07-08 12:23:59.672711",
+                            "updated_at": "2025-07-08 12:23:59.672712",
+                            "start_point": {
+                                "x": 700.0,
+                                "y": 100.0,
+                                "z": 0.0
+                            },
+                            "end_point": {
+                                "x": 720.0,
+                                "y": 100.0,
+                                "z": 0.0
+                            },
+                            "line_style": "solid"
+                        },
+                        {
+                            "id": "c2df6ca7-fa0d-4c15-aeeb-1a1ec422da85",
+                            "name": null,
+                            "stroke_color": {
+                                "r": 255,
+                                "g": 200,
+                                "b": 0,
+                                "a": 1.0
+                            },
+                            "stroke_width": 3.0,
+                            "fill": null,
+                            "opacity": 1.0,
+                            "visible": true,
+                            "locked": false,
+                            "layer_id": null,
+                            "transform": {
+                                "translate_x": 0.0,
+                                "translate_y": 0.0,
+                                "translate_z": 0.0,
+                                "rotate_x": 0.0,
+                                "rotate_y": 0.0,
+                                "rotate_z": 0.0,
+                                "scale_x": 1.0,
+                                "scale_y": 1.0,
+                                "scale_z": 1.0
+                            },
+                            "metadata": {},
+                            "created_at": "2025-07-08 12:23:59.672736",
+                            "updated_at": "2025-07-08 12:23:59.672737",
+                            "start_point": {
+                                "x": 685.3553390593274,
+                                "y": 135.35533905932738,
+                                "z": 0.0
+                            },
+                            "end_point": {
+                                "x": 699.4974746830583,
+                                "y": 149.49747468305833,
+                                "z": 0.0
+                            },
+                            "line_style": "solid"
+                        },
+                        {
+                            "id": "e13f00bb-e335-46c1-a121-adead831af6b",
+                            "name": null,
+                            "stroke_color": {
+                                "r": 255,
+                                "g": 200,
+                                "b": 0,
+                                "a": 1.0
+                            },
+                            "stroke_width": 3.0,
+                            "fill": null,
+                            "opacity": 1.0,
+                            "visible": true,
+                            "locked": false,
+                            "layer_id": null,
+                            "transform": {
+                                "translate_x": 0.0,
+                                "translate_y": 0.0,
+                                "translate_z": 0.0,
+                                "rotate_x": 0.0,
+                                "rotate_y": 0.0,
+                                "rotate_z": 0.0,
+                                "scale_x": 1.0,
+                                "scale_y": 1.0,
+                                "scale_z": 1.0
+                            },
+                            "metadata": {},
+                            "created_at": "2025-07-08 12:23:59.672755",
+                            "updated_at": "2025-07-08 12:23:59.672756",
+                            "start_point": {
+                                "x": 650.0,
+                                "y": 150.0,
+                                "z": 0.0
+                            },
+                            "end_point": {
+                                "x": 650.0,
+                                "y": 170.0,
+                                "z": 0.0
+                            },
+                            "line_style": "solid"
+                        },
+                        {
+                            "id": "643bed12-8854-4d4d-8165-7e2b04596346",
+                            "name": null,
+                            "stroke_color": {
+                                "r": 255,
+                                "g": 200,
+                                "b": 0,
+                                "a": 1.0
+                            },
+                            "stroke_width": 3.0,
+                            "fill": null,
+                            "opacity": 1.0,
+                            "visible": true,
+                            "locked": false,
+                            "layer_id": null,
+                            "transform": {
+                                "translate_x": 0.0,
+                                "translate_y": 0.0,
+                                "translate_z": 0.0,
+                                "rotate_x": 0.0,
+                                "rotate_y": 0.0,
+                                "rotate_z": 0.0,
+                                "scale_x": 1.0,
+                                "scale_y": 1.0,
+                                "scale_z": 1.0
+                            },
+                            "metadata": {},
+                            "created_at": "2025-07-08 12:23:59.672772",
+                            "updated_at": "2025-07-08 12:23:59.672772",
+                            "start_point": {
+                                "x": 614.6446609406727,
+                                "y": 135.35533905932738,
+                                "z": 0.0
+                            },
+                            "end_point": {
+                                "x": 600.5025253169417,
+                                "y": 149.49747468305833,
+                                "z": 0.0
+                            },
+                            "line_style": "solid"
+                        },
+                        {
+                            "id": "cc1bb705-68d6-4f15-8876-990cc480ff83",
+                            "name": null,
+                            "stroke_color": {
+                                "r": 255,
+                                "g": 200,
+                                "b": 0,
+                                "a": 1.0
+                            },
+                            "stroke_width": 3.0,
+                            "fill": null,
+                            "opacity": 1.0,
+                            "visible": true,
+                            "locked": false,
+                            "layer_id": null,
+                            "transform": {
+                                "translate_x": 0.0,
+                                "translate_y": 0.0,
+                                "translate_z": 0.0,
+                                "rotate_x": 0.0,
+                                "rotate_y": 0.0,
+                                "rotate_z": 0.0,
+                                "scale_x": 1.0,
+                                "scale_y": 1.0,
+                                "scale_z": 1.0
+                            },
+                            "metadata": {},
+                            "created_at": "2025-07-08 12:23:59.672792",
+                            "updated_at": "2025-07-08 12:23:59.672792",
+                            "start_point": {
+                                "x": 600.0,
+                                "y": 100.0,
+                                "z": 0.0
+                            },
+                            "end_point": {
+                                "x": 580.0,
+                                "y": 100.00000000000001,
+                                "z": 0.0
+                            },
+                            "line_style": "solid"
+                        },
+                        {
+                            "id": "d6ec590b-db14-48ef-b694-79d2ac1f37bf",
+                            "name": null,
+                            "stroke_color": {
+                                "r": 255,
+                                "g": 200,
+                                "b": 0,
+                                "a": 1.0
+                            },
+                            "stroke_width": 3.0,
+                            "fill": null,
+                            "opacity": 1.0,
+                            "visible": true,
+                            "locked": false,
+                            "layer_id": null,
+                            "transform": {
+                                "translate_x": 0.0,
+                                "translate_y": 0.0,
+                                "translate_z": 0.0,
+                                "rotate_x": 0.0,
+                                "rotate_y": 0.0,
+                                "rotate_z": 0.0,
+                                "scale_x": 1.0,
+                                "scale_y": 1.0,
+                                "scale_z": 1.0
+                            },
+                            "metadata": {},
+                            "created_at": "2025-07-08 12:23:59.672808",
+                            "updated_at": "2025-07-08 12:23:59.672808",
+                            "start_point": {
+                                "x": 614.6446609406726,
+                                "y": 64.64466094067262,
+                                "z": 0.0
+                            },
+                            "end_point": {
+                                "x": 600.5025253169416,
+                                "y": 50.50252531694168,
+                                "z": 0.0
+                            },
+                            "line_style": "solid"
+                        },
+                        {
+                            "id": "73aca23b-6110-450f-86a4-f066a4ae666a",
+                            "name": null,
+                            "stroke_color": {
+                                "r": 255,
+                                "g": 200,
+                                "b": 0,
+                                "a": 1.0
+                            },
+                            "stroke_width": 3.0,
+                            "fill": null,
+                            "opacity": 1.0,
+                            "visible": true,
+                            "locked": false,
+                            "layer_id": null,
+                            "transform": {
+                                "translate_x": 0.0,
+                                "translate_y": 0.0,
+                                "translate_z": 0.0,
+                                "rotate_x": 0.0,
+                                "rotate_y": 0.0,
+                                "rotate_z": 0.0,
+                                "scale_x": 1.0,
+                                "scale_y": 1.0,
+                                "scale_z": 1.0
+                            },
+                            "metadata": {},
+                            "created_at": "2025-07-08 12:23:59.672823",
+                            "updated_at": "2025-07-08 12:23:59.672823",
+                            "start_point": {
+                                "x": 650.0,
+                                "y": 50.0,
+                                "z": 0.0
+                            },
+                            "end_point": {
+                                "x": 650.0,
+                                "y": 30.0,
+                                "z": 0.0
+                            },
+                            "line_style": "solid"
+                        },
+                        {
+                            "id": "30849c2e-6c91-4d57-bba0-53bc632fe36e",
+                            "name": null,
+                            "stroke_color": {
+                                "r": 255,
+                                "g": 200,
+                                "b": 0,
+                                "a": 1.0
+                            },
+                            "stroke_width": 3.0,
+                            "fill": null,
+                            "opacity": 1.0,
+                            "visible": true,
+                            "locked": false,
+                            "layer_id": null,
+                            "transform": {
+                                "translate_x": 0.0,
+                                "translate_y": 0.0,
+                                "translate_z": 0.0,
+                                "rotate_x": 0.0,
+                                "rotate_y": 0.0,
+                                "rotate_z": 0.0,
+                                "scale_x": 1.0,
+                                "scale_y": 1.0,
+                                "scale_z": 1.0
+                            },
+                            "metadata": {},
+                            "created_at": "2025-07-08 12:23:59.672838",
+                            "updated_at": "2025-07-08 12:23:59.672839",
+                            "start_point": {
+                                "x": 685.3553390593273,
+                                "y": 64.64466094067262,
+                                "z": 0.0
+                            },
+                            "end_point": {
+                                "x": 699.4974746830583,
+                                "y": 50.502525316941664,
+                                "z": 0.0
+                            },
+                            "line_style": "solid"
+                        }
+                    ]
+                },
+                {
+                    "id": "308fe779-292d-49e0-8a6d-8462e7666de2",
+                    "name": "House",
+                    "stroke_color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0,
+                        "a": 1.0
+                    },
+                    "stroke_width": 1.0,
+                    "fill": null,
+                    "opacity": 1.0,
+                    "visible": true,
+                    "locked": false,
+                    "layer_id": "63bd12fe-f41d-4b5e-b0c6-6e2b2d57f09b",
+                    "transform": {
+                        "translate_x": 0.0,
+                        "translate_y": 0.0,
+                        "translate_z": 0.0,
+                        "rotate_x": 0.0,
+                        "rotate_y": 0.0,
+                        "rotate_z": 0.0,
+                        "scale_x": 1.0,
+                        "scale_y": 1.0,
+                        "scale_z": 1.0
+                    },
+                    "metadata": {},
+                    "created_at": "2025-07-08 12:23:59.672880",
+                    "updated_at": "2025-07-08 12:23:59.672994",
+                    "objects": [
+                        {
+                            "id": "34f2d2a8-dcc4-425b-9532-2d8ee1e8a94a",
+                            "name": "House Body",
+                            "stroke_color": {
+                                "r": 150,
+                                "g": 100,
+                                "b": 60,
+                                "a": 1.0
+                            },
+                            "stroke_width": 2.0,
+                            "fill": {
+                                "color": {
+                                    "r": 220,
+                                    "g": 180,
+                                    "b": 140,
+                                    "a": 1.0
+                                },
+                                "gradient": null,
+                                "pattern": null
+                            },
+                            "opacity": 1.0,
+                            "visible": true,
+                            "locked": false,
+                            "layer_id": null,
+                            "transform": {
+                                "translate_x": 0.0,
+                                "translate_y": 0.0,
+                                "translate_z": 0.0,
+                                "rotate_x": 0.0,
+                                "rotate_y": 0.0,
+                                "rotate_z": 0.0,
+                                "scale_x": 1.0,
+                                "scale_y": 1.0,
+                                "scale_z": 1.0
+                            },
+                            "metadata": {},
+                            "created_at": "2025-07-08 12:23:59.672899",
+                            "updated_at": "2025-07-08 12:23:59.672900",
+                            "top_left": {
+                                "x": 100.0,
+                                "y": 300.0,
+                                "z": 0.0
+                            },
+                            "width": 200.0,
+                            "height": 150.0,
+                            "corner_radius": 0.0
+                        },
+                        {
+                            "id": "de042a4c-3300-428c-a18a-66d479be5a51",
+                            "name": "Roof",
+                            "stroke_color": {
+                                "r": 120,
+                                "g": 40,
+                                "b": 40,
+                                "a": 1.0
+                            },
+                            "stroke_width": 2.0,
+                            "fill": {
+                                "color": {
+                                    "r": 180,
+                                    "g": 60,
+                                    "b": 60,
+                                    "a": 1.0
+                                },
+                                "gradient": null,
+                                "pattern": null
+                            },
+                            "opacity": 1.0,
+                            "visible": true,
+                            "locked": false,
+                            "layer_id": null,
+                            "transform": {
+                                "translate_x": 0.0,
+                                "translate_y": 0.0,
+                                "translate_z": 0.0,
+                                "rotate_x": 0.0,
+                                "rotate_y": 0.0,
+                                "rotate_z": 0.0,
+                                "scale_x": 1.0,
+                                "scale_y": 1.0,
+                                "scale_z": 1.0
+                            },
+                            "metadata": {},
+                            "created_at": "2025-07-08 12:23:59.672926",
+                            "updated_at": "2025-07-08 12:23:59.672927",
+                            "points": [
+                                {
+                                    "x": 80.0,
+                                    "y": 300.0,
+                                    "z": 0.0
+                                },
+                                {
+                                    "x": 200.0,
+                                    "y": 200.0,
+                                    "z": 0.0
+                                },
+                                {
+                                    "x": 320.0,
+                                    "y": 300.0,
+                                    "z": 0.0
+                                }
+                            ],
+                            "closed": true
+                        },
+                        {
+                            "id": "3f591ad3-4848-4a05-a4c1-a8faa10c1d24",
+                            "name": "Door",
+                            "stroke_color": {
+                                "r": 60,
+                                "g": 40,
+                                "b": 20,
+                                "a": 1.0
+                            },
+                            "stroke_width": 2.0,
+                            "fill": {
+                                "color": {
+                                    "r": 100,
+                                    "g": 60,
+                                    "b": 40,
+                                    "a": 1.0
+                                },
+                                "gradient": null,
+                                "pattern": null
+                            },
+                            "opacity": 1.0,
+                            "visible": true,
+                            "locked": false,
+                            "layer_id": null,
+                            "transform": {
+                                "translate_x": 0.0,
+                                "translate_y": 0.0,
+                                "translate_z": 0.0,
+                                "rotate_x": 0.0,
+                                "rotate_y": 0.0,
+                                "rotate_z": 0.0,
+                                "scale_x": 1.0,
+                                "scale_y": 1.0,
+                                "scale_z": 1.0
+                            },
+                            "metadata": {},
+                            "created_at": "2025-07-08 12:23:59.672948",
+                            "updated_at": "2025-07-08 12:23:59.672948",
+                            "top_left": {
+                                "x": 180.0,
+                                "y": 380.0,
+                                "z": 0.0
+                            },
+                            "width": 40.0,
+                            "height": 70.0,
+                            "corner_radius": 0.0
+                        },
+                        {
+                            "id": "0da45f6a-6d77-4b6d-a08b-c2a6407544eb",
+                            "name": "Window 1",
+                            "stroke_color": {
+                                "r": 100,
+                                "g": 100,
+                                "b": 100,
+                                "a": 1.0
+                            },
+                            "stroke_width": 2.0,
+                            "fill": {
+                                "color": {
+                                    "r": 180,
+                                    "g": 220,
+                                    "b": 255,
+                                    "a": 0.8
+                                },
+                                "gradient": null,
+                                "pattern": null
+                            },
+                            "opacity": 1.0,
+                            "visible": true,
+                            "locked": false,
+                            "layer_id": null,
+                            "transform": {
+                                "translate_x": 0.0,
+                                "translate_y": 0.0,
+                                "translate_z": 0.0,
+                                "rotate_x": 0.0,
+                                "rotate_y": 0.0,
+                                "rotate_z": 0.0,
+                                "scale_x": 1.0,
+                                "scale_y": 1.0,
+                                "scale_z": 1.0
+                            },
+                            "metadata": {},
+                            "created_at": "2025-07-08 12:23:59.672971",
+                            "updated_at": "2025-07-08 12:23:59.672971",
+                            "top_left": {
+                                "x": 130.0,
+                                "y": 330.0,
+                                "z": 0.0
+                            },
+                            "width": 30.0,
+                            "height": 30.0,
+                            "corner_radius": 0.0
+                        },
+                        {
+                            "id": "1bb1d598-9c28-4186-9a02-80cfa130cd3f",
+                            "name": "Window 2",
+                            "stroke_color": {
+                                "r": 100,
+                                "g": 100,
+                                "b": 100,
+                                "a": 1.0
+                            },
+                            "stroke_width": 2.0,
+                            "fill": {
+                                "color": {
+                                    "r": 180,
+                                    "g": 220,
+                                    "b": 255,
+                                    "a": 0.8
+                                },
+                                "gradient": null,
+                                "pattern": null
+                            },
+                            "opacity": 1.0,
+                            "visible": true,
+                            "locked": false,
+                            "layer_id": null,
+                            "transform": {
+                                "translate_x": 0.0,
+                                "translate_y": 0.0,
+                                "translate_z": 0.0,
+                                "rotate_x": 0.0,
+                                "rotate_y": 0.0,
+                                "rotate_z": 0.0,
+                                "scale_x": 1.0,
+                                "scale_y": 1.0,
+                                "scale_z": 1.0
+                            },
+                            "metadata": {},
+                            "created_at": "2025-07-08 12:23:59.672990",
+                            "updated_at": "2025-07-08 12:23:59.672991",
+                            "top_left": {
+                                "x": 240.0,
+                                "y": 330.0,
+                                "z": 0.0
+                            },
+                            "width": 30.0,
+                            "height": 30.0,
+                            "corner_radius": 0.0
+                        }
+                    ]
+                },
+                {
+                    "id": "ed3d021d-3bf2-4079-a275-d3061bb81d42",
+                    "name": "Tree",
+                    "stroke_color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0,
+                        "a": 1.0
+                    },
+                    "stroke_width": 1.0,
+                    "fill": null,
+                    "opacity": 1.0,
+                    "visible": true,
+                    "locked": false,
+                    "layer_id": "63bd12fe-f41d-4b5e-b0c6-6e2b2d57f09b",
+                    "transform": {
+                        "translate_x": 0.0,
+                        "translate_y": 0.0,
+                        "translate_z": 0.0,
+                        "rotate_x": 0.0,
+                        "rotate_y": 0.0,
+                        "rotate_z": 0.0,
+                        "scale_x": 1.0,
+                        "scale_y": 1.0,
+                        "scale_z": 1.0
+                    },
+                    "metadata": {},
+                    "created_at": "2025-07-08 12:23:59.673013",
+                    "updated_at": "2025-07-08 12:23:59.673141",
+                    "objects": [
+                        {
+                            "id": "bd365206-a46a-4e30-9cf3-83edb544510c",
+                            "name": "Tree Trunk",
+                            "stroke_color": {
+                                "r": 60,
+                                "g": 40,
+                                "b": 20,
+                                "a": 1.0
+                            },
+                            "stroke_width": 2.0,
+                            "fill": {
+                                "color": {
+                                    "r": 101,
+                                    "g": 67,
+                                    "b": 33,
+                                    "a": 1.0
+                                },
+                                "gradient": null,
+                                "pattern": null
+                            },
+                            "opacity": 1.0,
+                            "visible": true,
+                            "locked": false,
+                            "layer_id": null,
+                            "transform": {
+                                "translate_x": 0.0,
+                                "translate_y": 0.0,
+                                "translate_z": 0.0,
+                                "rotate_x": 0.0,
+                                "rotate_y": 0.0,
+                                "rotate_z": 0.0,
+                                "scale_x": 1.0,
+                                "scale_y": 1.0,
+                                "scale_z": 1.0
+                            },
+                            "metadata": {},
+                            "created_at": "2025-07-08 12:23:59.673030",
+                            "updated_at": "2025-07-08 12:23:59.673030",
+                            "top_left": {
+                                "x": 480.0,
+                                "y": 380.0,
+                                "z": 0.0
+                            },
+                            "width": 40.0,
+                            "height": 80.0,
+                            "corner_radius": 0.0
+                        },
+                        {
+                            "id": "0e304e34-f3ce-49d7-a7f9-081a6889057b",
+                            "name": null,
+                            "stroke_color": {
+                                "r": 20,
+                                "g": 90,
+                                "b": 20,
+                                "a": 1.0
+                            },
+                            "stroke_width": 1.0,
+                            "fill": {
+                                "color": {
+                                    "r": 34,
+                                    "g": 139,
+                                    "b": 34,
+                                    "a": 1.0
+                                },
+                                "gradient": null,
+                                "pattern": null
+                            },
+                            "opacity": 1.0,
+                            "visible": true,
+                            "locked": false,
+                            "layer_id": null,
+                            "transform": {
+                                "translate_x": 0.0,
+                                "translate_y": 0.0,
+                                "translate_z": 0.0,
+                                "rotate_x": 0.0,
+                                "rotate_y": 0.0,
+                                "rotate_z": 0.0,
+                                "scale_x": 1.0,
+                                "scale_y": 1.0,
+                                "scale_z": 1.0
+                            },
+                            "metadata": {},
+                            "created_at": "2025-07-08 12:23:59.673050",
+                            "updated_at": "2025-07-08 12:23:59.673050",
+                            "center": {
+                                "x": 500.0,
+                                "y": 340.0,
+                                "z": 0.0
+                            },
+                            "radius": 35.0
+                        },
+                        {
+                            "id": "d184c16d-c9aa-4122-ae4c-1c61bc4613f7",
+                            "name": null,
+                            "stroke_color": {
+                                "r": 20,
+                                "g": 90,
+                                "b": 20,
+                                "a": 1.0
+                            },
+                            "stroke_width": 1.0,
+                            "fill": {
+                                "color": {
+                                    "r": 34,
+                                    "g": 139,
+                                    "b": 34,
+                                    "a": 1.0
+                                },
+                                "gradient": null,
+                                "pattern": null
+                            },
+                            "opacity": 1.0,
+                            "visible": true,
+                            "locked": false,
+                            "layer_id": null,
+                            "transform": {
+                                "translate_x": 0.0,
+                                "translate_y": 0.0,
+                                "translate_z": 0.0,
+                                "rotate_x": 0.0,
+                                "rotate_y": 0.0,
+                                "rotate_z": 0.0,
+                                "scale_x": 1.0,
+                                "scale_y": 1.0,
+                                "scale_z": 1.0
+                            },
+                            "metadata": {},
+                            "created_at": "2025-07-08 12:23:59.673071",
+                            "updated_at": "2025-07-08 12:23:59.673071",
+                            "center": {
+                                "x": 480.0,
+                                "y": 350.0,
+                                "z": 0.0
+                            },
+                            "radius": 30.0
+                        },
+                        {
+                            "id": "eb1b3587-b4a8-4430-bbd4-5145b99ecb7e",
+                            "name": null,
+                            "stroke_color": {
+                                "r": 20,
+                                "g": 90,
+                                "b": 20,
+                                "a": 1.0
+                            },
+                            "stroke_width": 1.0,
+                            "fill": {
+                                "color": {
+                                    "r": 34,
+                                    "g": 139,
+                                    "b": 34,
+                                    "a": 1.0
+                                },
+                                "gradient": null,
+                                "pattern": null
+                            },
+                            "opacity": 1.0,
+                            "visible": true,
+                            "locked": false,
+                            "layer_id": null,
+                            "transform": {
+                                "translate_x": 0.0,
+                                "translate_y": 0.0,
+                                "translate_z": 0.0,
+                                "rotate_x": 0.0,
+                                "rotate_y": 0.0,
+                                "rotate_z": 0.0,
+                                "scale_x": 1.0,
+                                "scale_y": 1.0,
+                                "scale_z": 1.0
+                            },
+                            "metadata": {},
+                            "created_at": "2025-07-08 12:23:59.673088",
+                            "updated_at": "2025-07-08 12:23:59.673089",
+                            "center": {
+                                "x": 520.0,
+                                "y": 350.0,
+                                "z": 0.0
+                            },
+                            "radius": 30.0
+                        },
+                        {
+                            "id": "aa4264e4-32fe-40a2-869f-99939b1a93fe",
+                            "name": null,
+                            "stroke_color": {
+                                "r": 20,
+                                "g": 90,
+                                "b": 20,
+                                "a": 1.0
+                            },
+                            "stroke_width": 1.0,
+                            "fill": {
+                                "color": {
+                                    "r": 34,
+                                    "g": 139,
+                                    "b": 34,
+                                    "a": 1.0
+                                },
+                                "gradient": null,
+                                "pattern": null
+                            },
+                            "opacity": 1.0,
+                            "visible": true,
+                            "locked": false,
+                            "layer_id": null,
+                            "transform": {
+                                "translate_x": 0.0,
+                                "translate_y": 0.0,
+                                "translate_z": 0.0,
+                                "rotate_x": 0.0,
+                                "rotate_y": 0.0,
+                                "rotate_z": 0.0,
+                                "scale_x": 1.0,
+                                "scale_y": 1.0,
+                                "scale_z": 1.0
+                            },
+                            "metadata": {},
+                            "created_at": "2025-07-08 12:23:59.673105",
+                            "updated_at": "2025-07-08 12:23:59.673106",
+                            "center": {
+                                "x": 500.0,
+                                "y": 320.0,
+                                "z": 0.0
+                            },
+                            "radius": 30.0
+                        },
+                        {
+                            "id": "5d979768-32c5-41c6-8aa6-e1f3fade1b94",
+                            "name": null,
+                            "stroke_color": {
+                                "r": 20,
+                                "g": 90,
+                                "b": 20,
+                                "a": 1.0
+                            },
+                            "stroke_width": 1.0,
+                            "fill": {
+                                "color": {
+                                    "r": 34,
+                                    "g": 139,
+                                    "b": 34,
+                                    "a": 1.0
+                                },
+                                "gradient": null,
+                                "pattern": null
+                            },
+                            "opacity": 1.0,
+                            "visible": true,
+                            "locked": false,
+                            "layer_id": null,
+                            "transform": {
+                                "translate_x": 0.0,
+                                "translate_y": 0.0,
+                                "translate_z": 0.0,
+                                "rotate_x": 0.0,
+                                "rotate_y": 0.0,
+                                "rotate_z": 0.0,
+                                "scale_x": 1.0,
+                                "scale_y": 1.0,
+                                "scale_z": 1.0
+                            },
+                            "metadata": {},
+                            "created_at": "2025-07-08 12:23:59.673122",
+                            "updated_at": "2025-07-08 12:23:59.673123",
+                            "center": {
+                                "x": 485.0,
+                                "y": 330.0,
+                                "z": 0.0
+                            },
+                            "radius": 25.0
+                        },
+                        {
+                            "id": "421f2c06-c4cd-4539-bc02-0c8eda792783",
+                            "name": null,
+                            "stroke_color": {
+                                "r": 20,
+                                "g": 90,
+                                "b": 20,
+                                "a": 1.0
+                            },
+                            "stroke_width": 1.0,
+                            "fill": {
+                                "color": {
+                                    "r": 34,
+                                    "g": 139,
+                                    "b": 34,
+                                    "a": 1.0
+                                },
+                                "gradient": null,
+                                "pattern": null
+                            },
+                            "opacity": 1.0,
+                            "visible": true,
+                            "locked": false,
+                            "layer_id": null,
+                            "transform": {
+                                "translate_x": 0.0,
+                                "translate_y": 0.0,
+                                "translate_z": 0.0,
+                                "rotate_x": 0.0,
+                                "rotate_y": 0.0,
+                                "rotate_z": 0.0,
+                                "scale_x": 1.0,
+                                "scale_y": 1.0,
+                                "scale_z": 1.0
+                            },
+                            "metadata": {},
+                            "created_at": "2025-07-08 12:23:59.673139",
+                            "updated_at": "2025-07-08 12:23:59.673139",
+                            "center": {
+                                "x": 515.0,
+                                "y": 330.0,
+                                "z": 0.0
+                            },
+                            "radius": 25.0
+                        }
+                    ]
+                },
+                {
+                    "id": "1e255315-2986-4848-a182-4dd59bfabea5",
+                    "name": "Ellipse",
+                    "stroke_color": {
+                        "r": 200,
+                        "g": 50,
+                        "b": 50,
+                        "a": 1.0
+                    },
+                    "stroke_width": 2.0,
+                    "fill": {
+                        "color": {
+                            "r": 255,
+                            "g": 100,
+                            "b": 100,
+                            "a": 0.6
+                        },
+                        "gradient": null,
+                        "pattern": null
+                    },
+                    "opacity": 1.0,
+                    "visible": true,
+                    "locked": false,
+                    "layer_id": "63bd12fe-f41d-4b5e-b0c6-6e2b2d57f09b",
+                    "transform": {
+                        "translate_x": 0.0,
+                        "translate_y": 0.0,
+                        "translate_z": 0.0,
+                        "rotate_x": 0.0,
+                        "rotate_y": 0.0,
+                        "rotate_z": 0.0,
+                        "scale_x": 1.0,
+                        "scale_y": 1.0,
+                        "scale_z": 1.0
+                    },
+                    "metadata": {},
+                    "created_at": "2025-07-08 12:23:59.673164",
+                    "updated_at": "2025-07-08 12:23:59.673165",
+                    "center": {
+                        "x": 400.0,
+                        "y": 150.0,
+                        "z": 0.0
+                    },
+                    "rx": 60.0,
+                    "ry": 30.0,
+                    "rotation": 30.0
+                },
+                {
+                    "id": "c14ccd6c-3623-4485-9552-f7675e83850e",
+                    "name": "Rainbow",
+                    "stroke_color": {
+                        "r": 147,
+                        "g": 112,
+                        "b": 219,
+                        "a": 1.0
+                    },
+                    "stroke_width": 20.0,
+                    "fill": null,
+                    "opacity": 1.0,
+                    "visible": true,
+                    "locked": false,
+                    "layer_id": "63bd12fe-f41d-4b5e-b0c6-6e2b2d57f09b",
+                    "transform": {
+                        "translate_x": 0.0,
+                        "translate_y": 0.0,
+                        "translate_z": 0.0,
+                        "rotate_x": 0.0,
+                        "rotate_y": 0.0,
+                        "rotate_z": 0.0,
+                        "scale_x": 1.0,
+                        "scale_y": 1.0,
+                        "scale_z": 1.0
+                    },
+                    "metadata": {},
+                    "created_at": "2025-07-08 12:23:59.673193",
+                    "updated_at": "2025-07-08 12:23:59.673193",
+                    "center": {
+                        "x": 400.0,
+                        "y": 500.0,
+                        "z": 0.0
+                    },
+                    "radius": 150.0,
+                    "start_angle": 180.0,
+                    "end_angle": 360.0
+                },
+                {
+                    "id": "29ca5868-4d78-4a04-a3fe-f139d654d9c5",
+                    "name": "Mountain",
+                    "stroke_color": {
+                        "r": 100,
+                        "g": 100,
+                        "b": 100,
+                        "a": 1.0
+                    },
+                    "stroke_width": 3.0,
+                    "fill": null,
+                    "opacity": 1.0,
+                    "visible": true,
+                    "locked": false,
+                    "layer_id": "63bd12fe-f41d-4b5e-b0c6-6e2b2d57f09b",
+                    "transform": {
+                        "translate_x": 0.0,
+                        "translate_y": 0.0,
+                        "translate_z": 0.0,
+                        "rotate_x": 0.0,
+                        "rotate_y": 0.0,
+                        "rotate_z": 0.0,
+                        "scale_x": 1.0,
+                        "scale_y": 1.0,
+                        "scale_z": 1.0
+                    },
+                    "metadata": {},
+                    "created_at": "2025-07-08 12:23:59.673258",
+                    "updated_at": "2025-07-08 12:23:59.673259",
+                    "points": [
+                        {
+                            "x": 50.0,
+                            "y": 500.0,
+                            "z": 0.0
+                        },
+                        {
+                            "x": 150.0,
+                            "y": 400.0,
+                            "z": 0.0
+                        },
+                        {
+                            "x": 200.0,
+                            "y": 450.0,
+                            "z": 0.0
+                        },
+                        {
+                            "x": 300.0,
+                            "y": 350.0,
+                            "z": 0.0
+                        },
+                        {
+                            "x": 350.0,
+                            "y": 400.0,
+                            "z": 0.0
+                        },
+                        {
+                            "x": 450.0,
+                            "y": 500.0,
+                            "z": 0.0
+                        }
+                    ],
+                    "line_style": "solid"
+                }
+            ],
+            "z_index": 1
+        },
+        {
+            "id": "4bd6b888-1a49-4f54-80d8-dca6bc87b33f",
+            "name": "Text",
+            "visible": true,
+            "locked": false,
+            "opacity": 1.0,
+            "objects": [
+                {
+                    "id": "35ed7fa6-2303-4f10-a015-5d4948d7cc2f",
+                    "name": "Title",
+                    "stroke_color": {
+                        "r": 50,
+                        "g": 50,
+                        "b": 150,
+                        "a": 1.0
+                    },
+                    "stroke_width": 1.0,
+                    "fill": null,
+                    "opacity": 1.0,
+                    "visible": true,
+                    "locked": false,
+                    "layer_id": "4bd6b888-1a49-4f54-80d8-dca6bc87b33f",
+                    "transform": {
+                        "translate_x": 0.0,
+                        "translate_y": 0.0,
+                        "translate_z": 0.0,
+                        "rotate_x": 0.0,
+                        "rotate_y": 0.0,
+                        "rotate_z": 0.0,
+                        "scale_x": 1.0,
+                        "scale_y": 1.0,
+                        "scale_z": 1.0
+                    },
+                    "metadata": {},
+                    "created_at": "2025-07-08 12:23:59.673297",
+                    "updated_at": "2025-07-08 12:23:59.673297",
+                    "position": {
+                        "x": 400.0,
+                        "y": 50.0,
+                        "z": 0.0
+                    },
+                    "content": "My Vector Drawing",
+                    "font_family": "Arial",
+                    "font_size": 32.0,
+                    "font_weight": "bold",
+                    "font_style": "normal",
+                    "text_alignment": "center",
+                    "vertical_alignment": "bottom"
+                },
+                {
+                    "id": "e94f9a51-8e61-4e8f-965e-92b753c9402c",
+                    "name": null,
+                    "stroke_color": {
+                        "r": 100,
+                        "g": 100,
+                        "b": 100,
+                        "a": 1.0
+                    },
+                    "stroke_width": 1.0,
+                    "fill": null,
+                    "opacity": 1.0,
+                    "visible": true,
+                    "locked": false,
+                    "layer_id": "4bd6b888-1a49-4f54-80d8-dca6bc87b33f",
+                    "transform": {
+                        "translate_x": 0.0,
+                        "translate_y": 0.0,
+                        "translate_z": 0.0,
+                        "rotate_x": 0.0,
+                        "rotate_y": 0.0,
+                        "rotate_z": 0.0,
+                        "scale_x": 1.0,
+                        "scale_y": 1.0,
+                        "scale_z": 1.0
+                    },
+                    "metadata": {},
+                    "created_at": "2025-07-08 12:23:59.673321",
+                    "updated_at": "2025-07-08 12:23:59.673322",
+                    "position": {
+                        "x": 200.0,
+                        "y": 480.0,
+                        "z": 0.0
+                    },
+                    "content": "House",
+                    "font_family": "Arial",
+                    "font_size": 14.0,
+                    "font_weight": "normal",
+                    "font_style": "normal",
+                    "text_alignment": "center",
+                    "vertical_alignment": "bottom"
+                },
+                {
+                    "id": "2702cb31-9247-4e48-9599-c4286867b455",
+                    "name": null,
+                    "stroke_color": {
+                        "r": 100,
+                        "g": 100,
+                        "b": 100,
+                        "a": 1.0
+                    },
+                    "stroke_width": 1.0,
+                    "fill": null,
+                    "opacity": 1.0,
+                    "visible": true,
+                    "locked": false,
+                    "layer_id": "4bd6b888-1a49-4f54-80d8-dca6bc87b33f",
+                    "transform": {
+                        "translate_x": 0.0,
+                        "translate_y": 0.0,
+                        "translate_z": 0.0,
+                        "rotate_x": 0.0,
+                        "rotate_y": 0.0,
+                        "rotate_z": 0.0,
+                        "scale_x": 1.0,
+                        "scale_y": 1.0,
+                        "scale_z": 1.0
+                    },
+                    "metadata": {},
+                    "created_at": "2025-07-08 12:23:59.673335",
+                    "updated_at": "2025-07-08 12:23:59.673336",
+                    "position": {
+                        "x": 500.0,
+                        "y": 480.0,
+                        "z": 0.0
+                    },
+                    "content": "Tree",
+                    "font_family": "Arial",
+                    "font_size": 14.0,
+                    "font_weight": "normal",
+                    "font_style": "normal",
+                    "text_alignment": "center",
+                    "vertical_alignment": "bottom"
+                },
+                {
+                    "id": "129a0301-1e6e-4bc4-9eb9-46567005561d",
+                    "name": null,
+                    "stroke_color": {
+                        "r": 150,
+                        "g": 150,
+                        "b": 150,
+                        "a": 1.0
+                    },
+                    "stroke_width": 1.0,
+                    "fill": null,
+                    "opacity": 1.0,
+                    "visible": true,
+                    "locked": false,
+                    "layer_id": "4bd6b888-1a49-4f54-80d8-dca6bc87b33f",
+                    "transform": {
+                        "translate_x": 0.0,
+                        "translate_y": 0.0,
+                        "translate_z": 0.0,
+                        "rotate_x": 0.0,
+                        "rotate_y": 0.0,
+                        "rotate_z": 0.0,
+                        "scale_x": 1.0,
+                        "scale_y": 1.0,
+                        "scale_z": 1.0
+                    },
+                    "metadata": {},
+                    "created_at": "2025-07-08 12:23:59.673352",
+                    "updated_at": "2025-07-08 12:23:59.673353",
+                    "position": {
+                        "x": 700.0,
+                        "y": 580.0,
+                        "z": 0.0
+                    },
+                    "content": "Created with Python",
+                    "font_family": "Arial",
+                    "font_size": 10.0,
+                    "font_weight": "normal",
+                    "font_style": "italic",
+                    "text_alignment": "right",
+                    "vertical_alignment": "bottom"
+                }
+            ],
+            "z_index": 2
+        }
+    ],
+    "metadata": {},
+    "created_at": "2025-07-08 12:23:59.672462",
+    "updated_at": "2025-07-08 12:23:59.673497"
+}
