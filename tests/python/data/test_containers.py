@@ -83,11 +83,6 @@ class TestGroup:
         group = Group()
         initial_updated = group.updated_at
 
-        # Small delay to ensure timestamp difference on all platforms
-        import time
-
-        time.sleep(0.001)
-
         circle = Circle(center=Point(x=0, y=0), radius=10)
         group.add_object(circle)
 
@@ -283,11 +278,6 @@ class TestDrawing:
     def test_drawing_updated_timestamp(self):
         drawing = Drawing()
         initial_updated = drawing.updated_at
-
-        # Small delay to ensure timestamp difference on all platforms
-        import time
-
-        time.sleep(0.001)
 
         layer = Layer(name="New Layer")
         drawing.add_layer(layer)
