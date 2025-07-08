@@ -17,7 +17,7 @@ ext_modules = [
          "src/batch_operations.cpp"],
         include_dirs=["include"],
         cxx_std=17,
-        extra_compile_args=["-O3", "-march=native"],
+        extra_compile_args=["-O3"],
     ),
 ]
 

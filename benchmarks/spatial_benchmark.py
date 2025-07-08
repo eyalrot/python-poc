@@ -11,8 +11,15 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.insert(0, 'cpp')
 
-import drawing_cpp
-from python.drawing_cpp_wrapper import DrawingCpp
+try:
+    import drawing_cpp
+    from python.drawing_cpp_wrapper import DrawingCpp
+    CPP_AVAILABLE = True
+except ImportError:
+    print("Error: C++ bindings not available. Please build them first:")
+    print("  cd cpp")
+    print("  python setup.py build_ext --inplace")
+    sys.exit(1)
 
 
 class SpatialBenchmark:

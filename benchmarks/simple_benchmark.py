@@ -13,9 +13,14 @@ from typing import Dict, List, Any
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # Import C++ implementation
-sys.path.insert(0, 'cpp')
-import drawing_cpp
-from python.drawing_cpp_wrapper import DrawingCpp
+try:
+    sys.path.insert(0, 'cpp')
+    import drawing_cpp
+    from python.drawing_cpp_wrapper import DrawingCpp
+    CPP_AVAILABLE = True
+except ImportError:
+    print("Warning: C++ bindings not available. Some benchmarks will be skipped.")
+    CPP_AVAILABLE = False
 
 
 class SimpleBenchmark:
@@ -235,9 +240,7 @@ def compare_with_python():
     
     # Python version (if available)
     try:
-        from python.data.drawing import Drawing as PyDrawing
-        from python.data.shapes import Circle as PyCircle
-        from python.data.basic_models import Point as PyPoint, Color as PyColor
+        from python.data.models import Drawing as PyDrawing, Circle as PyCircle, Point as PyPoint, Color as PyColor
         
         # Python creation
         start = time.perf_counter()
@@ -275,6 +278,13 @@ def compare_with_python():
 
 def main():
     """Run benchmarks."""
+    if not CPP_AVAILABLE:
+        print("Error: C++ bindings are required for benchmarks.")
+        print("Please build the C++ bindings first:")
+        print("  cd cpp")
+        print("  python setup.py build_ext --inplace")
+        return 1
+    
     benchmark = SimpleBenchmark()
     
     # Run with different sizes
@@ -294,7 +304,9 @@ def main():
     
     # Compare with Python if available
     compare_with_python()
+    
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
