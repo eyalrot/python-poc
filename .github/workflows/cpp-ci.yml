@@ -7,12 +7,15 @@ on:
       - 'cpp/**'
       - 'benchmarks/**'
       - '.github/workflows/cpp-ci.yml'
+      - 'tests/cpp_integration/**'
   pull_request:
     branches: [ master, main ]
     paths:
       - 'cpp/**'
       - 'benchmarks/**'
       - '.github/workflows/cpp-ci.yml'
+      - 'tests/cpp_integration/**'
+  workflow_dispatch:
 
 jobs:
   build-and-test:
